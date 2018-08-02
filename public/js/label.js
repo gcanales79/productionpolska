@@ -29,7 +29,8 @@ $("#submit").on("click", function (event) {
 
                 $.post("/api/repetido", newSerial)
                     .then(newSerial);
-                mandarMensaje(newSerial);
+                    mandarMensaje(newSerial);
+
                 return;
             }
             else {
@@ -66,6 +67,12 @@ $("#submit").on("click", function (event) {
         $("#Resultado").append(newDiv);
 
     }
+
+
+    function mandarMensaje(newSerial) {
+        $.post("/message", newSerial)
+            .then(newSerial);
+    }
 })
 
 $(document).on("click", "#cambioDeetiqueta", function (event) {
@@ -74,7 +81,3 @@ $(document).on("click", "#cambioDeetiqueta", function (event) {
     window.location.href = "./";
 });
 
-function mandarMensaje(newSerial) {
-    $.post("/message", newSerial)
-        .then(newSerial);
-}
