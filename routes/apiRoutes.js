@@ -1,6 +1,6 @@
-var accountSid = process.env.TWILIO_ACCOUNT_SID;
-var authToken = process.env.TWILIO_AUTH_TOKEN;
-var client = require("twilio")(accountSid, authToken);
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require("twilio")(accountSid, authToken);
 var db = require("../models");
 
 module.exports = function (app) {
@@ -47,7 +47,8 @@ module.exports = function (app) {
         to: telefonos[i],  // Text this number
         from: process.env.TWILIO_Phone // From a valid Twilio number
       })
-        .then((message) => console.log(message.sid));
+        .then((message) => console.log(message.sid))
+        .done();
     }
   });
 
