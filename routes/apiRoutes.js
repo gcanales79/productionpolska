@@ -45,7 +45,7 @@ module.exports = function (app) {
       client.messages.create({
         body: "Salio una pieza con serial repetido. El serial es " + req.body.serial,
         to: telefonos[i],  // Text this number
-        from: process.env.TWILIO_Phone // From a valid Twilio number
+        From: process.env.TWILIO_Phone // From a valid Twilio number
       })
         .then((message) => console.log(message.sid))
         .done();
