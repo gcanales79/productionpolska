@@ -1,0 +1,79 @@
+var accountSid = process.env.TWILIO_ACCOUNT_SID;
+var authToken = process.env.TWILIO_AUTH_TOKEN;
+var client = require("twilio")(accountSid, authToken);
+var db = require("../models");
+
+module.exports = function (app) {
+  // Get all examples
+  app.get("/api/:serial", function (req, res) {
+    db.Daimler.findOne({
+      where: {
+        serial: req.params.serial
+      }
+    }).then(function (dbDaimler) {
+      res.json(dbDaimler);
+      //console.log(dbDaimler);
+    });
+  });
+
+  // Create a new serial
+  app.post("/api/serial", function (req, res) {
+    db.Daimler.create(req.body).then(function (dbDaimler) {
+      res.json(dbDaimler);
+
+    });
+  });
+
+  app.post("/api/repetido", function (req, res) {
+    db.Daimler.update({
+      repetida: true,
+    }, {
+        where: {
+          serial: req.body.serial
+        }
+
+      })
+
+
+  });
+
+  app.post("/message", function (req, res) {
+    var telefonos = [process.env.GUS_PHONE, process.env.OMAR_PHONE, process.env.TAMARA_PHONE, 
+      process.env.ANGEL_PHONE, process.env.GABRIEL_PHONE];
+
+    for (var i = 0; i < telefonos.length; i++) {
+      client.messages.create({
+        body: "Salio una pieza con serial repetido. El seria es " + req.body.serial,
+        to: telefonos[i],  // Text this number
+        from: process.env.TWILIO_Phone // From a valid Twilio number
+      })
+        .then((message) => console.log(message.sid));
+    }
+  });
+
+  app.post("/api/cambioetiqueta",function (req,res){
+    db.Daimler.create({
+      serial: req.body.serial,
+      nueva_etiqueta: req.body.nueva_etiqueta,
+      repetida:true,
+    }).then(function (dbDaimler) {
+      res.json(dbDaimler);
+
+    });
+  })
+
+  app.get("/api/all/:serial", function (req, res) {
+    db.Daimler.findAll({
+      where: {
+        serial: req.params.serial
+      }
+    }).then(function (dbDaimler) {
+      res.json(dbDaimler);
+      //console.log(dbDaimler);
+    });
+  });
+
+
+
+};
+
