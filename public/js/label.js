@@ -29,8 +29,7 @@ $("#submit").on("click", function (event) {
 
                 $.post("/api/repetido", newSerial)
                     .then(newSerial);
-                $.post("/message", newSerial)
-                    .then(newSerial);
+                mandarMensaje();
                 return;
             }
             else {
@@ -74,3 +73,8 @@ $(document).on("click", "#cambioDeetiqueta", function (event) {
     $("#serialEtiqueta").val("");
     window.location.href = "./";
 });
+
+function mandarMensaje() {
+    $.post("/message", newSerial)
+        .then(newSerial);
+}
