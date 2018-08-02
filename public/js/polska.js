@@ -40,6 +40,7 @@ $("#submit").on("click", function (event) {
                         resultadoImagen.attr("class", "resultadoImagen");
                         newDiv.text("Good Label. The part is OK to ship");
                         newDiv.attr("class", "comentariobueno");
+                        $("#serialEtiqueta").val("");
                         $("#Resultado").append(resultadoImagen);
                         $("#Resultado").append(newDiv);
             }
@@ -51,6 +52,7 @@ $("#submit").on("click", function (event) {
                         resultadoImagen.attr("class", "resultadoImagen");
                         newDiv.text("The label is not on the database. Please change label");
                         newDiv.attr("class", "comentario");
+                        $("#serialEtiqueta").val("");
                         $("#Resultado").append(resultadoImagen);
                         $("#Resultado").append(newDiv);
             }
@@ -67,6 +69,7 @@ $("#submit").on("click", function (event) {
         resultadoImagen.attr("class", "resultadoImagen");
         newDiv.text("The label needs to have 22 digits. ");
         newDiv.attr("class", "comentario");
+        $("#serialEtiqueta").val("");
         $("#Resultado").append(resultadoImagen);
         $("#Resultado").append(newDiv);
 

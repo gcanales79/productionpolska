@@ -44,6 +44,7 @@ $("#submit").on("click", function (event) {
                         resultadoImagen.attr("class", "resultadoImagen");
                         newDiv.text("Etiqueta Correcta");
                         newDiv.attr("class", "comentariobueno");
+                        $("#serialEtiqueta").val("");
                         $("#Resultado").append(resultadoImagen);
                         $("#Resultado").append(newDiv);
 
@@ -70,5 +71,6 @@ $("#submit").on("click", function (event) {
 
 $(document).on("click", "#cambioDeetiqueta", function (event) {
     event.preventDefault();
+    $("#serialEtiqueta").val("");
     window.location.href = "./";
 });
