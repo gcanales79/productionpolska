@@ -29,7 +29,7 @@ $("#submit").on("click", function (event) {
 
                 $.post("/api/repetido", newSerial)
                     .then(newSerial);
-                mandarMensaje();
+                mandarMensaje(newSerial);
                 return;
             }
             else {
@@ -74,7 +74,7 @@ $(document).on("click", "#cambioDeetiqueta", function (event) {
     window.location.href = "./";
 });
 
-function mandarMensaje() {
+function mandarMensaje(newSerial) {
     $.post("/message", newSerial)
         .then(newSerial);
 }
