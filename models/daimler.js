@@ -5,7 +5,7 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.BOOLEAN,
       defaultValue:false,
     },
-    nueva_etiqueta: DataTypes.STRING,
+    etiqueta_remplazada: DataTypes.STRING,
     
   });
 

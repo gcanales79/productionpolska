@@ -54,7 +54,7 @@ module.exports = function (app) {
   app.post("/api/cambioetiqueta",function (req,res){
     db.Daimler.create({
       serial: req.body.serial,
-      nueva_etiqueta: req.body.nueva_etiqueta,
+      etiqueta_remplazada: req.body. etiqueta_remplazada,
       repetida:true,
     }).then(function (dbDaimler) {
       res.json(dbDaimler);

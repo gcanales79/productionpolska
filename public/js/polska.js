@@ -8,9 +8,9 @@ $("#submit").on("click", function (event) {
     }
     if (nuevoSerial.length === 22) {
         $.get("/api/all/" + nuevoSerial, function (data) {
+            console.log(data);
 
             if (data.length>1) {
-                console.log(data);
                 var newDiv = $("<div>")
                 var resultadoImagen = $("<img>")
                 resultadoImagen.attr("src", "./images/wrong.png");

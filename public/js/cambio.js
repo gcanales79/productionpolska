@@ -5,7 +5,7 @@ $("#cambiar").on("click", function (event) {
     var nuevoSerial = $("#serialEtiquetanueva").val().trim();
     var newSerial = {
         serial: nuevoSerial,
-        nueva_etiqueta: serialRepetido
+        etiqueta_remplazada: serialRepetido
     }
     console.log("El dato nuevo es " + newSerial)
     console.log("Serial Repetido Length " + serialRepetido.length);
