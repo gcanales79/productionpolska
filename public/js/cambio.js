@@ -67,7 +67,7 @@ function digitosIncorrectos(){
         newDiv.attr("class", "comentario");
         $("#Respuesta").append(resultadoImagen);
         $("#Respuesta").append(newDiv);
-        limpiarInput();
+        
 }
 
 
