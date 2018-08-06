@@ -1,0 +1,39 @@
+<div class="container">
+    <form>
+        <div class="form-group">
+            <label for="numeroDeserie">Numero de Serie a Buscar</label>
+            <input type="number" autofocus="autofocus" class="form-control" id="numeroDeserie" aria-describedby="emailHelp" placeholder="123456789">
+            <small id="emailHelp" class="form-text text-muted">No. de Serie de la Etiqueta</small>
+        </div>
+        <button type="submit" class="btn btn-primary" id="buscarSerial">Submit</button>
+    </form>
+    <br>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Serial</th>
+                <th scope="col">Repetida</th>
+                <th scope="col">Etiqueta Reemplazada</th>
+                <th scope="col">Fecha Creacion</th>
+                <th scope="col">Ultima Actualizacion</th>
+            </tr>
+        </thead>
+        <tbdody>
+            {{#each etiqueta}}
+            <tr>
+                <th scope="row">{{this.id}}</th>
+                <td>{{this.serial}}</td>
+                <td>{{this.repetida}}</td>
+                <td>{{this.etiqueta_remplazada}}</td>
+                <td>{{this.createdAt}}</td>
+                <td>{{this.updatedAt}}</td>
+            </tr>
+            {{/each}}
+        </tbdody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="/js/consulta.js"></script>
