@@ -52,6 +52,7 @@ module.exports = function (app) {
       })
         .then(function(message) {
           console.log(message.sid);
+          res.json(message);
         });
     }
   });
