@@ -38,7 +38,8 @@ module.exports = function (app) {
   });
 
   app.post("/message", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE];
+    var telefonos = [process.env.GUS_PHONE,prcoess.env.OMAR_PHONE,
+    process.env.TAMARA_PHONE,process.env.ANGEL_PHONE,process.env.GABRIEL_PHONE];
 
     for (var i = 0; i < telefonos.length; i++) {
       client.messages.create({
