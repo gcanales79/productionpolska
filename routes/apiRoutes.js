@@ -32,6 +32,8 @@ module.exports = function (app) {
           serial: req.body.serial
         }
 
+      }).then(function(dbDaimler){
+        res.json(dbDaimler);
       })
 
 
