@@ -50,8 +50,9 @@ module.exports = function (app) {
         to: telefonos[i],  // Text this number
         
       })
-        .then((message) => console.log(message.sid))
-        .done();
+        .then(function(message) {
+          console.log(message.sid);
+        });
     }
   });
 
