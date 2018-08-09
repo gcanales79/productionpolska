@@ -4,14 +4,23 @@ module.exports = function (app) {
   // Load index page
   app.get("/", function (req, res) {
     res.status(200);
-    res.render("index", {
-      title: "home",
-      active_home: {
-        Register: true,
-      },
+    db.Daimler.findAll({
+      limit: 6,
+      order: [["createdAt", "DESC"]],
+
     })
+      .then(function (dbDaimler) {
+        res.render("index", {
+          title: "home",
+          active_home: {
+            Register: true,
+          },
+          etiqueta: dbDaimler,
+        });
+      });
   });
 
+  //Esto sirve para cambiar el CSS cuando entras a consulta, con el actvie_consulta
   app.get("/consulta", function (req, res) {
     res.status(200);
     res.render("consulta", {
@@ -22,6 +31,7 @@ module.exports = function (app) {
     })
   });
 
+  //Este te permite ver los datos de una etiqueta en particular
   app.get("/consulta/:serie", function (req, res) {
     db.Daimler.findAll({
       where: {
@@ -40,6 +50,37 @@ module.exports = function (app) {
         //console.log(dbDaimler);
       });
   });
+
+  //Cargar la tabla de registros
+  app.get("/tabla/:registros", function (req, res) {
+    res.status(200);
+    db.Daimler.findAll({
+      limit: parseInt(req.params.registros),
+      order: [["createdAt", "DESC"]],
+
+    })
+      .then(function (dbDaimler) {
+        res.render("tabla", {
+          title: "tabla",
+          active_consulta: {
+            Register: true,
+          },
+          etiqueta: dbDaimler,
+        });
+      });
+  });
+
+  // Carga la pagina tabla
+  app.get("/tabla", function (req, res) {
+    res.status(200);
+    res.render("tabla", {
+      title: "tabla",
+      active_consulta:{
+        Register:true,
+      },
+    });
+  });
+
 
 
 

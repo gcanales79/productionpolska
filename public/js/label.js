@@ -45,9 +45,17 @@ $("#submit").on("click", function (event) {
                         resultadoImagen.attr("class", "resultadoImagen");
                         newDiv.text("Etiqueta Correcta");
                         newDiv.attr("class", "comentariobueno");
-                        $("#serialEtiqueta").val("");
+                        //Borra el dato de la etiqueta despues de 3 segundos
+                        setTimeout(function () {
+                            $("#serialEtiqueta").val("");
+                        }, 3000);
                         $("#Resultado").append(resultadoImagen);
                         $("#Resultado").append(newDiv);
+                        //Esta funcion permite recargar la pagina para que saliera la tabla    
+                        /*
+                        setTimeout(function () {
+                            window.location.href = "./";
+                        }, 5000);*/
 
 
                     });
@@ -68,7 +76,7 @@ $("#submit").on("click", function (event) {
         $("#Resultado").append(newDiv);
 
     }
-   
+
 })
 
 $(document).on("click", "#cambioDeetiqueta", function (event) {

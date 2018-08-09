@@ -41,7 +41,7 @@ module.exports = function (app) {
 
   app.post("/message", function (req, res) {
     var telefonos = [process.env.GUS_PHONE,process.env.OMAR_PHONE,
-    process.env.TAMARA_PHONE,process.env.ANGEL_PHONE,process.env.GABRIEL_PHONE];
+    process.env.TAMARA_PHONE,process.env.ANGEL_PHONE,process.env.GABRIEL_PHONE,process.env.CHAVA_PHONE];
 
     for (var i = 0; i < telefonos.length; i++) {
       client.messages.create({
