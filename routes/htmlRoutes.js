@@ -53,7 +53,6 @@ module.exports = function (app) {
 
   //Cargar la tabla de registros
   app.get("/tabla/:registros", function (req, res) {
-    res.status(200);
     db.Daimler.findAll({
       limit: parseInt(req.params.registros),
       order: [["createdAt", "DESC"]],
