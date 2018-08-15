@@ -15,7 +15,7 @@
                 <th scope="col">Id</th>
                 <th scope="col">Serial</th>
                 <th scope="col">Repetida</th>
-                <th scope="col">Etiqueta Reemplazada</th>
+                <th scope="col">Reemplazo a</th>
                 <th scope="col">Fecha Creacion</th>
                 <th scope="col">Ultima Actualizacion</th>
             </tr>
@@ -27,8 +27,8 @@
                 <td>{{this.serial}}</td>
                 <td>{{#if this.repetida}}Si{{else}}No{{/if}}</td>
                 <td>{{this.etiqueta_remplazada}}</td>
-                <td>{{moment this.createdAt local=true format="DD-MM-YYYY hh:mm a"}}</td>
-                <td>{{moment this.updatedAt local=true format="DD-MM-YYYY hh:mm a"}}</td>
+                <td>{{moment this.createdAt subtract="hours" amount="5" format="DD-MM-YYYY hh:mm:ss a"}}</td>
+                <td>{{moment this.updatedAt subtract="hours" amount="5" format="DD-MM-YYYY hh:mm:ss a"}}</td>
             </tr>
             {{/each}}
         </tbdody>

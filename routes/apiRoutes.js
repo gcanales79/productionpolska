@@ -82,11 +82,12 @@ module.exports = function (app) {
     }
   });
 
+  //* This is to create the label registry once it has been changed
   app.post("/api/cambioetiqueta", function (req, res) {
     db.Daimler.create({
       serial: req.body.serial,
       etiqueta_remplazada: req.body.etiqueta_remplazada,
-      repetida: true,
+      repetida: false,
     }).then(function (dbDaimler) {
       res.json(dbDaimler);
 

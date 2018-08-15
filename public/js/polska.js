@@ -20,6 +20,7 @@ $("#submit").on("click", function (event) {
             if (data.length === 1) {
                 //console.log("Status de repetida " + data[0].repetida)
                 for (var i = 0; i < data.length; i++) {
+                    //!En el futuro conviene quitar el AND.
                     if (data[i].repetida && (data[i].etiqueta_remplazada == null || data[i].etiqueta_remplazada =="")) {
                         duplicatedLabel();
                     }

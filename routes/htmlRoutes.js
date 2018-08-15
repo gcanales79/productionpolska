@@ -34,8 +34,12 @@ module.exports = function (app) {
   //Este te permite ver los datos de una etiqueta en particular
   app.get("/consulta/:serie", function (req, res) {
     db.Daimler.findAll({
+      
       where: {
-        serial: req.params.serie
+        $or:{
+        serial: req.params.serie,
+        etiqueta_remplazada: req.params.serie,
+        }
       },
 
     })
