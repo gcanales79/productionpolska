@@ -25,8 +25,8 @@
                 <tr>
                     <th scope="row">{{this.serial}}</th>
                     <td>{{#if this.repetida}}Si{{else}}No{{/if}}</td>
-                    <td>{{moment this.createdAt format="DD-MM-YYYY hh:mm a"}}</td>
-                    <td>{{moment this.updatedAt format="DD-MM-YYYY hh:mm a"}}</td>
+                    <td>{{moment this.createdAt local=true format="DD-MM-YYYY hh:mm a"}}</td>
+                    <td>{{moment this.updatedAt local=true format="DD-MM-YYYY hh:mm a"}}</td>
                 </tr>
                 {{/each}}
             </tbdody>
