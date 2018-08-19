@@ -95,7 +95,7 @@ $(document).on("click", "#cambioDeetiqueta", function (event) {
 });
 
 // Function to make the table with the 6 last results
-function getLast6() {
+function getLast6(lugar) {
     $("#tablaDe6").empty();
     // Grab the last 6 scan labels
     $.getJSON("/api/all/tabla/seisetiquetas", function (data) {
@@ -104,11 +104,11 @@ function getLast6() {
         for (var i = 0; i < data.length; i++) {
             // ...populate the results
             if (data[i].repetida) {
-                var resultado = "Si"
+                //var resultado = "Si"
                 var resultadoIcono = "'fa fa-ban ban'"
             }
             else {
-                var resultado = "No";
+                //var resultado = "No";
                 var resultadoIcono = "'fa fa-check-circle check'";
 
             };
