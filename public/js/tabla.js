@@ -4,6 +4,10 @@ $("#buscarRegistros").on("click", function (event) {
     url = "/tabla/" + numeroDeregistros;
     console.log("El url es " + url);
     window.location.href = url;
+   
 
 
 });
+
+$("#tablaConsulta").DataTable();
+

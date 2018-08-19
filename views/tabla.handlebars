@@ -1,3 +1,4 @@
+
 <div class="container">
     <form>
         <div class="form-group">
@@ -6,12 +7,13 @@
             <small id="emailHelp" class="form-text text-muted">ültimos Registros a Buscar</small>
         </div>
         <button type="submit" class="btn btn-primary" id="buscarRegistros">Submit</button>
+        
     </form>
     <br>
 
 
     <div class="table-responsive">
-        <table class="table table-striped table-sm">
+        <table class="table table-striped table-bordered hover" style="width:100%" id="tablaConsulta" >
             <thead>
                 <tr>
                     <th scope="col">Serial</th>
@@ -25,14 +27,18 @@
                 <tr>
                     <th scope="row">{{this.serial}}</th>
                     <td>{{#if this.repetida}}Si{{else}}No{{/if}}</td>
-                    <td>{{moment this.createdAt subtract="hours" amount="5" format="DD-MM-YYYY hh:mm:ss a"}}</td>
-                    <td>{{moment this.updatedAt subtract="hours" amount="5" format="DD-MM-YYYY hh:mm:ss a"}}</td>
+                    <td>{{formatDate this.createdAt}}</td>
+                    <td>{{formatDate this.updatedAt}}</td>
                 </tr>
                 {{/each}}
             </tbdody>
         </table>
     </div>
 </div>
+</br>
+</br>
+</br>
 
 <script src="https://code.jquery.com/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 <script src="/js/tabla.js"></script>

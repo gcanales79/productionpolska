@@ -69,8 +69,11 @@ module.exports = function (app) {
             Register: true,
           },
           etiqueta: dbDaimler,
+          
         });
+        //console.log(dbDaimler)
       });
+    
   });
 
   // Carga la pagina tabla
