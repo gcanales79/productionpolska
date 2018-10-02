@@ -4,7 +4,10 @@ var bodyParser = require("body-parser");
 var exphbs = require("express-handlebars");
 var twilio=require("twilio");
 var helpers = require('handlebars-helpers')();
-var moment = require('moment-timezone');
+const moment = require('moment-timezone');
+var session = require("express-session");
+// Requiring passport as we've configured it
+var passport = require("./config/passport");
 var db = require("./models");
 
 
@@ -15,6 +18,10 @@ var PORT = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
+// We need to use sessions to keep track of our user's login status
+app.use(session({ secret: "keyboard cat", resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 //Create a Handlebar function
@@ -35,6 +42,9 @@ app.engine(
   hbs.engine
 );
 app.set("view engine", "handlebars");
+
+//Moment
+
 
 
 // Routes

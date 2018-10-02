@@ -1,9 +1,48 @@
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
+var passport = require("../config/passport");
 var db = require("../models");
 
 module.exports = function (app) {
+
+  // Using the passport.authenticate middleware with our local strategy.
+  // If the user has valid login credentials, send them to the members page.
+  // Otherwise the user will be sent an error
+  app.post("/api/login", passport.authenticate("local"), function(req, res) {
+    // Since we're doing a POST with javascript, we can't actually redirect that post into a GET request
+    // So we're sending the user back the route to the members page because the redirect will happen on the front end
+    // They won't get this or even be able to access this page if they aren't authed
+    if(req.user.role==="produccion" || req.user.role==="admin"){
+    res.json("/produccion");
+    }
+    if(req.user.role==="inspector"){
+      res.json("/gp12")
+    }
+    //console.log(req.user)
+  });
+
+  app.post("/api/signup", function(req, res) {
+    console.log(req.body);
+    db.User.create({
+      email: req.body.email,
+      password: req.body.password
+    }).then(function() {
+      res.redirect(307, "/api/login");
+    }).catch(function(err) {
+      console.log(err);
+      res.json(err);
+      // res.status(422).json(err.errors[0].message);
+    });
+  });
+
+   // Route for logging user out
+   app.get("/logout", function(req, res) {
+    req.logout();
+    res.redirect("/");
+  });
+
+
   // Get all examples
   app.get("/api/:serial", function (req, res) {
     db.Daimler.findOne({
@@ -49,8 +88,8 @@ module.exports = function (app) {
   });
 
   app.post("/message", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE, process.env.OMAR_PHONE,
-    process.env.TAMARA_PHONE, process.env.ANGEL_PHONE, process.env.GABRIEL_PHONE, process.env.CHAVA_PHONE];
+    var telefonos = [process.env.GUS_PHONE/*, process.env.OMAR_PHONE,
+    process.env.TAMARA_PHONE, process.env.ANGEL_PHONE, process.env.GABRIEL_PHONE, process.env.CHAVA_PHONE*/];
 
     //* Send messages thru SMS
     for (var i = 0; i < telefonos.length; i++) {
@@ -67,11 +106,11 @@ module.exports = function (app) {
     }
 
     //* Send messages thru Whatsapp
-    for (var i = 0; i < telefonos.length; i++) {
+    /*for (var i = 0; i < telefonos.length; i++) {
       console.log("whatsapp:" + telefonos[i]);
       client.messages.create({
         from: "whatsapp:+14155238886",
-        body: "Salio una pieza con serial repetido. El serial es " + req.body.serial,
+        body: `Your {{rechazo}} code is {${req.body.serial}}`,
         to: "whatsapp:" + telefonos[i],  // Text this number
 
       })
@@ -79,44 +118,86 @@ module.exports = function (app) {
           console.log("Whatsapp:" + message.sid);
           res.json(message);
         });
+    }*/
+
+
+  });
+
+  //* Api for labels not on the database
+  app.post("/notfound", function (req, res) {
+    var telefonos = [process.env.GUS_PHONE,process.env.TAMARA_PHONE/*, process.env.GABRIEL_PHONE*/];
+    //console.log("Manda mensaje de no en base de datos")
+    //* Send messages thru SMS
+    for (var i = 0; i < telefonos.length; i++) {
+      client.messages.create({
+        from: process.env.TWILIO_PHONE, // From a valid Twilio number
+        body: "Salio una pieza en GP12 que no estaba dada de alta en la base de datos. " +
+          "El serial es " + req.body.serial,
+        to: telefonos[i],  // Text this number
+
+      })
+        .then(function (message) {
+          console.log("Mensaje de texto: " + message.sid);
+          res.json(message);
+        });
     }
   });
 
-  //* This is to create the label registry once it has been changed
-  app.post("/api/cambioetiqueta", function (req, res) {
-    db.Daimler.create({
-      serial: req.body.serial,
-      etiqueta_remplazada: req.body.etiqueta_remplazada,
-      repetida: false,
-    }).then(function (dbDaimler) {
-      res.json(dbDaimler);
+    //* Api for labels repeated in gp12
+    app.post("/repeatgp12", function (req, res) {
+      var telefonos = [process.env.GUS_PHONE,process.env.TAMARA_PHONE/*,process.env.GABRIEL_PHONE*/];
 
-    });
-  })
+      //* Send messages thru SMS
+      for (var i = 0; i < telefonos.length; i++) {
+        client.messages.create({
+          from: process.env.TWILIO_PHONE, // From a valid Twilio number
+          body: "Salio una pieza en GP12 repetida. " +
+            "El serial es " + req.body.serial,
+          to: telefonos[i],  // Text this number
 
-  app.get("/api/all/:serial", function (req, res) {
-    db.Daimler.findAll({
-      where: {
-        serial: req.params.serial
+        })
+          .then(function (message) {
+            console.log("Mensaje de texto: " + message.sid);
+            res.json(message);
+          });
       }
-    }).then(function (dbDaimler) {
-      res.json(dbDaimler);
-      //console.log(dbDaimler);
     });
-  });
 
-  //To show the last 6 scan labels
-  app.get("/api/all/tabla/seisetiquetas", function (req, res) {
-    db.Daimler.findAll({
-      limit: 6,
-      order: [["createdAt", "DESC"]],
-    }).then(function (dbDaimler) {
-      res.json(dbDaimler);
-      //console.log(dbDaimler)
+    //* This is to create the label registry once it has been changed
+    app.post("/api/cambioetiqueta", function (req, res) {
+      db.Daimler.create({
+        serial: req.body.serial,
+        etiqueta_remplazada: req.body.etiqueta_remplazada,
+        repetida: false,
+      }).then(function (dbDaimler) {
+        res.json(dbDaimler);
 
+      });
+    })
+
+    app.get("/api/all/:serial", function (req, res) {
+      db.Daimler.findAll({
+        where: {
+          serial: req.params.serial
+        }
+      }).then(function (dbDaimler) {
+        res.json(dbDaimler);
+        //console.log(dbDaimler);
+      });
     });
-  });
+
+    //To show the last 6 scan labels
+    app.get("/api/all/tabla/seisetiquetas", function (req, res) {
+      db.Daimler.findAll({
+        limit: 6,
+        order: [["createdAt", "DESC"]],
+      }).then(function (dbDaimler) {
+        res.json(dbDaimler);
+        //console.log(dbDaimler)
+
+      });
+    });
 
 
-};
+  };
 

@@ -28,6 +28,11 @@
 
           </a>
         </li>
+        <li class="nav-item {{#if active_produccion}} active {{/if}}">
+          <a class="nav-link" href="/produccion">Produccion
+
+          </a>
+        </li>
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle {{#if active_consulta}} active {{/if}}" href="/consulta" id="navbarDropdownMenuLink" data-toggle="dropdown"
@@ -37,7 +42,15 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" href="/consulta">Consulta No. Serie</a>
             <a class="dropdown-item" href="/tabla">Ver Registros</a>
+            <a class="dropdown-item" href="/alta">Alta Usuarios</a>
           </div>
+        </li>
+        <li class="nav-item {{#if active_gp12}}active{{/if}}">
+        <a class="nav-link" href="/gp12">GP12</a>
+        </li>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="/logout">Logout</a>
         </li>
       </ul>
     </div>

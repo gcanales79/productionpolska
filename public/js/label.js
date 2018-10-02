@@ -94,10 +94,12 @@ $(document).on("click", "#cambioDeetiqueta", function (event) {
     getLast6();
 });
 
+
 // Function to make the table with the 6 last results
-function getLast6(lugar) {
+function getLast6() {
     $("#tablaDe6").empty();
     // Grab the last 6 scan labels
+
     $.getJSON("/api/all/tabla/seisetiquetas", function (data) {
         //console.log(data);
         // For each registry...
@@ -117,6 +119,7 @@ function getLast6(lugar) {
             $("#tablaDe6").prepend("<tr><th scope='row'>" + data[i].serial + "</th> <td> <span class= "
                 + resultadoIcono + "></span> </td> <td>" + fechaCreacion + "</td> </tr>");
         }
-    });
+    })
+    
 }
 
