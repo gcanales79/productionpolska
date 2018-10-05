@@ -19,7 +19,7 @@
                     <th scope="col">Serial</th>
                     <th scope="col">Repetida</th>
                     <th scope="col">Fecha Creacion</th>
-                    <th scope="col">Ultima Actualizacion</th>
+                    <th scope="col">Escaneo GP-12</th>
                 </tr>
             </thead>
             <tbdody>
@@ -28,7 +28,7 @@
                     <th scope="row">{{this.serial}}</th>
                     <td>{{#if this.repetida}}Si{{else}}No{{/if}}</td>
                     <td>{{formatDate this.createdAt}}</td>
-                    <td>{{formatDate this.updatedAt}}</td>
+                    <td>{{formatDate this.fecha_gp12}}</td>
                 </tr>
                 {{/each}}
             </tbdody>

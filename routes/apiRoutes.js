@@ -198,6 +198,34 @@ module.exports = function (app) {
       });
     });
 
+    //To add the date it was inspected in GP-12
+    app.put("/api/gp12/:serial",function(req,res){
+      db.Daimler.update({
+        fecha_gp12:Date.now()
+      },
+      {
+      where:{
+        serial:req.params.serial
+      }}).then(data=>{
+        res.json(data)
+      }).catch(function(err){
+        console.log(err)
+      })
+    })
+
+    //To get the last 6 GP12 scan labels
+    //To show the last 6 scan labels
+    app.get("/api/all/tabla/gp12seisetiquetas", function (req, res) {
+      db.Daimler.findAll({
+        limit: 6,
+        order: [["fecha_gp12", "DESC"]],
+      }).then(function (dbDaimler) {
+        res.json(dbDaimler);
+        //console.log(dbDaimler)
+
+      });
+    });
+
 
   };
 

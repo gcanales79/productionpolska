@@ -29,7 +29,7 @@ $("#submit").on("click", function (event) {
 
 
                     else {
-                        etiquetaCorrecta();
+                        etiquetaCorrecta(newSerial);
                     }
                 }
             }
@@ -54,7 +54,7 @@ $(document).on("click", "#cambioDeetiqueta", function (event) {
     window.location.href = "./cambiar.html";
 });
 
-//Lo que muestra cuando el seria no es de la longitud correcta
+//Lo que muestra cuando el serial no es de la longitud correcta
 function serialIncorrecto() {
     var newDiv = $("<div>")
     var resultadoImagen = $("<img>")
@@ -86,6 +86,16 @@ function duplicatedLabel(newSerial) {
     $("#submit").prop("disabled", true);
     $.post("/repeatgp12",newSerial)
     .then(newSerial);
+    $.ajax({
+        url:"/api/gp12/"+ newSerial.serial,
+        type:"PUT",
+        success:
+        function(data){
+            getLast6();
+            console.log("Fecha de GP12 ok")
+        }
+    })
+    
     
 }
 
@@ -110,7 +120,7 @@ function etiquetaFaltante(newSerial) {
     .then(newSerial);
 }
 
-function etiquetaCorrecta() {
+function etiquetaCorrecta(newSerial) {
     var newDiv = $("<div>")
     var resultadoImagen = $("<img>")
     resultadoImagen.attr("src", "./images/good.png");
@@ -120,6 +130,16 @@ function etiquetaCorrecta() {
     $("#serialEtiqueta").val("");
     $("#Resultado").append(resultadoImagen);
     $("#Resultado").append(newDiv);
+    //console.log("El nuevo serial es " + newSerial.serial)
+    $.ajax({
+        url:"/api/gp12/"+ newSerial.serial,
+        type:"PUT",
+        success:
+        function(data){
+            getLast6();
+            console.log("Fecha de GP12 ok")
+        }
+    })
 }
 
 
@@ -128,7 +148,7 @@ function getLast6() {
     $("#tablaDe6").empty();
     // Grab the last 6 scan labels
 
-    $.getJSON("/api/all/tabla/seisetiquetas", function (data) {
+    $.getJSON("/api/all/tabla/gp12seisetiquetas", function (data) {
         //console.log(data);
         // For each registry...
         for (var i = 0; i < data.length; i++) {
@@ -143,9 +163,9 @@ function getLast6() {
 
             };
             moment.tz.add("America/Monterrey|LMT CST CDT|6F.g 60 50|0121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-1UQG0 2FjC0 1nX0 i6p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 1fB0 WL0 1fB0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0|41e5")
-            var fechaCreacion = moment(data[i].createdAt).tz("America/Monterrey").format("DD/MM/YYYY hh:mm:ss a");
+            var fechagp12 = moment(data[i].fecha_gp12).tz("America/Monterrey").format("DD/MM/YYYY hh:mm:ss a");
             $("#tablaDe6").prepend("<tr><th scope='row'>" + data[i].serial + "</th> <td> <span class= "
-                + resultadoIcono + "></span> </td> <td>" + fechaCreacion + "</td> </tr>");
+                + resultadoIcono + "></span> </td> <td>" + fechagp12 + "</td> </tr>");
         }
     })
     
