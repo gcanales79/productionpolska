@@ -55,6 +55,10 @@ $("#submit").on("click", function (event) {
                         }, 3000);
                         $("#Resultado").append(resultadoImagen);
                         $("#Resultado").append(newDiv);
+                        //Borrar el resultado despues de unos segundos
+                        setTimeout(function(){
+                            $("#Resultado").empty();
+                        },5000);
                         getLast6();
                         //Esta funcion permite recargar la pagina para que saliera la tabla    
                         /*
@@ -64,6 +68,7 @@ $("#submit").on("click", function (event) {
 
 
                     });
+                    return;
             }
 
         });
@@ -90,7 +95,7 @@ $("#submit").on("click", function (event) {
 $(document).on("click", "#cambioDeetiqueta", function (event) {
     event.preventDefault();
     $("#serialEtiqueta").val("");
-    window.location.href = "./";
+    window.location.href = "./produccion";
     getLast6();
 });
 

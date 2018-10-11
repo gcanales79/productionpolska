@@ -127,7 +127,6 @@ function etiquetaCorrecta(newSerial) {
     resultadoImagen.attr("class", "resultadoImagen");
     newDiv.text("Etiqueta Correcta.");
     newDiv.attr("class", "comentariobueno");
-    $("#serialEtiqueta").val("");
     $("#Resultado").append(resultadoImagen);
     $("#Resultado").append(newDiv);
     //console.log("El nuevo serial es " + newSerial.serial)
@@ -140,6 +139,13 @@ function etiquetaCorrecta(newSerial) {
             console.log("Fecha de GP12 ok")
         }
     })
+    setTimeout(function () {
+        $("#serialEtiqueta").val("");
+    }, 3000)
+    setTimeout(function(){
+        $("#Resultado").empty();
+    },5000);
+
 }
 
 

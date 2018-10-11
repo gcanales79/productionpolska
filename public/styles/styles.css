@@ -19,11 +19,9 @@
   position: fixed;
   left:0;
   bottom:0;
-
-  
+  display: table-row;
     width: 100%;
-    height: 70px;
-    line-height: 60px;
+    height: auto;
   background-color: #1f1f23;
 }
 
@@ -33,6 +31,28 @@
 
 .ban{
   color: #ff6b6b;
+}
+
+
+@media screen and (max-width:600px){
+
+
+h1{
+  font-size:4vw;
+}
+
+h2{
+  font-size:4vw;
+}
+
+th{
+  font-size:3vw;
+}
+
+td{
+  font-size:3vw;
+}
+
 }
 
 
