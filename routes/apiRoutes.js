@@ -3,6 +3,7 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
 var passport = require("../config/passport");
 var db = require("../models");
+const moment = require('moment-timezone');
 
 module.exports = function (app) {
 
@@ -225,6 +226,30 @@ module.exports = function (app) {
 
       });
     });
+
+    //Get data between hour
+    app.get("/produccionhora/:fechainicial/:fechafinal",function(req,res){
+      let fechainicial=moment.unix(req.params.fechainicial).format("YYYY-MM-DD HH:mm:ss")
+      let fechafinal=moment.unix(req.params.fechafinal).format("YYYY-MM-DD HH:mm:ss")
+      //console.log(fechainicial)
+      //console.log(fechafinal)
+      //console.log(req.params.fechafinal)
+      db.Daimler.findAndCountAll({
+        where:{
+          createdAt:{ 
+            $gte:fechainicial,
+            $lte:fechafinal
+          },
+          repetida:false
+        }
+      }).then(data=>{
+        res.json(data)
+      }).catch(function(err){
+        console.log(err)
+      })
+    })
+
+  ;
 
 
   };

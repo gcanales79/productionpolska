@@ -1,4 +1,5 @@
 getLast6();
+produccionPorhora();
 
 $("#submit").on("click", function (event) {
     event.preventDefault();
@@ -42,7 +43,7 @@ $("#submit").on("click", function (event) {
 
                 $.post("/api/serial", newSerial)
                     .then(function () {
-                        console.log("El newSerial es: " + JSON.stringify(newSerial));
+                        //console.log("El newSerial es: " + JSON.stringify(newSerial));
                         var newDiv = $("<div>")
                         var resultadoImagen = $("<img>")
                         resultadoImagen.attr("src", "./images/good.png");
@@ -52,14 +53,15 @@ $("#submit").on("click", function (event) {
                         //Borra el dato de la etiqueta despues de 3 segundos
                         setTimeout(function () {
                             $("#serialEtiqueta").val("");
-                        }, 3000);
+                        }, 2000);
                         $("#Resultado").append(resultadoImagen);
                         $("#Resultado").append(newDiv);
                         //Borrar el resultado despues de unos segundos
-                        setTimeout(function(){
+                        setTimeout(function () {
                             $("#Resultado").empty();
-                        },5000);
+                        }, 3000);
                         getLast6();
+                        produccionPorhora();
                         //Esta funcion permite recargar la pagina para que saliera la tabla    
                         /*
                         setTimeout(function () {
@@ -68,7 +70,7 @@ $("#submit").on("click", function (event) {
 
 
                     });
-                    return;
+                return;
             }
 
         });
@@ -125,6 +127,53 @@ function getLast6() {
                 + resultadoIcono + "></span> </td> <td>" + fechaCreacion + "</td> </tr>");
         }
     })
-    
+
 }
 
+function produccionPorhora() {
+    
+    let produccion = [];
+    for (let i = 0; i < 6; i++) {
+        //calcula la hora actual y resta 6 horas atras
+        let hora = moment().startOf("hour").subtract(i, "hour").format("h:mm a")
+        //let horafinal=moment().startOf("hour").subtract(i-1,"hour").format("h:mm a")
+        let fechainicial = moment().startOf("hour").subtract(i, "hour").format("X")
+        let fechafinal = moment().startOf("hour").subtract(i - 1, "hour").format("X")
+        //console.log(hora)
+        //console.log("La fecha inicial es: " + fechaincial + " o " + hora)
+        //console.log("La fecha final es: " + fechafinal + " o " + horafinal)
+        $.getJSON("/produccionhora/" + fechainicial + "/" + fechafinal, function (data) {
+            //console.log(data.count)
+            //console.log(hora)
+            
+            produccion.push({
+                fecha: fechainicial,
+                producidas: data.count
+            })
+            tablaProduccion(produccion)
+        })
+
+    }
+
+//Funcion para que siempre la horas salgan ordenadas
+    function tablaProduccion(produccion) {
+        produccion.sort(function (a, b) {
+            if (a.fecha > b.fecha) {
+                return -1;
+            }
+            if (b.fecha > a.fecha) {
+                return 1;
+            }
+            return 0;
+        })
+        //console.log(produccion)
+        $("#tablaHora").empty();
+        for (let i=0;i<produccion.length;i++){
+            let hora=moment.unix(produccion[i].fecha).format("h:mm a")
+            $("#tablaHora").prepend("<tr><th scope='row'>" + hora + "</th> <td> " + produccion[i].producidas + "</td>")
+
+        }
+
+    }
+
+}
