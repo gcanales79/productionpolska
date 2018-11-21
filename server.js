@@ -2,13 +2,15 @@ require("dotenv").config();
 var express = require("express");
 var bodyParser = require("body-parser");
 var exphbs = require("express-handlebars");
-var twilio=require("twilio");
+var twilio = require("twilio");
 var helpers = require('handlebars-helpers')();
 const moment = require('moment-timezone');
 var session = require("express-session");
 // Requiring passport as we've configured it
 var passport = require("./config/passport");
 var db = require("./models");
+var cron = require('node-cron');
+var axios=require("axios")
 
 
 var app = express();
@@ -25,12 +27,12 @@ app.use(passport.session());
 
 
 //Create a Handlebar function
-var hbs=exphbs.create({
+var hbs = exphbs.create({
   defaultLayout: "main",
-  helpers:{
-    formatDate:function(property){
+  helpers: {
+    formatDate: function (property) {
       moment.tz.add("America/Monterrey|LMT CST CDT|6F.g 60 50|0121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-1UQG0 2FjC0 1nX0 i6p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 1fB0 WL0 1fB0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0|41e5")
-            var fechaCreacion = moment(property).tz("America/Monterrey").format("DD/MM/YYYY hh:mm:ss a");
+      var fechaCreacion = moment(property).tz("America/Monterrey").format("DD/MM/YYYY hh:mm:ss a");
       return fechaCreacion;
     }
   }
@@ -38,7 +40,7 @@ var hbs=exphbs.create({
 
 // Handlebars
 app.engine(
-  "handlebars", 
+  "handlebars",
   hbs.engine
 );
 app.set("view engine", "handlebars");
@@ -50,6 +52,7 @@ app.set("view engine", "handlebars");
 // Routes
 require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
+
 
 
 var syncOptions = { force: false };

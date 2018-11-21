@@ -249,9 +249,26 @@ module.exports = function (app) {
       }).catch(function(err){
         console.log(err)
       })
-    })
+    });
 
-  ;
+  //* SMS Produccion del turno
+  app.post("/reporte", function (req, res) {
+    var telefonos = [process.env.GUS_PHONE];
+
+    //* Send messages thru SMS
+    for (var i = 0; i < telefonos.length; i++) {
+      client.messages.create({
+        from: process.env.TWILIO_PHONE, // From a valid Twilio number
+        body: "La producción del turno de " + req.body.turno + " fue de: " + req.body.piezasProducidas,
+        to: telefonos[i],  // Text this number
+
+      })
+        .then(function (message) {
+          console.log("Mensaje de texto: " + message.sid);
+          res.json(message);
+        });
+    }
+  });
 
 
   };
