@@ -133,8 +133,8 @@ function getLast6() {
 function produccionPorhora() {
     
     let produccion = [];
-    for (let i = 0; i < 6; i++) {
-        //calcula la hora actual y resta 6 horas atras
+    for (let i = 0; i < 8; i++) {
+        //calcula la hora actual y resta 8 horas atras
         let hora = moment().startOf("hour").subtract(i, "hour").format("h:mm a")
         //let horafinal=moment().startOf("hour").subtract(i-1,"hour").format("h:mm a")
         let fechainicial = moment().startOf("hour").subtract(i, "hour").format("X")
@@ -170,7 +170,8 @@ function produccionPorhora() {
         $("#tablaHora").empty();
         for (let i=0;i<produccion.length;i++){
             let hora=moment.unix(produccion[i].fecha).format("h:mm a")
-            $("#tablaHora").prepend("<tr><th scope='row'>" + hora + "</th> <td> " + produccion[i].producidas + "</td>")
+            let horafinal=moment.unix(produccion[i].fecha).add(1,"hour").format("h:mm a")
+            $("#tablaHora").prepend("<tr><th scope='row'>" + hora + " a " + horafinal + "</th> <td> " + produccion[i].producidas + "</td>")
 
         }
 
