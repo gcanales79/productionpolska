@@ -240,8 +240,10 @@ module.exports = function (app) {
             $gte:fechainicial,
             $lte:fechafinal
           },
-          repetida:false
-        }
+          
+        },
+        distinct:true,
+          col:"serial"
       }).then(data=>{
         res.json(data)
       }).catch(function(err){
