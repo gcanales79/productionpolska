@@ -254,7 +254,7 @@ module.exports = function (app) {
   //* SMS Produccion del turno
   app.post("/reporte", function (req, res) {
     var telefonos = [process.env.GUS_PHONE,process.env.OMAR_PHONE,process.env.ANGEL_PHONE,
-      process.env.ANDREA_PHONE,process.env.SALINAS_PHONE];
+      process.env.CHAVA_PHONE,process.env.SALINAS_PHONE];
 
     //* Send messages thru SMS
     for (var i = 0; i < telefonos.length; i++) {
