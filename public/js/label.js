@@ -280,11 +280,11 @@ function produccionTurnos() {
     let datosTurno1 = [];
     let datosTurno2=[];
     let datosTurno3=[];
-    let horaFinaldia= moment().startOf('isoweek').format("YYYY-MM-DD") + " 21:00:00"
-    let horaInicialdia=moment(horaFinaldia).subtract(0,"day").format("YYYY-MM-DD") + " 13:00:00"
+    let horaFinaldia= moment().startOf('isoweek').format("YYYY-MM-DD") + " 15:00:00"
+    let horaInicialdia=moment(horaFinaldia).subtract(0,"day").format("YYYY-MM-DD") + " 07:00:00"
     for (let i = 0; i < 7; i++) {
-        let fechainicial = moment(horaInicialdia).add(i, "day").format("YYYY-MM-DD") + " 13:00:00"
-        let fechafinal = moment(horaFinaldia).add(i, "day").format("YYYY-MM-DD") + " 21:00:00"
+        let fechainicial = moment(horaInicialdia).add(i, "day").format("YYYY-MM-DD") + " 07:00:00"
+        let fechafinal = moment(horaFinaldia).add(i, "day").format("YYYY-MM-DD") + " 15:00:00"
         let fechaInicalx = moment(fechainicial).format("X");
         let fechaFinalx = moment(fechafinal).format("X");
         console.log(fechainicial);
@@ -301,13 +301,13 @@ function produccionTurnos() {
     }
     //*Produccion Turno 2
     
-    let horafinaltarde= moment().startOf('isoweek').format("YYYY-MM-DD") + " 05:00:00"
-    let horainicialtarde=moment(horafinaltarde).subtract(1,"day").format("YYYY-MM-DD") + " 21:00:00"
+    let horafinaltarde= moment().startOf('isoweek').format("YYYY-MM-DD") + " 23:00:00"
+    let horainicialtarde=moment(horafinaltarde).subtract(0,"day").format("YYYY-MM-DD") + " 15:00:00"
     //console.log(horainicial)
     //console.log(horafinal)
     for (let i=0;i<7;i++){
-        let fechainicial = moment(horainicialtarde).add(i, "day").format("YYYY-MM-DD") + " 21:00:00"
-        let fechafinal = moment(horafinaltarde).add(i, "day").format("YYYY-MM-DD") + " 05:00:00"
+        let fechainicial = moment(horainicialtarde).add(i, "day").format("YYYY-MM-DD") + " 15:00:00"
+        let fechafinal = moment(horafinaltarde).add(i, "day").format("YYYY-MM-DD") + " 23:00:00"
         let fechaInicalx = moment(fechainicial).format("X");
         let fechaFinalx = moment(fechafinal).format("X")
         //console.log(fechainicial)
@@ -322,13 +322,13 @@ function produccionTurnos() {
 
     //*Produccion Turno 3
     
-    let horafinalnoche= moment().startOf('isoweek').format("YYYY-MM-DD") + " 13:00:00"
-    let horainicialnoche=moment(horafinalnoche).subtract(0,"day").format("YYYY-MM-DD") + " 05:00:00"
+    let horafinalnoche= moment().startOf('isoweek').format("YYYY-MM-DD") + " 07:00:00"
+    let horainicialnoche=moment(horafinalnoche).subtract(1,"day").format("YYYY-MM-DD") + " 23:00:00"
     //console.log(horainicial)
     //console.log(horafinal)
     for (let i=0;i<7;i++){
-        let fechainicial = moment(horainicialnoche).add(i, "day").format("YYYY-MM-DD") + " 05:00:00"
-        let fechafinal = moment(horafinalnoche).add(i, "day").format("YYYY-MM-DD") + " 13:00:00"
+        let fechainicial = moment(horainicialnoche).add(i, "day").format("YYYY-MM-DD") + " 07:00:00"
+        let fechafinal = moment(horafinalnoche).add(i, "day").format("YYYY-MM-DD") + " 23:00:00"
         let fechaInicalx = moment(fechainicial).format("X");
         let fechaFinalx = moment(fechafinal).format("X")
         //console.log(fechainicial)
