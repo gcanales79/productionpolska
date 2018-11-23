@@ -1,5 +1,6 @@
 getLast6();
 produccionPorhora();
+produccionTurnos();
 
 
 $("#submit").on("click", function (event) {
@@ -152,7 +153,7 @@ function produccionPorhora() {
                 producidas: data.count
             })
             tablaProduccion(produccion)
-            produccionTurnos();
+            
         })
 
     }
