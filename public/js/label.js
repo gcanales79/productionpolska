@@ -287,13 +287,13 @@ function produccionTurnos() {
         let fechafinal = moment(horaFinaldia).add(i, "day").format("YYYY-MM-DD") + " 15:00:00"
         let fechaInicalx = moment(fechainicial).format("X");
         let fechaFinalx = moment(fechafinal).format("X");
-        console.log(fechainicial);
-        console.log(fechaInicalx)
-        console.log(fechafinal)
-        console.log(fechaFinalx)
+        //console.log(fechainicial);
+        //console.log(fechaInicalx)
+        //console.log(fechafinal)
+        //console.log(fechaFinalx)
         $.get("/produccionhora/" + fechaInicalx + "/" + fechaFinalx, function (data) {
            datosTurno1.splice(i,0,data.count)
-            console.log(datosTurno1)
+            //console.log(datosTurno1)
             graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
 
         })
@@ -331,8 +331,8 @@ function produccionTurnos() {
         let fechafinal = moment(horafinalnoche).add(i, "day").format("YYYY-MM-DD") + " 07:00:00"
         let fechaInicalx = moment(fechainicial).format("X");
         let fechaFinalx = moment(fechafinal).format("X")
-        //console.log(fechainicial)
-        //console.log(fechafinal)
+        console.log(fechainicial)
+        console.log(fechafinal)
         $.get("/produccionhora/" + fechaInicalx + "/" + fechaFinalx, function (data) {
             datosTurno3.splice(i,0,data.count)
             //console.log(datosTurno3)
