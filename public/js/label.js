@@ -184,11 +184,17 @@ function tablaProduccion(produccion) {
 
 // Grafica por turno 7 dias
 
+//* Se poner afuera la variable para que no muestre datos viejos.
+var myChart;
+
 function graficaProduccion(datosTurno1, datosTurno2, datosTurno3) {
 
     if (datosTurno1.length === 7 || datosTurno2.length || 7 && datosTurno3 || 7) {
+       if(myChart){
+           myChart.destroy();
+       }
         var ctx = $("#myChart");
-        var myChart = new Chart(ctx, {
+        myChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],
