@@ -135,8 +135,8 @@ function getLast6() {
 function produccionPorhora() {
 
     let produccion = [];
-    for (let i = 0; i < 8; i++) {
-        //calcula la hora actual y resta 8 horas atras
+    for (let i = 0; i < 9; i++) {
+        //calcula la hora actual y resta 9 horas atras
         let hora = moment().startOf("hour").subtract(i, "hour").format("h:mm a")
         //let horafinal=moment().startOf("hour").subtract(i-1,"hour").format("h:mm a")
         let fechainicial = moment().startOf("hour").subtract(i, "hour").format("X")
@@ -186,7 +186,7 @@ function tablaProduccion(produccion) {
 
 function graficaProduccion(datosTurno1, datosTurno2, datosTurno3) {
 
-    if (datosTurno1.length === 7 || datosTurno2.length === 7 || datosTurno3 === 7) {
+    if (datosTurno1.length === 7 || datosTurno2.length || 7 && datosTurno3 || 7) {
         var ctx = $("#myChart");
         var myChart = new Chart(ctx, {
             type: 'bar',
