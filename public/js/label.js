@@ -327,8 +327,8 @@ function produccionTurnos() {
     //console.log(horainicial)
     //console.log(horafinal)
     for (let i=0;i<7;i++){
-        let fechainicial = moment(horainicialnoche).add(i, "day").format("YYYY-MM-DD") + " 07:00:00"
-        let fechafinal = moment(horafinalnoche).add(i, "day").format("YYYY-MM-DD") + " 23:00:00"
+        let fechainicial = moment(horainicialnoche).add(i, "day").format("YYYY-MM-DD") + " 23:00:00"
+        let fechafinal = moment(horafinalnoche).add(i, "day").format("YYYY-MM-DD") + " 07:00:00"
         let fechaInicalx = moment(fechainicial).format("X");
         let fechaFinalx = moment(fechafinal).format("X")
         //console.log(fechainicial)
