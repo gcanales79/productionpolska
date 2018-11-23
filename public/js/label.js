@@ -1,6 +1,7 @@
 getLast6();
 produccionPorhora();
 
+
 $("#submit").on("click", function (event) {
     event.preventDefault();
     //console.log("Submitt button");
@@ -131,7 +132,7 @@ function getLast6() {
 }
 
 function produccionPorhora() {
-    
+
     let produccion = [];
     for (let i = 0; i < 8; i++) {
         //calcula la hora actual y resta 8 horas atras
@@ -145,36 +146,200 @@ function produccionPorhora() {
         $.getJSON("/produccionhora/" + fechainicial + "/" + fechafinal, function (data) {
             //console.log(data.count)
             //console.log(hora)
-            
+
             produccion.push({
                 fecha: fechainicial,
                 producidas: data.count
             })
             tablaProduccion(produccion)
+            produccionTurnos();
         })
-
-    }
-
-//Funcion para que siempre la horas salgan ordenadas
-    function tablaProduccion(produccion) {
-        produccion.sort(function (a, b) {
-            if (a.fecha > b.fecha) {
-                return -1;
-            }
-            if (b.fecha > a.fecha) {
-                return 1;
-            }
-            return 0;
-        })
-        //console.log(produccion)
-        $("#tablaHora").empty();
-        for (let i=0;i<produccion.length;i++){
-            let hora=moment.unix(produccion[i].fecha).format("h:mm a")
-            let horafinal=moment.unix(produccion[i].fecha).add(1,"hour").format("h:mm a")
-            $("#tablaHora").prepend("<tr><th scope='row'>" + hora + " a " + horafinal + "</th> <td> " + produccion[i].producidas + "</td>")
-
-        }
 
     }
 
 }
+
+//Funcion para que siempre la horas salgan ordenadas
+function tablaProduccion(produccion) {
+    produccion.sort(function (a, b) {
+        if (a.fecha > b.fecha) {
+            return -1;
+        }
+        if (b.fecha > a.fecha) {
+            return 1;
+        }
+        return 0;
+    })
+    //console.log(produccion)
+    $("#tablaHora").empty();
+    for (let i = 0; i < produccion.length; i++) {
+        let hora = moment.unix(produccion[i].fecha).format("h:mm a")
+        let horafinal = moment.unix(produccion[i].fecha).add(1, "hour").format("h:mm a")
+        $("#tablaHora").prepend("<tr><th scope='row'>" + hora + " a " + horafinal + "</th> <td> " + produccion[i].producidas + "</td>")
+
+    }
+
+}
+
+// Grafica por turno 7 dias
+
+function graficaProduccion(datosTurno1, datosTurno2, datosTurno3) {
+
+
+    var ctx = $("#myChart");
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"],
+            datasets: [{
+                label: "Turno 1",
+                data: datosTurno1,
+                backgroundColor: [
+                    "rgba(75, 192, 192, 0.2)",
+                    "rgba(75, 192, 192, 0.2)",
+                    "rgba(75, 192, 192, 0.2)",
+                    "rgba(75, 192, 192, 0.2)",
+                    "rgba(75, 192, 192, 0.2)",
+                    "rgba(75, 192, 192, 0.2)",
+                    "rgba(75, 192, 192, 0.2)",
+                ],
+                borderColor: [
+                    'rgba(75,192,192,1)',
+                    'rgba(75,192,192,1)',
+                    'rgba(75,192,192,1)',
+                    'rgba(75,192,192,1)',
+                    'rgba(75,192,192,1)',
+                    'rgba(75,192,192,1)',
+                    'rgba(75,192,192,1)',
+                ],
+                borderWidth: 1
+            }, {
+                label: "Turno 2",
+                data: datosTurno2,
+                backgroundColor: [
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(54, 162, 235, 0.2)"
+                ],
+                borderColor: [
+                    "rgba(54,162,235,1)",
+                    "rgba(54,162,235,1)",
+                    "rgba(54,162,235,1)",
+                    "rgba(54,162,235,1)",
+                    "rgba(54,162,235,1)",
+                    "rgba(54,162,235,1)",
+                    "rgba(54,162,235,1)"
+                ],
+                borderWidth: 1
+            }, {
+                label: "Turno 3",
+                data: datosTurno3,
+                backgroundColor: [
+                    "rgba(255,206,86,0.2)",
+                    "rgba(255,206,86,0.2)",
+                    "rgba(255,206,86,0.2)",
+                    "rgba(255,206,86,0.2)",
+                    "rgba(255,206,86,0.2)",
+                    "rgba(255,206,86,0.2)",
+                    "rgba(255,206,86,0.2)",
+                ],
+                borderColor: [
+                    "rgba(255,206,86,0.02)",
+                    "rgba(255,206,86,0.02)",
+                    "rgba(255,206,86,0.02)",
+                    "rgba(255,206,86,0.02)",
+                    "rgba(255,206,86,0.02)",
+                    "rgba(255,206,86,0.02)",
+                    "rgba(255,206,86,0.02)",
+                ],
+                borderWidth: 1
+            }
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+}
+
+
+//Produccion Turno 1
+function produccionTurnos() {
+    
+    let datosTurno1 = [];
+    let datosTurno2=[];
+    let datosTurno3=[];
+    let horaFinaldia= moment().startOf('isoweek').format("YYYY-MM-DD") + " 21:00:00"
+    let horaInicialdia=moment(horaFinaldia).subtract(0,"day").format("YYYY-MM-DD") + " 13:00:00"
+    for (let i = 0; i < 7; i++) {
+        let fechainicial = moment(horaInicialdia).add(i, "day").format("YYYY-MM-DD") + " 13:00:00"
+        let fechafinal = moment(horaFinaldia).add(i, "day").format("YYYY-MM-DD") + " 21:00:00"
+        let fechaInicalx = moment(fechainicial).format("X");
+        let fechaFinalx = moment(fechafinal).format("X");
+        //console.log(fechainicial);
+        //console.log(fechafinal)
+        $.get("/produccionhora/" + fechaInicalx + "/" + fechaFinalx, function (data) {
+           datosTurno1.splice(i,0,data.count)
+            //console.log(datosTurno1)
+            graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
+
+        })
+        
+    }
+    //*Produccion Turno 2
+    
+    let horafinaltarde= moment().startOf('isoweek').format("YYYY-MM-DD") + " 05:00:00"
+    let horainicialtarde=moment(horafinaltarde).subtract(1,"day").format("YYYY-MM-DD") + " 21:00:00"
+    //console.log(horainicial)
+    //console.log(horafinal)
+    for (let i=0;i<7;i++){
+        let fechainicial = moment(horainicialtarde).add(i, "day").format("YYYY-MM-DD") + " 21:00:00"
+        let fechafinal = moment(horafinaltarde).add(i, "day").format("YYYY-MM-DD") + " 05:00:00"
+        let fechaInicalx = moment(fechainicial).format("X");
+        let fechaFinalx = moment(fechafinal).format("X")
+        //console.log(fechainicial)
+        //console.log(fechafinal)
+        $.get("/produccionhora/" + fechaInicalx + "/" + fechaFinalx, function (data) {
+            datosTurno2.splice(i,0,data.count)
+             //console.log(datosTurno2)
+             graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
+ 
+         })
+    }
+
+    //*Produccion Turno 3
+    
+    let horafinalnoche= moment().startOf('isoweek').format("YYYY-MM-DD") + " 13:00:00"
+    let horainicialnoche=moment(horafinalnoche).subtract(0,"day").format("YYYY-MM-DD") + " 05:00:00"
+    //console.log(horainicial)
+    //console.log(horafinal)
+    for (let i=0;i<7;i++){
+        let fechainicial = moment(horainicialnoche).add(i, "day").format("YYYY-MM-DD") + " 05:00:00"
+        let fechafinal = moment(horafinalnoche).add(i, "day").format("YYYY-MM-DD") + " 13:00:00"
+        let fechaInicalx = moment(fechainicial).format("X");
+        let fechaFinalx = moment(fechafinal).format("X")
+        //console.log(fechainicial)
+        //console.log(fechafinal)
+        $.get("/produccionhora/" + fechaInicalx + "/" + fechaFinalx, function (data) {
+            datosTurno3.splice(i,0,data.count)
+            //console.log(datosTurno3)
+            graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
+ 
+         })
+    }
+ 
+
+}
+
+
+

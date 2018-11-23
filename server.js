@@ -9,8 +9,8 @@ var session = require("express-session");
 // Requiring passport as we've configured it
 var passport = require("./config/passport");
 var db = require("./models");
-var cron = require('node-cron');
 var axios=require("axios")
+
 
 
 var app = express();
