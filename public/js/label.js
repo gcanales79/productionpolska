@@ -192,8 +192,8 @@ function graficaProduccion(datosTurno1, datosTurno2, datosTurno3) {
         myChart.destroy();
     }
 
-    if (datosTurno1.length === 7 || datosTurno2.length || 7 && datosTurno3 || 7) {
-       
+    if (datosTurno1.length === 7 && datosTurno2.length === 7 && datosTurno3.length === 7) {
+       console.log("Entro chart")
         var ctx = $("#myChart");
         myChart = new Chart(ctx, {
             type: 'bar',
@@ -290,23 +290,61 @@ function produccionTurnos() {
     let datosTurno3 = [];
     let horaFinaldia = moment().startOf('isoweek').format("YYYY-MM-DD") + " 15:00:00"
     let horaInicialdia = moment(horaFinaldia).subtract(0, "day").format("YYYY-MM-DD") + " 07:00:00"
+    //*Produccion Turno 2
+
+    let horafinaltarde = moment().startOf('isoweek').format("YYYY-MM-DD") + " 23:00:00"
+    let horainicialtarde = moment(horafinaltarde).subtract(0, "day").format("YYYY-MM-DD") + " 15:00:00"
+
+    //* Produccion Turno 3
+    let horafinalnoche = moment().startOf('isoweek').format("YYYY-MM-DD") + " 07:00:00"
+    let horainicialnoche = moment(horafinalnoche).subtract(1, "day").format("YYYY-MM-DD") + " 23:00:00"
+
     for (let i = 0; i < 7; i++) {
-        let fechainicial = moment(horaInicialdia).add(i, "day").format("YYYY-MM-DD") + " 07:00:00"
-        let fechafinal = moment(horaFinaldia).add(i, "day").format("YYYY-MM-DD") + " 15:00:00"
-        let fechaInicalx = moment(fechainicial).format("X");
-        let fechaFinalx = moment(fechafinal).format("X");
-        //console.log(fechainicial);
-        //console.log(fechaInicalx)
-        //console.log(fechafinal)
-        //console.log(fechaFinalx)
-        $.get("/produccionhora/" + fechaInicalx + "/" + fechaFinalx, function (data) {
+        let fechainicialDia = moment(horaInicialdia).add(i, "day").format("YYYY-MM-DD") + " 07:00:00"
+        let fechafinalDia = moment(horaFinaldia).add(i, "day").format("YYYY-MM-DD") + " 15:00:00"
+        let fechaInicalDiax = moment(fechainicialDia).format("X");
+        let fechaFinaldiax = moment(fechafinalDia).format("X");
+        //Turno Tarde
+        let fechainicialTarde = moment(horainicialtarde).add(i, "day").format("YYYY-MM-DD") + " 15:00:00"
+        let fechafinalTarde = moment(horafinaltarde).add(i, "day").format("YYYY-MM-DD") + " 23:00:00"
+        let fechaInicaltardex = moment(fechainicialTarde).format("X");
+        let fechaFinaltardex = moment(fechafinalTarde).format("X")
+      //Turno Noche
+      let fechainicialNoche = moment(horainicialnoche).add(i, "day").format("YYYY-MM-DD") + " 23:00:00"
+      let fechafinalNoche = moment(horafinalnoche).add(i, "day").format("YYYY-MM-DD") + " 07:00:00"
+      let fechaInicalnochex = moment(fechainicialNoche).format("X");
+      let fechaFinalnochex = moment(fechafinalNoche).format("X")
+      
+$.when(
+      
+        $.get("/produccionhora/" + fechaInicalDiax + "/" + fechaFinaldiax, function (data) {
             datosTurno1.splice(i, 0, data.count)
             //console.log(datosTurno1)
-            graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
+            //graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
 
+        }),
+
+        $.get("/produccionhora/" + fechaInicaltardex + "/" + fechaFinaltardex, function (data) {
+            datosTurno2.splice(i, 0, data.count)
+            //console.log(datosTurno2)
+            //graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
+
+        }),
+
+        $.get("/produccionhora/" + fechaInicalnochex + "/" + fechaFinalnochex, function (data) {
+            datosTurno3.splice(i, 0, data.count)
+            //console.log(datosTurno3)
+            //graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
+            
+  
         })
+).then(function(){
+    graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
+})
 
     }
+
+    /*
     //*Produccion Turno 2
 
     let horafinaltarde = moment().startOf('isoweek').format("YYYY-MM-DD") + " 23:00:00"
@@ -314,13 +352,13 @@ function produccionTurnos() {
     //console.log(horainicial)
     //console.log(horafinal)
     for (let i = 0; i < 7; i++) {
-        let fechainicial = moment(horainicialtarde).add(i, "day").format("YYYY-MM-DD") + " 15:00:00"
-        let fechafinal = moment(horafinaltarde).add(i, "day").format("YYYY-MM-DD") + " 23:00:00"
-        let fechaInicalx = moment(fechainicial).format("X");
-        let fechaFinalx = moment(fechafinal).format("X")
+        let fechainicialTarde = moment(horainicialtarde).add(i, "day").format("YYYY-MM-DD") + " 15:00:00"
+        let fechafinalTarde = moment(horafinaltarde).add(i, "day").format("YYYY-MM-DD") + " 23:00:00"
+        let fechaInicaltardex = moment(fechainicialTarde).format("X");
+        let fechaFinaltardex = moment(fechafinalTarde).format("X")
         //console.log(fechainicial)
         //console.log(fechafinal)
-        $.get("/produccionhora/" + fechaInicalx + "/" + fechaFinalx, function (data) {
+        $.get("/produccionhora/" + fechaInicaltardex + "/" + fechaFinaltardex, function (data) {
             datosTurno2.splice(i, 0, data.count)
             //console.log(datosTurno2)
             graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
@@ -335,19 +373,19 @@ function produccionTurnos() {
     //console.log(horainicial)
     //console.log(horafinal)
     for (let i = 0; i < 7; i++) {
-        let fechainicial = moment(horainicialnoche).add(i, "day").format("YYYY-MM-DD") + " 23:00:00"
-        let fechafinal = moment(horafinalnoche).add(i, "day").format("YYYY-MM-DD") + " 07:00:00"
-        let fechaInicalx = moment(fechainicial).format("X");
-        let fechaFinalx = moment(fechafinal).format("X")
+        let fechainicialNoche = moment(horainicialnoche).add(i, "day").format("YYYY-MM-DD") + " 23:00:00"
+        let fechafinalNoche = moment(horafinalnoche).add(i, "day").format("YYYY-MM-DD") + " 07:00:00"
+        let fechaInicalnochex = moment(fechainicialNoche).format("X");
+        let fechaFinaltardex = moment(fechafinalNoche).format("X")
         //console.log(fechainicial)
         //console.log(fechafinal)
-        $.get("/produccionhora/" + fechaInicalx + "/" + fechaFinalx, function (data) {
+        $.get("/produccionhora/" + fechaInicalnochex + "/" + fechaFinaltardex, function (data) {
             datosTurno3.splice(i, 0, data.count)
             //console.log(datosTurno3)
             graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
 
         })
-    }
+    }*/
 
 
 }
