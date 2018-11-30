@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 app.use(cookieParser('secret'));
 app.use(session({
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 86400000},
     store: sessionStore,
     saveUninitialized: true,
     resave: 'true',
