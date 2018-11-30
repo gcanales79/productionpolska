@@ -4,41 +4,71 @@ const client = require("twilio")(accountSid, authToken);
 var passport = require("../config/passport");
 var db = require("../models");
 const moment = require('moment-timezone');
+const { check, validationResult } = require('express-validator/check');
 
 module.exports = function (app) {
 
   // Using the passport.authenticate middleware with our local strategy.
   // If the user has valid login credentials, send them to the members page.
   // Otherwise the user will be sent an error
-  app.post("/api/login", passport.authenticate("local"), function(req, res) {
+  app.post("/api/login", passport.authenticate("local",{failureRedirect:"/",badRequestMessage:"Por favor llena la forma",failureFlash:true}), function (req, res) {
     // Since we're doing a POST with javascript, we can't actually redirect that post into a GET request
     // So we're sending the user back the route to the members page because the redirect will happen on the front end
-    // They won't get this or even be able to access this page if they aren't authed
-    if(req.user.role==="produccion" || req.user.role==="admin"){
-    res.json("/produccion");
+    // They won't get this or even be able to access this page if they aren't authed    
+
+
+    if (req.user.role === "produccion" || req.user.role === "admin") {
+      res.redirect("/produccion");
     }
-    if(req.user.role==="inspector"){
-      res.json("/gp12")
+    if (req.user.role === "inspector") {
+      res.redirect("/gp12")
     }
-    //console.log(req.user)
+
+  })
+
+  app.post("/api/signup", [
+    check("email").isEmail().withMessage("No es un correo valido"),
+    check("password").isLength({ min: 5 }).withMessage("La contraseña debe tener 5 caracteres  ")
+  ], (req, res) => {
+    const errors = validationResult(req)
+    //Revisa si hay errores
+    let message =[];
+    let errorsMessage=errors.array()
+    if (!errors.isEmpty()) {
+      for(let i=0;i<errorsMessage.length;i++){
+      //console.log(errorsMessage)
+      message.push({
+        type:"alert alert-danger",
+        message: errorsMessage[i].msg}),
+      console.log(message)
+      }
+      req.session.sessionFlash=message,
+      res.redirect("/alta")
+     
+    }
+    else {
+      db.User.create({
+        email: req.body.email,
+        password: req.body.password
+      }).then(function (data) {
+        req.session.sessionFlash = [{
+          type: "alert alert-success",
+          message: "Usuario agregado exitosamente"
+        }]
+        //console.log(req.flash("info"))
+        res.redirect("/alta");
+      }).catch(function (err) {
+        console.log(err);
+        res.json(err);
+        // res.status(422).json(err.errors[0].message);
+      });
+    }
   });
 
-  app.post("/api/signup", function(req, res) {
-    console.log(req.body);
-    db.User.create({
-      email: req.body.email,
-      password: req.body.password
-    }).then(function() {
-      res.redirect(307, "/api/login");
-    }).catch(function(err) {
-      console.log(err);
-      res.json(err);
-      // res.status(422).json(err.errors[0].message);
-    });
-  });
 
-   // Route for logging user out
-   app.get("/logout", function(req, res) {
+
+  // Route for logging user out
+  app.get("/logout", function (req, res) {
     req.logout();
     res.redirect("/");
   });
@@ -89,8 +119,8 @@ module.exports = function (app) {
   });
 
   app.post("/message", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE,process.env.TAMARA_PHONE, 
-      process.env.GABRIEL_PHONE, process.env.ANDREA_PHONE];
+    var telefonos = [process.env.GUS_PHONE, process.env.TAMARA_PHONE,
+    process.env.GABRIEL_PHONE, process.env.ANDREA_PHONE];
 
     //* Send messages thru SMS
     for (var i = 0; i < telefonos.length; i++) {
@@ -126,7 +156,7 @@ module.exports = function (app) {
 
   //* Api for labels not on the database
   app.post("/notfound", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE,process.env.TAMARA_PHONE, process.env.GABRIEL_PHONE,process.env.ANDREA_PHONE];
+    var telefonos = [process.env.GUS_PHONE, process.env.TAMARA_PHONE, process.env.GABRIEL_PHONE, process.env.ANDREA_PHONE];
     //console.log("Manda mensaje de no en base de datos")
     //* Send messages thru SMS
     for (var i = 0; i < telefonos.length; i++) {
@@ -144,117 +174,118 @@ module.exports = function (app) {
     }
   });
 
-    //* Api for labels repeated in gp12
-    app.post("/repeatgp12", function (req, res) {
-      var telefonos = [process.env.GUS_PHONE,process.env.TAMARA_PHONE,process.env.GABRIEL_PHONE,process.env.ANDREA_PHONE];
+  //* Api for labels repeated in gp12
+  app.post("/repeatgp12", function (req, res) {
+    var telefonos = [process.env.GUS_PHONE, process.env.TAMARA_PHONE, process.env.GABRIEL_PHONE, process.env.ANDREA_PHONE];
 
-      //* Send messages thru SMS
-      for (var i = 0; i < telefonos.length; i++) {
-        client.messages.create({
-          from: process.env.TWILIO_PHONE, // From a valid Twilio number
-          body: "Salio una pieza en GP12 repetida. " +
-            "El serial es " + req.body.serial,
-          to: telefonos[i],  // Text this number
+    //* Send messages thru SMS
+    for (var i = 0; i < telefonos.length; i++) {
+      client.messages.create({
+        from: process.env.TWILIO_PHONE, // From a valid Twilio number
+        body: "Salio una pieza en GP12 repetida. " +
+          "El serial es " + req.body.serial,
+        to: telefonos[i],  // Text this number
 
-        })
-          .then(function (message) {
-            console.log("Mensaje de texto: " + message.sid);
-            res.json(message);
-          });
-      }
+      })
+        .then(function (message) {
+          console.log("Mensaje de texto: " + message.sid);
+          res.json(message);
+        });
+    }
+  });
+
+  //* This is to create the label registry once it has been changed
+  app.post("/api/cambioetiqueta", function (req, res) {
+    db.Daimler.create({
+      serial: req.body.serial,
+      etiqueta_remplazada: req.body.etiqueta_remplazada,
+      repetida: false,
+    }).then(function (dbDaimler) {
+      res.json(dbDaimler);
+
     });
+  })
 
-    //* This is to create the label registry once it has been changed
-    app.post("/api/cambioetiqueta", function (req, res) {
-      db.Daimler.create({
-        serial: req.body.serial,
-        etiqueta_remplazada: req.body.etiqueta_remplazada,
-        repetida: false,
-      }).then(function (dbDaimler) {
-        res.json(dbDaimler);
+  app.get("/api/all/:serial", function (req, res) {
+    db.Daimler.findAll({
+      where: {
+        serial: req.params.serial
+      }
+    }).then(function (dbDaimler) {
+      res.json(dbDaimler);
+      //console.log(dbDaimler);
+    });
+  });
 
-      });
-    })
+  //To show the last 6 scan labels
+  app.get("/api/all/tabla/seisetiquetas", function (req, res) {
+    db.Daimler.findAll({
+      limit: 6,
+      order: [["createdAt", "DESC"]],
+    }).then(function (dbDaimler) {
+      res.json(dbDaimler);
+      //console.log(dbDaimler)
 
-    app.get("/api/all/:serial", function (req, res) {
-      db.Daimler.findAll({
+    });
+  });
+
+  //To add the date it was inspected in GP-12
+  app.put("/api/gp12/:serial", function (req, res) {
+    db.Daimler.update({
+      fecha_gp12: Date.now()
+    },
+      {
         where: {
           serial: req.params.serial
         }
-      }).then(function (dbDaimler) {
-        res.json(dbDaimler);
-        //console.log(dbDaimler);
-      });
-    });
-
-    //To show the last 6 scan labels
-    app.get("/api/all/tabla/seisetiquetas", function (req, res) {
-      db.Daimler.findAll({
-        limit: 6,
-        order: [["createdAt", "DESC"]],
-      }).then(function (dbDaimler) {
-        res.json(dbDaimler);
-        //console.log(dbDaimler)
-
-      });
-    });
-
-    //To add the date it was inspected in GP-12
-    app.put("/api/gp12/:serial",function(req,res){
-      db.Daimler.update({
-        fecha_gp12:Date.now()
-      },
-      {
-      where:{
-        serial:req.params.serial
-      }}).then(data=>{
+      }).then(data => {
         res.json(data)
-      }).catch(function(err){
+      }).catch(function (err) {
         console.log(err)
       })
-    })
+  })
 
-    //To get the last 6 GP12 scan labels
-    //To show the last 6 scan labels
-    app.get("/api/all/tabla/gp12seisetiquetas", function (req, res) {
-      db.Daimler.findAll({
-        limit: 6,
-        order: [["fecha_gp12", "DESC"]],
-      }).then(function (dbDaimler) {
-        res.json(dbDaimler);
-        //console.log(dbDaimler)
+  //To get the last 6 GP12 scan labels
+  //To show the last 6 scan labels
+  app.get("/api/all/tabla/gp12seisetiquetas", function (req, res) {
+    db.Daimler.findAll({
+      limit: 6,
+      order: [["fecha_gp12", "DESC"]],
+    }).then(function (dbDaimler) {
+      res.json(dbDaimler);
+      //console.log(dbDaimler)
 
-      });
     });
+  });
 
-    //Get data between hour
-    app.get("/produccionhora/:fechainicial/:fechafinal",function(req,res){
-      let fechainicial=moment.unix(req.params.fechainicial).format("YYYY-MM-DD HH:mm:ss")
-      let fechafinal=moment.unix(req.params.fechafinal).format("YYYY-MM-DD HH:mm:ss")
-      //console.log(fechainicial)
-      //console.log(fechafinal)
-      //console.log(req.params.fechafinal)
-      db.Daimler.findAndCountAll({
-        where:{
-          createdAt:{ 
-            $gte:fechainicial,
-            $lte:fechafinal
-          },
-          
+  //Get data between hour
+  app.get("/produccionhora/:fechainicial/:fechafinal", function (req, res) {
+    let fechainicial = moment.unix(req.params.fechainicial).format("YYYY-MM-DD HH:mm:ss")
+    let fechafinal = moment.unix(req.params.fechafinal).format("YYYY-MM-DD HH:mm:ss")
+    //console.log(fechainicial)
+    //console.log(fechafinal)
+    //console.log(req.params.fechafinal)
+    db.Daimler.findAndCountAll({
+      where: {
+        createdAt: {
+          $gte: fechainicial,
+          $lte: fechafinal
         },
-        distinct:true,
-          col:"serial"
-      }).then(data=>{
-        res.json(data)
-      }).catch(function(err){
-        console.log(err)
-      })
-    });
+
+      },
+      distinct: true,
+      col: "serial"
+    }).then(data => {
+      res.json(data)
+    }).catch(function (err) {
+      console.log(err)
+    })
+  });
 
   //* SMS Produccion del turno
   app.post("/reporte", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE,process.env.OMAR_PHONE,process.env.ANGEL_PHONE,
-      process.env.CHAVA_PHONE,process.env.SALINAS_PHONE];
+    var telefonos = [process.env.GUS_PHONE, process.env.OMAR_PHONE, process.env.ANGEL_PHONE,
+    process.env.CHAVA_PHONE, process.env.SALINAS_PHONE];
 
     //* Send messages thru SMS
     for (var i = 0; i < telefonos.length; i++) {
@@ -272,5 +303,5 @@ module.exports = function (app) {
   });
 
 
-  };
+};
 

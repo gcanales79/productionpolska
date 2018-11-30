@@ -5,6 +5,7 @@ module.exports = function (app) {
   // Load index page
   app.get("/", function (req, res) {
     res.status(200);
+    console.log(req.flash("message"))
     db.Daimler.findAll({
       limit: 6,
       order: [["createdAt", "DESC"]],
@@ -16,7 +17,7 @@ module.exports = function (app) {
           active_home: {
             Register: true,
           },
-          etiqueta: dbDaimler,
+          etiqueta: dbDaimler
         });
       });
 
@@ -137,13 +138,20 @@ module.exports = function (app) {
 
   // Carga la pagina para dar de alta usuarios
   app.get("/alta", isAuthenticated, function (req, res) {
+    //console.log(res.locals.sessionFlash)
+    let message=res.locals.sessionFlash
+    console.log(message)
     if(req.user.role==="admin"){
-    res.status(200);
+      //console.log(res.locals.sessionFlash)
+    //res.status(200);
     res.render("alta", {
+      sessionFlash: message,
       title: "alta",
       active_alta: {
         Register: true,
       },
+      
+      
     });
   }
   else{

@@ -1,27 +1,40 @@
 require("dotenv").config();
 var express = require("express");
 var bodyParser = require("body-parser");
+var cookieParser=require("cookie-parser")
 var exphbs = require("express-handlebars");
 var twilio = require("twilio");
-var helpers = require('handlebars-helpers')();
+//var helpers = require('handlebars-helpers')();
 const moment = require('moment-timezone');
 var session = require("express-session");
 // Requiring passport as we've configured it
 var passport = require("./config/passport");
 var db = require("./models");
 var axios=require("axios")
+var flash=require("connect-flash");
+
 
 
 
 var app = express();
+var sessionStore = new session.MemoryStore;
 var PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(bodyParser.json());
 app.use(express.static("public"));
-// We need to use sessions to keep track of our user's login status
-app.use(session({ secret: "keyboard cat", resave: true, saveUninitialized: true }));
+app.use(cookieParser('secret'));
+app.use(session({
+    cookie: { maxAge: 60000 },
+    store: sessionStore,
+    saveUninitialized: true,
+    resave: 'true',
+    secret: 'secret'
+}));
+app.use(flash());
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -45,8 +58,25 @@ app.engine(
 );
 app.set("view engine", "handlebars");
 
-//Moment
 
+app.use(function(req, res, next){
+  // if there's a flash message in the session request, make it available in the response, then delete it
+  res.locals.sessionFlash = req.session.sessionFlash;
+  delete req.session.sessionFlash;
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  res.locals.user = req.user || null;
+  next();
+});
+
+/*
+//Global Vars
+app.use(function(req,res,next){
+  res.locals.success_msg=req.flash("success_msg");
+  res.locals.error_msg=req.flash("error_msg");
+  res.locals.error=req.flash("error");
+  next()
+})*/
 
 
 // Routes
