@@ -188,11 +188,12 @@ function tablaProduccion(produccion) {
 var myChart;
 
 function graficaProduccion(datosTurno1, datosTurno2, datosTurno3) {
+    if(myChart){
+        myChart.destroy();
+    }
 
     if (datosTurno1.length === 7 || datosTurno2.length || 7 && datosTurno3 || 7) {
-       if(myChart){
-           myChart.destroy();
-       }
+       
         var ctx = $("#myChart");
         myChart = new Chart(ctx, {
             type: 'bar',
