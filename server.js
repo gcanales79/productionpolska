@@ -65,6 +65,7 @@ app.use(function(req, res, next){
   delete req.session.sessionFlash;
   res.locals.error_msg = req.flash('error_msg');
   res.locals.error = req.flash('error');
+  res.locals.success = req.flash('success');
   res.locals.user = req.user || null;
   next();
 });

@@ -190,11 +190,35 @@ module.exports = function (app) {
     }
   });
 
+  //Cambiar contraseña
+
+  app.get("/reset/:token",function (req,res){
+    db.User.findOne({
+      where:{
+        resetPasswordToken:req.params.token,
+        resetPasswordExpire:{
+          $gt:Date.now()
+        }
+
+      }
+    }).then(user=>{
+      if(!user){
+        req.flash("error","El token para restablecer la contraseña se ha vencido")
+        return res.redirect("/")
+      }
+      res.render("reset",{
+        token:req.params.token
+      })
+    })
+  })
+
 
   // Render 404 page for any unmatched routes
   app.get("*", function (req, res) {
     res.render("404");
   });
+
+
 
 
 }
