@@ -12,12 +12,13 @@ var passport = require("./config/passport");
 var db = require("./models");
 var axios=require("axios")
 var flash=require("connect-flash");
+var MemoryStore=require("memorystore")(session)
 
 
 
 
 var app = express();
-var sessionStore = new session.MemoryStore;
+//var sessionStore = new session.MemoryStore;
 var PORT = process.env.PORT || 3000;
 
 // Middleware
@@ -28,7 +29,9 @@ app.use(express.static("public"));
 app.use(cookieParser('secret'));
 app.use(session({
     cookie: { maxAge: 86400000},
-    store: sessionStore,
+    store: new MemoryStore({
+      checkPeriod:86400000
+    }),
     saveUninitialized: true,
     resave: 'true',
     secret: 'secret'
@@ -58,7 +61,7 @@ app.engine(
 );
 app.set("view engine", "handlebars");
 
-
+//*Global Vars
 app.use(function(req, res, next){
   // if there's a flash message in the session request, make it available in the response, then delete it
   res.locals.sessionFlash = req.session.sessionFlash;
@@ -69,15 +72,6 @@ app.use(function(req, res, next){
   res.locals.user = req.user || null;
   next();
 });
-
-/*
-//Global Vars
-app.use(function(req,res,next){
-  res.locals.success_msg=req.flash("success_msg");
-  res.locals.error_msg=req.flash("error_msg");
-  res.locals.error=req.flash("error");
-  next()
-})*/
 
 
 // Routes
