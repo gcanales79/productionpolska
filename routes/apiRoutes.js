@@ -351,13 +351,17 @@ module.exports = function (app) {
         var smtpTransport = nodemailer.createTransport({
           service: 'Gmail',
           auth: {
-            user: 'gustavo.canalesr@gmail.com',
-            pass: process.env.GMAILPW
+            type:"OAuth2",
+            user: 'netzwerk.mty@gmail.com',
+            clientId:process.env.clientId,
+            clientSecret:process.env.clientSecret,
+            refreshToken:process.env.refreshToken,
+            accessToken:process.env.accessToken
           }
         });
         var mailOptions = {
           to: data.email,
-          from: 'gustavo.canalesr@gmail.com',
+          from: 'netzwerk.mty@gmail.com',
           subject: 'Restablecer contraseña',
           text: 'Estas recibiendo este mensaje porque tu (o alguien mas) ha pedido restablecer tu contraseña de tu cuenta.\n\n' +
             ' Por favor dale click en el siguiente link, o pega el link en tu navegador para completar el proceso:\n\n' +
@@ -427,13 +431,17 @@ module.exports = function (app) {
         var smtpTransport = nodemailer.createTransport({
           service: 'Gmail',
           auth: {
-            user: 'gustavo.canalesr@gmail.com',
-            pass: process.env.GMAILPW
+            type:"OAuth2",
+            user: 'netzwerk.mty@gmail.com',
+            clientId:process.env.clientId,
+            clientSecret:process.env.clientSecret,
+            refreshToken:process.env.refreshToken,
+            accessToken:process.env.accessToken
           }
         });
         var mailOptions = {
           to: user.email,
-          from: 'gustavo.canalesr@mail.com',
+          from: 'netzwerk.mty@gmail.com',
           subject: 'Tu contraseña ha cambiado',
           text: 'Hola,\n\n' +
             'Esta es una confirmación de que la contraseña de tu cuenta ' + user.email + ' ha cambiado.\n'
