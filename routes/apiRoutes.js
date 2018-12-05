@@ -8,7 +8,7 @@ const { check, validationResult } = require('express-validator/check');
 var async = require("async");
 var nodemailer = require("nodemailer");
 var crypto = require("crypto");
-var bcrypt = require("bcrypt-nodejs");
+
 
 module.exports = function (app) {
 
@@ -368,7 +368,7 @@ module.exports = function (app) {
           console.log('mail sent');
           req.flash('success', 'Un e-mail se ha mandado a ' + data.email + ' con las instrucciones a seguir.');
           done(err, 'done');
-          return res.redirect("/")
+          //return res.redirect("/")
         });
       }
     ], function (err) {
