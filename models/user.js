@@ -41,6 +41,7 @@ module.exports = function(sequelize, DataTypes) {
     console.log("Before Create")
     user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
   });
+
   User.hook("beforeUpdate", function(user) {
     console.log("before update")
     user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);

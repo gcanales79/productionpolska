@@ -400,12 +400,13 @@ module.exports = function (app) {
               db.User.update({
                 resetPasswordToken: null,
                 resetPasswordExpire: null,
-                password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null)
+                password: req.body.password
               },
                 {
                   where: {
                     resetPasswordToken: req.params.token
-                  }
+                  },
+                  individualHooks:true
                 }).then(function (data, err) {
                   done(err, user)
                 })
