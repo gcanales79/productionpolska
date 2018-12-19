@@ -124,8 +124,7 @@ module.exports = function (app) {
   });
 
   app.post("/message", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE, process.env.TAMARA_PHONE,
-    process.env.GABRIEL_PHONE, process.env.ANDREA_PHONE];
+    var telefonos = [process.env.GUS_PHONE, process.env.TAMARA_PHONE];
 
     //* Send messages thru SMS
     for (var i = 0; i < telefonos.length; i++) {
@@ -161,7 +160,7 @@ module.exports = function (app) {
 
   //* Api for labels not on the database
   app.post("/notfound", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE, process.env.TAMARA_PHONE, process.env.GABRIEL_PHONE, process.env.ANDREA_PHONE];
+    var telefonos = [process.env.GUS_PHONE, process.env.TAMARA_PHONE];
     //console.log("Manda mensaje de no en base de datos")
     //* Send messages thru SMS
     for (var i = 0; i < telefonos.length; i++) {
@@ -181,7 +180,7 @@ module.exports = function (app) {
 
   //* Api for labels repeated in gp12
   app.post("/repeatgp12", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE, process.env.TAMARA_PHONE, process.env.GABRIEL_PHONE, process.env.ANDREA_PHONE];
+    var telefonos = [process.env.GUS_PHONE, process.env.TAMARA_PHONE];
 
     //* Send messages thru SMS
     for (var i = 0; i < telefonos.length; i++) {
@@ -289,7 +288,7 @@ module.exports = function (app) {
 
   //* SMS Produccion del turno
   app.post("/reporte", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE, process.env.OMAR_PHONE, process.env.ANGEL_PHONE,
+    var telefonos = [process.env.GUS_PHONE, process.env.OMAR_PHONE,
     process.env.CHAVA_PHONE, process.env.SALINAS_PHONE];
 
     //* Send messages thru SMS
