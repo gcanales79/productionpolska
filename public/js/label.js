@@ -1,6 +1,7 @@
 getLast6();
 produccionPorhora();
 produccionTurnos();
+produccionPorsemana();
 
 
 $("#submit").on("click", function (event) {
@@ -188,12 +189,12 @@ function tablaProduccion(produccion) {
 var myChart;
 
 function graficaProduccion(datosTurno1, datosTurno2, datosTurno3) {
-    if(myChart){
+    if (myChart) {
         myChart.destroy();
     }
 
     if (datosTurno1.length === 7 && datosTurno2.length === 7 && datosTurno3.length === 7) {
-       console.log("Entro chart")
+        //console.log("Entro chart")
         var ctx = $("#myChart");
         myChart = new Chart(ctx, {
             type: 'bar',
@@ -309,86 +310,129 @@ function produccionTurnos() {
         let fechafinalTarde = moment(horafinaltarde).add(i, "day").format("YYYY-MM-DD") + " 23:00:00"
         let fechaInicaltardex = moment(fechainicialTarde).format("X");
         let fechaFinaltardex = moment(fechafinalTarde).format("X")
-      //Turno Noche
-      let fechainicialNoche = moment(horainicialnoche).add(i, "day").format("YYYY-MM-DD") + " 23:00:00"
-      let fechafinalNoche = moment(horafinalnoche).add(i, "day").format("YYYY-MM-DD") + " 07:00:00"
-      let fechaInicalnochex = moment(fechainicialNoche).format("X");
-      let fechaFinalnochex = moment(fechafinalNoche).format("X")
-      
-$.when(
-      
-        $.get("/produccionhora/" + fechaInicalDiax + "/" + fechaFinaldiax, function (data) {
-            datosTurno1.splice(i, 0, data.count)
-            //console.log(datosTurno1)
-            //graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
-
-        }),
-
-        $.get("/produccionhora/" + fechaInicaltardex + "/" + fechaFinaltardex, function (data) {
-            datosTurno2.splice(i, 0, data.count)
-            //console.log(datosTurno2)
-            //graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
-
-        }),
-
-        $.get("/produccionhora/" + fechaInicalnochex + "/" + fechaFinalnochex, function (data) {
-            datosTurno3.splice(i, 0, data.count)
-            //console.log(datosTurno3)
-            //graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
-            
-  
-        })
-).then(function(){
-    graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
-})
-
-    }
-
-    /*
-    //*Produccion Turno 2
-
-    let horafinaltarde = moment().startOf('isoweek').format("YYYY-MM-DD") + " 23:00:00"
-    let horainicialtarde = moment(horafinaltarde).subtract(0, "day").format("YYYY-MM-DD") + " 15:00:00"
-    //console.log(horainicial)
-    //console.log(horafinal)
-    for (let i = 0; i < 7; i++) {
-        let fechainicialTarde = moment(horainicialtarde).add(i, "day").format("YYYY-MM-DD") + " 15:00:00"
-        let fechafinalTarde = moment(horafinaltarde).add(i, "day").format("YYYY-MM-DD") + " 23:00:00"
-        let fechaInicaltardex = moment(fechainicialTarde).format("X");
-        let fechaFinaltardex = moment(fechafinalTarde).format("X")
-        //console.log(fechainicial)
-        //console.log(fechafinal)
-        $.get("/produccionhora/" + fechaInicaltardex + "/" + fechaFinaltardex, function (data) {
-            datosTurno2.splice(i, 0, data.count)
-            //console.log(datosTurno2)
-            graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
-
-        })
-    }
-
-    //*Produccion Turno 3
-
-    let horafinalnoche = moment().startOf('isoweek').format("YYYY-MM-DD") + " 07:00:00"
-    let horainicialnoche = moment(horafinalnoche).subtract(1, "day").format("YYYY-MM-DD") + " 23:00:00"
-    //console.log(horainicial)
-    //console.log(horafinal)
-    for (let i = 0; i < 7; i++) {
+        //Turno Noche
         let fechainicialNoche = moment(horainicialnoche).add(i, "day").format("YYYY-MM-DD") + " 23:00:00"
         let fechafinalNoche = moment(horafinalnoche).add(i, "day").format("YYYY-MM-DD") + " 07:00:00"
         let fechaInicalnochex = moment(fechainicialNoche).format("X");
-        let fechaFinaltardex = moment(fechafinalNoche).format("X")
-        //console.log(fechainicial)
-        //console.log(fechafinal)
-        $.get("/produccionhora/" + fechaInicalnochex + "/" + fechaFinaltardex, function (data) {
-            datosTurno3.splice(i, 0, data.count)
-            //console.log(datosTurno3)
+        let fechaFinalnochex = moment(fechafinalNoche).format("X")
+
+        $.when(
+
+            $.get("/produccionhora/" + fechaInicalDiax + "/" + fechaFinaldiax, function (data) {
+                datosTurno1.splice(i, 0, data.count)
+                //console.log(datosTurno1)
+                //graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
+
+            }),
+
+            $.get("/produccionhora/" + fechaInicaltardex + "/" + fechaFinaltardex, function (data) {
+                datosTurno2.splice(i, 0, data.count)
+                //console.log(datosTurno2)
+                //graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
+
+            }),
+
+            $.get("/produccionhora/" + fechaInicalnochex + "/" + fechaFinalnochex, function (data) {
+                datosTurno3.splice(i, 0, data.count)
+                //console.log(datosTurno3)
+                //graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
+
+
+            })
+        ).then(function () {
             graficaProduccion(datosTurno1, datosTurno2, datosTurno3)
-
         })
-    }*/
 
-
+    }
 }
 
 
+//*Funcion para sacar la producción por semana
+
+function produccionPorsemana() {
+    let datosSemana = [];
+    let numSemana = [];
+    //console.log("Inicio de semana " + moment().startOf("week"))
+    //console.log("Fin de semana " + moment().endOf("week"))
+    for (let i = 9; i >= 0; i--) {
+        //console.log("entro")
+        let fechainicial = moment().startOf("week").subtract(i, "weeks")
+        let fechafinal = moment().endOf("week").subtract(i, "weeks")
+        numSemana.splice(9 - i, 0, moment(fechainicial).week())
+        $.when(
+            $.get("/produccionhora/" + fechainicial + "/" + fechafinal, function (data) {
+                datosSemana.splice(i, 0, data.count)
+
+                //console.log(moment(fechainicial).week())
+
+
+            }),
+        ).then(function () {
+            //console.log(datosSemana)
+            //console.log(numSemana)
+            graficaProduccionsemana(datosSemana, numSemana)
+        })
+
+    }
+
+}
+
+//* Se poner afuera la variable para que no muestre datos viejos.
+var myChart2;
+
+function graficaProduccionsemana(datosSemana, numSemana) {
+    if (myChart2) {
+        myChart2.destroy();
+    }
+
+    if (datosSemana.length === 10) {
+        //console.log("Entro chart")
+        var ctx2 = $("#myChart2");
+        myChart2 = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: numSemana,
+                datasets: [{
+                    label: "Produccion Por Turno",
+                    data: datosSemana,
+                    backgroundColor: [
+                        "rgba(75, 192, 192, 0.2)",
+                        "rgba(75, 192, 192, 0.2)",
+                        "rgba(75, 192, 192, 0.2)",
+                        "rgba(75, 192, 192, 0.2)",
+                        "rgba(75, 192, 192, 0.2)",
+                        "rgba(75, 192, 192, 0.2)",
+                        "rgba(75, 192, 192, 0.2)",
+                        "rgba(75, 192, 192, 0.2)",
+                        "rgba(75, 192, 192, 0.2)",
+                        "rgba(75, 192, 192, 0.2)",
+                    ],
+                    borderColor: [
+                        'rgba(75,192,192,1)',
+                        'rgba(75,192,192,1)',
+                        'rgba(75,192,192,1)',
+                        'rgba(75,192,192,1)',
+                        'rgba(75,192,192,1)',
+                        'rgba(75,192,192,1)',
+                        'rgba(75,192,192,1)',
+                        'rgba(75,192,192,1)',
+                        'rgba(75,192,192,1)',
+                        'rgba(75,192,192,1)',
+                    ],
+                    borderWidth: 1
+                },
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+}
 
