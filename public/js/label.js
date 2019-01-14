@@ -368,7 +368,7 @@ function produccionPorsemana() {
 
             }),
         ).then(function () {
-            //console.log(datosSemana)
+            console.log(datosSemana)
             //console.log(numSemana)
             graficaProduccionsemana(datosSemana, numSemana)
         })
