@@ -357,8 +357,9 @@ function produccionPorsemana() {
     for (let i = 9; i >= 0; i--) {
         //console.log("entro")
         let fechainicial = moment().startOf("week").subtract(i, "weeks").format("X")
+        let fecha = moment().startOf("week").subtract(i, "weeks")
         let fechafinal = moment().endOf("week").subtract(i, "weeks").format("X")
-        numSemana.splice(9 - i, 0, moment(fechainicial).week())
+        numSemana.splice(9 - i, 0, moment(fecha).week())
         //console.log(fechainicial)
         $.when(
             $.get("/produccionhora/" + fechainicial + "/" + fechafinal, function (data) {
