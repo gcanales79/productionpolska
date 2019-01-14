@@ -352,23 +352,25 @@ function produccionTurnos() {
 function produccionPorsemana() {
     let datosSemana = [];
     let numSemana = [];
-    //console.log("Inicio de semana " + moment().startOf("week"))
+    //console.log("Inicio de semana " + moment().startOf("week").subtract(2,"weeks"))
     //console.log("Fin de semana " + moment().endOf("week"))
     for (let i = 9; i >= 0; i--) {
         //console.log("entro")
-        let fechainicial = moment().startOf("week").subtract(i, "weeks")
-        let fechafinal = moment().endOf("week").subtract(i, "weeks")
+        let fechainicial = moment().startOf("week").subtract(i, "weeks").format("X")
+        let fechafinal = moment().endOf("week").subtract(i, "weeks").format("X")
         numSemana.splice(9 - i, 0, moment(fechainicial).week())
+        //console.log(fechainicial)
         $.when(
             $.get("/produccionhora/" + fechainicial + "/" + fechafinal, function (data) {
-                datosSemana.splice(i, 0, data.count)
+                datosSemana.splice(9-i, 0, data.count)
+
 
                 //console.log(moment(fechainicial).week())
 
 
             }),
         ).then(function () {
-            console.log(datosSemana)
+            //console.log(datosSemana)
             //console.log(numSemana)
             graficaProduccionsemana(datosSemana, numSemana)
         })
