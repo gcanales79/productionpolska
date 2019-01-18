@@ -352,6 +352,7 @@ function produccionTurnos() {
 function produccionPorsemana() {
     let datosSemana = [];
     let numSemana = [];
+    let datos=[];
     //console.log("Inicio de semana " + moment().startOf("week").subtract(2,"weeks"))
     //console.log("Fin de semana " + moment().endOf("week"))
     for (let i = 9; i >= 0; i--) {
@@ -363,17 +364,31 @@ function produccionPorsemana() {
         //console.log(fechainicial)
         $.when(
             $.get("/produccionhora/" + fechainicial + "/" + fechafinal, function (data) {
-                datosSemana.splice(9-i, 0, data.count)
-
+               datos.push({
+                    semana: moment(fecha).week(),
+                    valor: data.count
+                })
+                //console.log(datos)
 
                 //console.log(moment(fechainicial).week())
 
 
             }),
         ).then(function () {
-            //console.log(datosSemana)
-            //console.log(numSemana)
+            
+            if(datos.length===10){
+               // console.log(datos)
+                //console.log(numSemana)
+            for(let i=0;i<numSemana.length;i++){
+                for (let j=0;j<datos.length;j++){
+                    if(numSemana[i]===datos[j].semana){
+                        datosSemana.push(datos[j].valor)
+                    }
+                }
+            }
+            console.log(datosSemana)
             graficaProduccionsemana(datosSemana, numSemana)
+            }
         })
 
     }
@@ -384,12 +399,13 @@ function produccionPorsemana() {
 var myChart2;
 
 function graficaProduccionsemana(datosSemana, numSemana) {
+    //console.log(datosSemana);
     if (myChart2) {
         myChart2.destroy();
     }
 
     if (datosSemana.length === 10) {
-        //console.log("Entro chart")
+        //console.log("Entro chart2")
         var ctx2 = $("#myChart2");
         myChart2 = new Chart(ctx2, {
             type: 'bar',
