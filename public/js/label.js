@@ -6,6 +6,7 @@ $(document).ready(function () {
     produccionPorsemana();
 
 
+
     $("#submit").on("click", function (event) {
         event.preventDefault();
         //console.log("Submitt button");
@@ -190,6 +191,7 @@ $(document).ready(function () {
     //* Se poner afuera la variable para que no muestre datos viejos.
     var myChart;
 
+
     function graficaProduccion(datosTurno1, datosTurno2, datosTurno3) {
         if (myChart) {
             myChart.destroy();
@@ -278,6 +280,14 @@ $(document).ready(function () {
                                 beginAtZero: true
                             }
                         }]
+                    },
+                    animation:{
+                        duration: 2000,
+                        onProgress:function(){
+                            
+                            $("#loadingTurno").hide()
+                        },
+                           
                     }
                 }
             });
@@ -451,6 +461,14 @@ $(document).ready(function () {
                                 beginAtZero: true
                             }
                         }]
+                    },
+                    animation:{
+                        duration: 2000,
+                        onProgress:function(){
+                            
+                            $("#loadingSemana").hide()
+                        },
+                           
                     }
                 }
             });
