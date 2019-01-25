@@ -1,6 +1,7 @@
 var db = require("../models");
 var isAuthenticated = require("../config/middleware/isAuthenticated");
 
+
 module.exports = function (app) {
   // Load index page
   app.get("/", function (req, res) {

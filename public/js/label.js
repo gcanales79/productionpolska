@@ -5,6 +5,13 @@ $(document).ready(function () {
     produccionTurnos();
     produccionPorsemana();
 
+    $("#exampleModal").modal(
+        {
+            show: false,
+            backdrop: "static",
+            keyboard: false
+        })
+
 
 
     $("#submit").on("click", function (event) {
@@ -12,6 +19,8 @@ $(document).ready(function () {
         //console.log("Submitt button");
         $("#Resultado").empty();
         var nuevoSerial = $("#serialEtiqueta").val().trim();
+        revisarNumerodeParte(nuevoSerial);
+        localStorage.setItem("ultimaEtiqueta", nuevoSerial)
         var newSerial = {
             serial: nuevoSerial,
         }
@@ -186,6 +195,20 @@ $(document).ready(function () {
 
     }
 
+    //Funcion para comparar los digitos de la ultima etiqueta escaneada contra la etiqueta escaneada
+
+    function revisarNumerodeParte(nuevoSerial) {
+        let ultimaEtiqueta = localStorage.getItem("ultimaEtiqueta")
+        let numeroDepartePasado = ultimaEtiqueta.slice(0, 10)
+        let numeroDeparteNuevo = nuevoSerial.slice(0, 10)
+        if (numeroDepartePasado === numeroDeparteNuevo) {
+            console.log("Son iguales");
+        }
+        else {
+            $("#exampleModal").modal("show")
+        }
+    }
+
     // Grafica por turno 7 dias
 
     //* Se poner afuera la variable para que no muestre datos viejos.
@@ -281,13 +304,13 @@ $(document).ready(function () {
                             }
                         }]
                     },
-                    animation:{
+                    animation: {
                         duration: 2000,
-                        onProgress:function(){
-                            
+                        onProgress: function () {
+
                             $("#loadingTurno").hide()
                         },
-                           
+
                     }
                 }
             });
@@ -462,13 +485,13 @@ $(document).ready(function () {
                             }
                         }]
                     },
-                    animation:{
+                    animation: {
                         duration: 2000,
-                        onProgress:function(){
-                            
+                        onProgress: function () {
+
                             $("#loadingSemana").hide()
                         },
-                           
+
                     }
                 }
             });
