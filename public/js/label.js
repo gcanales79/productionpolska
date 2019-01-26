@@ -199,7 +199,9 @@ $(document).ready(function () {
 
     function revisarNumerodeParte(nuevoSerial) {
         let ultimaEtiqueta = localStorage.getItem("ultimaEtiqueta")
-        let numeroDepartePasado = ultimaEtiqueta.slice(0, 10)
+        if(ultimaEtiqueta){
+        var numeroDepartePasado = ultimaEtiqueta.slice(0, 10)
+        }
         let numeroDeparteNuevo = nuevoSerial.slice(0, 10)
         if (numeroDepartePasado === numeroDeparteNuevo) {
             console.log("Son iguales");
