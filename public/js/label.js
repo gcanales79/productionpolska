@@ -77,6 +77,8 @@ $(document).ready(function () {
                             }, 3000);
                             getLast6();
                             produccionPorhora();
+                            produccionTurnos();
+                            produccionPorsemana();
                             //Esta funcion permite recargar la pagina para que saliera la tabla    
                             /*
                             setTimeout(function () {
@@ -199,8 +201,8 @@ $(document).ready(function () {
 
     function revisarNumerodeParte(nuevoSerial) {
         let ultimaEtiqueta = localStorage.getItem("ultimaEtiqueta")
-        if(ultimaEtiqueta){
-        var numeroDepartePasado = ultimaEtiqueta.slice(0, 10)
+        if (ultimaEtiqueta) {
+            var numeroDepartePasado = ultimaEtiqueta.slice(0, 10)
         }
         let numeroDeparteNuevo = nuevoSerial.slice(0, 10)
         if (numeroDepartePasado === numeroDeparteNuevo) {
@@ -209,6 +211,35 @@ $(document).ready(function () {
         else {
             $("#exampleModal").modal("show")
         }
+    }
+
+   
+
+    //Funcion para sacar en que turno se esta
+    function turnoActual() {
+        let horaActual = moment().hour()
+        let turno = ""
+        if (horaActual >= 7 && horaActual <= 15) {
+            turno = "Dia"
+        }
+        else {
+            if (horaActual > 15 && horaActual <= 23) {
+                turno = "Tarde"
+            }
+            else {
+                turno = "Noche"
+            }
+        }
+        return turno
+
+
+    }
+    
+
+    //Funcion para sacar el día que esta
+    function diaActual(){
+        let diaActual=moment().day()
+        return diaActual
     }
 
     // Grafica por turno 7 dias
@@ -223,7 +254,45 @@ $(document).ready(function () {
         }
 
         if (datosTurno1.length === 7 && datosTurno2.length === 7 && datosTurno3.length === 7) {
+            let maximo = datosTurno1.concat(datosTurno2, datosTurno3)
+            let mejorTurno = Math.max(...maximo)
+            $("#mejorTurno").text(mejorTurno)
+            let turno = turnoActual()
+            let dia=diaActual()
+            //console.log("El turno es " + turno)
             //console.log("Entro chart")
+            if (turno === "Dia") {
+                if(dia!=0){
+                let produccionAhora = datosTurno1[dia-1]
+                $("#turnoActual").text(produccionAhora)
+                }
+                else{
+                    let produccionAhora = datosTurno1[dia+6]
+                    $("#turnoActual").text(produccionAhora) 
+                }
+            }
+
+            if (turno === "Tarde") {
+                if(dia!=0){
+                    let produccionAhora = datosTurno2[dia-1]
+                    $("#turnoActual").text(produccionAhora)
+                    }
+                    else{
+                        let produccionAhora = datosTurno2[dia+6]
+                        $("#turnoActual").text(produccionAhora) 
+                    }
+            }
+
+            if (turno === "Noche") {
+                if(dia!=0){
+                    let produccionAhora = datosTurno3[dia-1]
+                    $("#turnoActual").text(produccionAhora)
+                    }
+                    else{
+                        let produccionAhora = datosTurno3[dia+6]
+                        $("#turnoActual").text(produccionAhora) 
+                    }
+            }
             var ctx = $("#myChart");
             myChart = new Chart(ctx, {
                 type: 'bar',
@@ -424,6 +493,10 @@ $(document).ready(function () {
                         }
                     }
                     console.log(datosSemana)
+                    let mejorSemana = Math.max(...datosSemana)
+                    $("#mejorSemana").text(mejorSemana)
+                    let semanaActual = datosSemana[datosSemana.length - 1]
+                    $("#semanaActual").text(semanaActual)
                     graficaProduccionsemana(datosSemana, numSemana)
                 }
             })
