@@ -464,8 +464,11 @@ $(document).ready(function () {
         for (let i = 9; i >= 0; i--) {
             //console.log("entro")
             let fechainicial = moment().startOf("week").subtract(i, "weeks").format("X")
+            console.log(fechainicial)
             let fecha = moment().startOf("week").subtract(i, "weeks")
+            console.log(fecha)
             let fechafinal = moment().endOf("week").subtract(i, "weeks").format("X")
+            console.log(fechafinal)
             numSemana.splice(9 - i, 0, moment(fecha).week())
             //console.log(fechainicial)
             $.when(
