@@ -1,9 +1,9 @@
 const moment = require('moment-timezone');
 const axios=require("axios");
 
-let horainicial = moment().subtract(1,"day").format("YYYY-MM-DD") + " 21:00:00"
+let horainicial = moment().subtract(1,"day").format("YYYY-MM-DD") + " 22:00:00"
 let horainicialx = moment(horainicial).format("X")
-let horafinal = moment().add(0,"day").format("YYYY-MM-DD") + " 05:00:00"
+let horafinal = moment().add(0,"day").format("YYYY-MM-DD") + " 06:00:00"
 let horafinalx = moment(horafinal).format("X")
 let dia=moment(horafinal).format("dddd")
 
