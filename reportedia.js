@@ -3,7 +3,7 @@ const axios = require("axios");
 
 
 /**Si es horario de verna */
-if (moment().isDST()) {
+if (moment().tz("America/Monterrey").isDST()) {
   //console.log("Es horario de verano")
   var horainicial = moment().format("YYYY-MM-DD") + " 12:00:00"
   var horainicialx = moment(horainicial).format("X")
