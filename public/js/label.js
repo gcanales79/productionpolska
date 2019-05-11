@@ -28,7 +28,7 @@ $(document).ready(function () {
             $.get("/api/" + nuevoSerial, function (data) {
 
                 if (data) {
-                    console.log(data);
+                    //console.log(data);
                     var newDiv = $("<div>")
                     var resultadoImagen = $("<img>")
                     resultadoImagen.attr("src", "./images/wrong.png");
@@ -157,11 +157,13 @@ $(document).ready(function () {
             let fechainicial = moment().startOf("hour").subtract(i, "hour").format("X")
             let fechafinal = moment().startOf("hour").subtract(i - 1, "hour").format("X")
             //console.log(hora)
-            //console.log("La fecha inicial es: " + fechaincial + " o " + hora)
+            //console.log("La fecha inicial es: " + fechainicial + " o " + hora)
             //console.log("La fecha final es: " + fechafinal + " o " + horafinal)
             $.getJSON("/produccionhora/" + fechainicial + "/" + fechafinal, function (data) {
-                //console.log(data.count)
-                //console.log(hora)
+                //console.log("De "+ fechainicial + " a " + fechafinal)
+                //console.log("A " + fechafinal)
+                //console.log("Lleva piezas " + data.count)
+                //console.log("En la hora " + hora)
 
                 produccion.push({
                     fecha: fechainicial,
@@ -206,7 +208,7 @@ $(document).ready(function () {
         }
         let numeroDeparteNuevo = nuevoSerial.slice(0, 10)
         if (numeroDepartePasado === numeroDeparteNuevo) {
-            console.log("Son iguales");
+            //console.log("Son iguales");
         }
         else {
             $("#exampleModal").modal("show")
@@ -464,11 +466,11 @@ $(document).ready(function () {
         for (let i = 9; i >= 0; i--) {
             //console.log("entro")
             let fechainicial = moment().startOf("week").subtract(i, "weeks").format("X")
-            console.log(fechainicial)
+            //console.log(fechainicial)
             let fecha = moment().startOf("week").subtract(i, "weeks")
-            console.log(fecha)
+            //console.log(fecha)
             let fechafinal = moment().endOf("week").subtract(i, "weeks").format("X")
-            console.log(fechafinal)
+            //console.log(fechafinal)
             numSemana.splice(9 - i, 0, moment(fecha).week())
             //console.log(fechainicial)
             $.when(
@@ -495,7 +497,7 @@ $(document).ready(function () {
                             }
                         }
                     }
-                    console.log(datosSemana)
+                    //console.log(datosSemana)
                     let mejorSemana = Math.max(...datosSemana)
                     $("#mejorSemana").text(mejorSemana)
                     let semanaActual = datosSemana[datosSemana.length - 1]

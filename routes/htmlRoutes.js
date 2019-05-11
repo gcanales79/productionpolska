@@ -1,5 +1,8 @@
 var db = require("../models");
 var isAuthenticated = require("../config/middleware/isAuthenticated");
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
 
 
 module.exports = function (app) {
@@ -73,7 +76,7 @@ module.exports = function (app) {
       db.Daimler.findAll({
 
         where: {
-          $or: {
+          [Op.or]: {
             serial: req.params.serie,
             etiqueta_remplazada: req.params.serie,
           }
@@ -198,7 +201,7 @@ module.exports = function (app) {
       where:{
         resetPasswordToken:req.params.token,
         resetPasswordExpire:{
-          $gt:Date.now()
+          [Op.gt]:Date.now()
         }
 
       }

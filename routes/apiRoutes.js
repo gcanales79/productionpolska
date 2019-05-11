@@ -8,6 +8,10 @@ const { check, validationResult } = require('express-validator/check');
 var async = require("async");
 var nodemailer = require("nodemailer");
 var crypto = require("crypto");
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
+
 
 
 module.exports = function (app) {
@@ -272,8 +276,8 @@ module.exports = function (app) {
     db.Daimler.findAndCountAll({
       where: {
         createdAt: {
-          $gte: fechainicial,
-          $lte: fechafinal
+          [Op.gte]: fechainicial,
+          [Op.lte]: fechafinal
         },
 
       },
@@ -390,7 +394,7 @@ module.exports = function (app) {
           where: {
             resetPasswordToken: req.params.token,
             resetPasswordExpire: {
-              $gt: Date.now()
+              [Op.gt]: Date.now()
             }
           }
         }).then(user => {
