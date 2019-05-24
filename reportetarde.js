@@ -1,14 +1,6 @@
 const moment = require('moment-timezone');
 const axios = require("axios");
 
-<<<<<<< HEAD
-=======
-let horainicial = moment().subtract(1,"day").format("YYYY-MM-DD") + " 20:00:00"
-let horainicialx = moment(horainicial).format("X")
-let horafinal = moment().add(0,"day").format("YYYY-MM-DD") + " 04:00:00"
-let horafinalx = moment(horafinal).format("X")
-let dia=moment(horafinal).format("dddd")
->>>>>>> ca1ce86ce7a9f0234ca060598b6795c3c6d14989
 
 if (moment().tz("America/Monterrey").isDST()) {
   var horainicial = moment().subtract(1, "day").format("YYYY-MM-DD") + " 20:00:00"
