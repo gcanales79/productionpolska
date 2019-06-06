@@ -296,6 +296,7 @@ module.exports = function (app) {
     process.env.CHAVA_PHONE, process.env.SALINAS_PHONE,process.env.CHAGO_PHONE];
 
     //* Send messages thru SMS
+/*
     for (var i = 0; i < telefonos.length; i++) {
       client.messages.create({
         from: process.env.TWILIO_PHONE, // From a valid Twilio number
@@ -306,6 +307,25 @@ module.exports = function (app) {
         .then(function (message) {
           console.log("Mensaje de texto: " + message.sid);
           res.json(message);
+        });
+    }
+  */
+
+    //* Send message thry whatsapp
+    for (var i = 0; i < telefonos.length; i++) {
+      console.log("whatsapp:" + telefonos[i]);
+      client.messages.create({
+        from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
+        body: "La producción de la linea Daimler del turno de " + req.body.turno + " fue de: " + req.body.piezasProducidas,
+        to: "whatsapp:" + telefonos[i],  // Text this number
+
+      })
+        .then(function (message) {
+          console.log("Whatsapp:" + message.sid);
+          res.json(message);
+        })
+        .catch(function(error){
+          res.json(error)
         });
     }
   });

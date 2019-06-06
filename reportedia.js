@@ -39,7 +39,7 @@ function reporte() {
         turno: "dia"
       })
         .then(function (response) {
-          //console.log(response)
+          console.log(response)
         })
         .catch(function (err) {
           console.log(err)
