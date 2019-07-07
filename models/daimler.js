@@ -8,6 +8,9 @@ module.exports = function (sequelize, DataTypes) {
     etiqueta_remplazada: DataTypes.STRING,
     fecha_gp12:{
       type:DataTypes.DATE,
+    },
+    fechapolonia:{
+      type:DataTypes.DATE,
     }
     
   });

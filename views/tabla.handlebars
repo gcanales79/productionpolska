@@ -20,6 +20,7 @@
                     <th scope="col">Repetida</th>
                     <th scope="col">Fecha Creacion</th>
                     <th scope="col">Escaneo GP-12</th>
+                    <th scope="col">Escaneo Polonia</th>
                 </tr>
             </thead>
             <tbdody>
@@ -29,6 +30,7 @@
                     <td>{{#if this.repetida}}Si{{else}}No{{/if}}</td>
                     <td>{{formatDate this.createdAt}}</td>
                     <td>{{formatDate this.fecha_gp12}}</td>
+                    <td>{{formatDate this.fechapolonia}}</td>
                 </tr>
                 {{/each}}
             </tbdody>

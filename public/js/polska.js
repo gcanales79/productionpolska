@@ -27,7 +27,7 @@ $("#submit").on("click", function (event) {
 
 
                     else {
-                        etiquetaCorrecta();
+                        etiquetaCorrecta(nuevoSerial);
                     }
                 }
             }
@@ -102,7 +102,7 @@ function etiquetaFaltante() {
     $("#submit").prop("disabled", true);
 }
 
-function etiquetaCorrecta() {
+function etiquetaCorrecta(nuevoSerial) {
     var newDiv = $("<div>")
     var resultadoImagen = $("<img>")
     resultadoImagen.attr("src", "./images/good.png");
@@ -112,5 +112,13 @@ function etiquetaCorrecta() {
     $("#serialEtiqueta").val("");
     $("#Resultado").append(resultadoImagen);
     $("#Resultado").append(newDiv);
+    $.ajax({
+        url: "/api/polonia/" + nuevoSerial,
+        type: "PUT",
+        success:
+            function (data) {
+                console.log("Fecha de Polonia ok")
+            }
+    })
 }
 

@@ -256,6 +256,22 @@ module.exports = function (app) {
       })
   })
 
+  //To add the date it was inspected in Poland
+  app.put("/api/polonia/:serial", function (req, res) {
+    db.Daimler.update({
+      fechapolonia: Date.now()
+    },
+      {
+        where: {
+          serial: req.params.serial
+        }
+      }).then(data => {
+        res.json(data)
+      }).catch(function (err) {
+        console.log(err)
+      })
+  })
+
   //To get the last 6 GP12 scan labels
   //To show the last 6 scan labels
   app.get("/api/all/tabla/gp12seisetiquetas", function (req, res) {
