@@ -23,12 +23,15 @@ module.exports = function (app) {
     // Since we're doing a POST with javascript, we can't actually redirect that post into a GET request
     // So we're sending the user back the route to the members page because the redirect will happen on the front end
     // They won't get this or even be able to access this page if they aren't authed    
-
+      
 
     if (req.user.role === "produccion" || req.user.role === "admin") {
+      res.cookie("usuario",req.user.email)
       res.redirect("/produccion");
+     
     }
     if (req.user.role === "inspector") {
+      res.cookie("usuario",req.user.email)
       res.redirect("/gp12")
     }
 
@@ -128,7 +131,7 @@ module.exports = function (app) {
   });
 
   app.post("/message", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE, process.env.TAMARA_PHONE];
+    var telefonos = [process.env.GABRIEL_PHONE, process.env.TAMARA_PHONE];
 
     //* Send messages thru SMS
     for (var i = 0; i < telefonos.length; i++) {
@@ -164,7 +167,7 @@ module.exports = function (app) {
 
   //* Api for labels not on the database
   app.post("/notfound", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE, process.env.TAMARA_PHONE];
+    var telefonos = [process.env.GABRIEL_PHONE, process.env.TAMARA_PHONE];
     //console.log("Manda mensaje de no en base de datos")
     //* Send messages thru SMS
     for (var i = 0; i < telefonos.length; i++) {
@@ -184,7 +187,7 @@ module.exports = function (app) {
 
   //* Api for labels repeated in gp12
   app.post("/repeatgp12", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE, process.env.TAMARA_PHONE];
+    var telefonos = [process.env.GABRIEL_PHONE, process.env.TAMARA_PHONE];
 
     //* Send messages thru SMS
     for (var i = 0; i < telefonos.length; i++) {
@@ -309,15 +312,16 @@ module.exports = function (app) {
           res.json(message);
         });
     }
-  */
+*/
 
     //* Send message thry whatsapp
     for (var i = 0; i < telefonos.length; i++) {
       console.log("whatsapp:" + telefonos[i]);
       client.messages.create({
         from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
-        body: "La producción de la linea Daimler del turno de " + req.body.turno + " fue de: " + req.body.piezasProducidas,
+        body: "La producción de la linea de Daimler del turno de " + req.body.turno + " fue de: " + req.body.piezasProducidas,
         to: "whatsapp:" + telefonos[i],  // Text this number
+        /*La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}*/
 
       })
         .then(function (message) {

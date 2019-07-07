@@ -21,6 +21,9 @@ $(document).ready(function () {
         var nuevoSerial = $("#serialEtiqueta").val().trim();
         revisarNumerodeParte(nuevoSerial);
         localStorage.setItem("ultimaEtiqueta", nuevoSerial)
+        var usuario=document.cookie.replace(/(?:(?:^|.*;\s*)usuario\s*\=\s*([^;]*).*$)|^.*$/, "$1")
+        localStorage.setItem("usuario",usuario)
+        
         var newSerial = {
             serial: nuevoSerial,
         }
