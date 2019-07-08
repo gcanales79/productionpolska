@@ -103,7 +103,10 @@ module.exports = function (app) {
     db.Daimler.create(req.body).then(function (dbDaimler) {
       res.json(dbDaimler);
 
-    });
+    })
+    .catch(function(error){
+      res.json(error)
+    });;
   });
   // Changes the status of the label that was repeated
   app.post("/api/repetido", function (req, res) {
