@@ -70,6 +70,19 @@ module.exports = function (app) {
     }
   });
 
+  //Para cargar la pagina de registro manual
+  app.get("/pruebas",isAuthenticated,function(req,res){
+    if(req.user.role==="admin"){
+      res.status(200);
+      res.render("pruebas",{
+        title:"pruebas",
+        active_pruebas: {
+          Register:true,
+        },
+      })
+    }
+  })
+
   //Este te permite ver los datos de una etiqueta en particular
   app.get("/consulta/:serie", isAuthenticated, function (req, res) {
     if (req.user.role === "admin") {

@@ -11,6 +11,14 @@ module.exports = function (sequelize, DataTypes) {
     },
     fechapolonia:{
       type:DataTypes.DATE,
+    },
+    uso_etiqueta:{
+      type: DataTypes.STRING,
+      defaultValue:"Produccion",
+    },
+    registro_auto:{
+      type:DataTypes.BOOLEAN,
+      defaultValue:true,
     }
     
   });

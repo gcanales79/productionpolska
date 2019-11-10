@@ -19,6 +19,7 @@ $(document).ready(function () {
         //console.log("Submitt button");
         $("#Resultado").empty();
         var nuevoSerial = $("#serialEtiqueta").val().trim();
+        var primNumeros = nuevoSerial.substring(0, 6);
         revisarNumerodeParte(nuevoSerial);
         localStorage.setItem("ultimaEtiqueta", nuevoSerial)
         var usuario=document.cookie.replace(/(?:(?:^|.*;\s*)usuario\s*\=\s*([^;]*).*$)|^.*$/, "$1")
@@ -27,7 +28,7 @@ $(document).ready(function () {
         var newSerial = {
             serial: nuevoSerial,
         }
-        if (nuevoSerial.length === 22) {
+        if (nuevoSerial.length === 22 && primNumeros==="247490") {
             $.get("/api/" + nuevoSerial, function (data) {
 
                 if (data) {
@@ -102,7 +103,7 @@ $(document).ready(function () {
             var resultadoImagen = $("<img>")
             resultadoImagen.attr("src", "./images/wrong.png");
             resultadoImagen.attr("class", "resultadoImagen");
-            newDiv.text("La etiqueta debe ser de 22 digitos");
+            newDiv.text("La etiqueta debe ser de 22 digitos o tiene el inicio incorrecto");
             newDiv.attr("class", "comentario");
             $("#Resultado").append(resultadoImagen);
             $("#Resultado").append(newDiv);

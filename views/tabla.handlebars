@@ -18,6 +18,7 @@
                 <tr>
                     <th scope="col">Serial</th>
                     <th scope="col">Repetida</th>
+                    <th scope="col">Uso</th>
                     <th scope="col">Fecha Creacion</th>
                     <th scope="col">Escaneo GP-12</th>
                     <th scope="col">Escaneo Polonia</th>
@@ -28,6 +29,7 @@
                 <tr>
                     <th scope="row">{{this.serial}}</th>
                     <td>{{#if this.repetida}}Si{{else}}No{{/if}}</td>
+                    <td>{{this.uso_etiqueta}}</td>
                     <td>{{formatDate this.createdAt}}</td>
                     <td>{{formatDate this.fecha_gp12}}</td>
                     <td>{{formatDate this.fechapolonia}}</td>

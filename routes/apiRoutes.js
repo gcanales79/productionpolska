@@ -108,6 +108,21 @@ module.exports = function (app) {
       res.json(error)
     });;
   });
+
+  // Create a new serial manually
+  app.post("/api/serialmanual", function (req, res) {
+    db.Daimler.create({
+      serial: req.body.serial,
+      registro_auto:false,
+      uso_etiqueta:req.body.uso
+    }).then(function (dbDaimler) {
+      res.json(dbDaimler);
+
+    });
+  })
+
+
+  
   // Changes the status of the label that was repeated
   app.post("/api/repetido", function (req, res) {
     db.Daimler.update({
@@ -234,6 +249,11 @@ module.exports = function (app) {
   //To show the last 6 scan labels
   app.get("/api/all/tabla/seisetiquetas", function (req, res) {
     db.Daimler.findAll({
+      where:{
+        uso_etiqueta:{
+          [Op.eq]:"Produccion"
+        }
+      },
       limit: 6,
       order: [["createdAt", "DESC"]],
     }).then(function (dbDaimler) {
@@ -300,6 +320,9 @@ module.exports = function (app) {
         createdAt: {
           [Op.gte]: fechainicial,
           [Op.lte]: fechafinal
+        },
+        registro_auto:{
+          [Op.eq]:1,
         },
 
       },
