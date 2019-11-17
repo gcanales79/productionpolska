@@ -23,15 +23,15 @@ module.exports = function (app) {
     // Since we're doing a POST with javascript, we can't actually redirect that post into a GET request
     // So we're sending the user back the route to the members page because the redirect will happen on the front end
     // They won't get this or even be able to access this page if they aren't authed    
-      
+
 
     if (req.user.role === "produccion" || req.user.role === "admin") {
-      res.cookie("usuario",req.user.email)
+      res.cookie("usuario", req.user.email)
       res.redirect("/produccion");
-     
+
     }
     if (req.user.role === "inspector") {
-      res.cookie("usuario",req.user.email)
+      res.cookie("usuario", req.user.email)
       res.redirect("/gp12")
     }
 
@@ -85,249 +85,59 @@ module.exports = function (app) {
     res.redirect("/");
   });
 
-
-  // Get all examples
-  app.get("/api/:serial", function (req, res) {
-    db.Daimler.findOne({
-      where: {
-        serial: req.params.serial
-      }
-    }).then(function (dbDaimler) {
-      res.json(dbDaimler);
-      //console.log(dbDaimler);
-    });
-  });
-
-  // Create a new serial
-  app.post("/api/serial", function (req, res) {
-    db.Daimler.create(req.body).then(function (dbDaimler) {
-      res.json(dbDaimler);
-
+  //API to get the data from the email
+  app.post("/api/production", function (req, res) {
+    var hora = new Date().getHours();
+    var turno;
+    //console.log(typeof(hora));
+    if (hora >= 6 && hora < 14) {
+      turno = 1
+    }
+    if (hora >= 14 && hora < 22) {
+      turno = 2
+    }
+    if ((hora >= 22 && hora < 24) || (hora >= 0 && hora < 6)) {
+      turno = 3
+    }
+    //console.log("El turno es "+ turno)
+    var dia = new Date().getDay();
+    console.log("El dia es " + dia)
+    db.Polska.create({
+      line_br10: req.body.line_br10,
+      line_hr10_lp1: req.body.line_hr10_lp1,
+      line_hr10_lp2: req.body.line_hr10_lp2,
+      line_hr16_lp1: req.body.line_hr16_lp1,
+      line_stf3: req.body.lines_stf3,
+      turno: turno,
+      dia: dia,
+    }).then(function (dbPolska) {
+      res.json(dbPolska)
     })
-    .catch(function(error){
-      res.json(error)
-    });;
-  });
-
-  // Create a new serial manually
-  app.post("/api/serialmanual", function (req, res) {
-    db.Daimler.create({
-      serial: req.body.serial,
-      registro_auto:false,
-      uso_etiqueta:req.body.uso
-    }).then(function (dbDaimler) {
-      res.json(dbDaimler);
-
-    });
-  })
-
-
-  
-  // Changes the status of the label that was repeated
-  app.post("/api/repetido", function (req, res) {
-    db.Daimler.update({
-      repetida: true,
-    }, {
-        where: {
-          serial: req.body.serial
-        }
-
-      }).then(function (dbDaimler) {
-        res.json(dbDaimler);
-      })
-  });
-
-  //Creates the registry of the repeated label
-  app.post("/api/crearregistro/repetido", function (req, res) {
-    //console.log("Entro al api de repetido");
-    db.Daimler.create({
-      serial: req.body.serial,
-      repetida: true,
-    }).then(function (dbDaimler) {
-      res.json(dbDaimler);
-    })
-  });
-
-  app.post("/message", function (req, res) {
-    var telefonos = [process.env.GABRIEL_PHONE, process.env.TAMARA_PHONE];
-
-    //* Send messages thru SMS
-    for (var i = 0; i < telefonos.length; i++) {
-      client.messages.create({
-        from: process.env.TWILIO_PHONE, // From a valid Twilio number
-        body: "Salio una pieza con serial repetido. El serial es " + req.body.serial,
-        to: telefonos[i],  // Text this number
-
-      })
-        .then(function (message) {
-          console.log("Mensaje de texto: " + message.sid);
-          res.json(message);
-        });
-    }
-
-    //* Send messages thru Whatsapp
-    /*for (var i = 0; i < telefonos.length; i++) {
-      console.log("whatsapp:" + telefonos[i]);
-      client.messages.create({
-        from: "whatsapp:+14155238886",
-        body: `Your {{rechazo}} code is {${req.body.serial}}`,
-        to: "whatsapp:" + telefonos[i],  // Text this number
-
-      })
-        .then(function (message) {
-          console.log("Whatsapp:" + message.sid);
-          res.json(message);
-        });
-    }*/
-
-
-  });
-
-  //* Api for labels not on the database
-  app.post("/notfound", function (req, res) {
-    var telefonos = [process.env.GABRIEL_PHONE, process.env.TAMARA_PHONE];
-    //console.log("Manda mensaje de no en base de datos")
-    //* Send messages thru SMS
-    for (var i = 0; i < telefonos.length; i++) {
-      client.messages.create({
-        from: process.env.TWILIO_PHONE, // From a valid Twilio number
-        body: "Salio una pieza en GP12 que no estaba dada de alta en la base de datos. " +
-          "El serial es " + req.body.serial,
-        to: telefonos[i],  // Text this number
-
-      })
-        .then(function (message) {
-          console.log("Mensaje de texto: " + message.sid);
-          res.json(message);
-        });
-    }
-  });
-
-  //* Api for labels repeated in gp12
-  app.post("/repeatgp12", function (req, res) {
-    var telefonos = [process.env.GABRIEL_PHONE, process.env.TAMARA_PHONE];
-
-    //* Send messages thru SMS
-    for (var i = 0; i < telefonos.length; i++) {
-      client.messages.create({
-        from: process.env.TWILIO_PHONE, // From a valid Twilio number
-        body: "Salio una pieza en GP12 repetida. " +
-          "El serial es " + req.body.serial,
-        to: telefonos[i],  // Text this number
-
-      })
-        .then(function (message) {
-          console.log("Mensaje de texto: " + message.sid);
-          res.json(message);
-        });
-    }
-  });
-
-  //* This is to create the label registry once it has been changed
-  app.post("/api/cambioetiqueta", function (req, res) {
-    db.Daimler.create({
-      serial: req.body.serial,
-      etiqueta_remplazada: req.body.etiqueta_remplazada,
-      repetida: false,
-    }).then(function (dbDaimler) {
-      res.json(dbDaimler);
-
-    });
-  })
-
-  app.get("/api/all/:serial", function (req, res) {
-    db.Daimler.findAll({
-      where: {
-        serial: req.params.serial
-      }
-    }).then(function (dbDaimler) {
-      res.json(dbDaimler);
-      //console.log(dbDaimler);
-    });
-  });
-
-  //To show the last 6 scan labels
-  app.get("/api/all/tabla/seisetiquetas", function (req, res) {
-    db.Daimler.findAll({
-      where:{
-        uso_etiqueta:{
-          [Op.eq]:"Produccion"
-        }
-      },
-      limit: 6,
-      order: [["createdAt", "DESC"]],
-    }).then(function (dbDaimler) {
-      res.json(dbDaimler);
-      //console.log(dbDaimler)
-
-    });
-  });
-
-  //To add the date it was inspected in GP-12
-  app.put("/api/gp12/:serial", function (req, res) {
-    db.Daimler.update({
-      fecha_gp12: Date.now()
-    },
-      {
-        where: {
-          serial: req.params.serial
-        }
-      }).then(data => {
-        res.json(data)
-      }).catch(function (err) {
-        console.log(err)
+      .catch(function (error) {
+        res.json(error)
       })
   })
 
-  //To add the date it was inspected in Poland
-  app.put("/api/polonia/:serial", function (req, res) {
-    db.Daimler.update({
-      fechapolonia: Date.now()
-    },
-      {
-        where: {
-          serial: req.params.serial
-        }
-      }).then(data => {
-        res.json(data)
-      }).catch(function (err) {
-        console.log(err)
-      })
-  })
-
-  //To get the last 6 GP12 scan labels
-  //To show the last 6 scan labels
-  app.get("/api/all/tabla/gp12seisetiquetas", function (req, res) {
-    db.Daimler.findAll({
-      limit: 6,
-      order: [["fecha_gp12", "DESC"]],
-    }).then(function (dbDaimler) {
-      res.json(dbDaimler);
-      //console.log(dbDaimler)
-
-    });
-  });
-
-  //Get data between hour
-  app.get("/produccionhora/:fechainicial/:fechafinal", function (req, res) {
+  //Get data for day shift
+  app.get("/produccionhoradia/:fechainicial/:fechafinal/", function (req, res) {
     let fechainicial = moment.unix(req.params.fechainicial).format("YYYY-MM-DD HH:mm:ss")
     let fechafinal = moment.unix(req.params.fechafinal).format("YYYY-MM-DD HH:mm:ss")
     //console.log(fechainicial)
     //console.log(fechafinal)
     //console.log(req.params.fechafinal)
-    db.Daimler.findAndCountAll({
+    db.Polska.findAll({
       where: {
         createdAt: {
           [Op.gte]: fechainicial,
           [Op.lte]: fechafinal
         },
-        registro_auto:{
-          [Op.eq]:1,
-        },
-
+        turno: {
+          [Op.eq]: 1
+        }
       },
-      distinct: true,
-      col: "serial"
+      order:[
+        ["dia","ASC"]
+      ]
     }).then(data => {
       res.json(data)
     }).catch(function (err) {
@@ -335,46 +145,83 @@ module.exports = function (app) {
     })
   });
 
-  //* SMS Produccion del turno
-  app.post("/reporte", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE, process.env.OMAR_PHONE,
-    process.env.CHAVA_PHONE, process.env.SALINAS_PHONE,process.env.CHAGO_PHONE];
-
-    //* Send messages thru SMS
-/*
-    for (var i = 0; i < telefonos.length; i++) {
-      client.messages.create({
-        from: process.env.TWILIO_PHONE, // From a valid Twilio number
-        body: "La producción de la linea Daimler del turno de " + req.body.turno + " fue de: " + req.body.piezasProducidas,
-        to: telefonos[i],  // Text this number
-
-      })
-        .then(function (message) {
-          console.log("Mensaje de texto: " + message.sid);
-          res.json(message);
-        });
-    }
-*/
-
-    //* Send message thry whatsapp
-    for (var i = 0; i < telefonos.length; i++) {
-      console.log("whatsapp:" + telefonos[i]);
-      client.messages.create({
-        from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
-        body: "La producción de la linea de Daimler del turno de " + req.body.turno + " fue de: " + req.body.piezasProducidas,
-        to: "whatsapp:" + telefonos[i],  // Text this number
-        /*La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}*/
-
-      })
-        .then(function (message) {
-          console.log("Whatsapp:" + message.sid);
-          res.json(message);
-        })
-        .catch(function(error){
-          res.json(error)
-        });
-    }
+  //Get data for afternoon shift
+  app.get("/produccionhoratarde/:fechainicial/:fechafinal/", function (req, res) {
+    let fechainicial = moment.unix(req.params.fechainicial).format("YYYY-MM-DD HH:mm:ss")
+    let fechafinal = moment.unix(req.params.fechafinal).format("YYYY-MM-DD HH:mm:ss")
+    //console.log(fechainicial)
+    //console.log(fechafinal)
+    //console.log(req.params.fechafinal)
+    db.Polska.findAll({
+      where: {
+        createdAt: {
+          [Op.gte]: fechainicial,
+          [Op.lte]: fechafinal
+        },
+        turno: {
+          [Op.eq]: 2
+        }
+      },
+      order:[
+        ["dia","ASC"]
+      ]
+    }).then(data => {
+      res.json(data)
+    }).catch(function (err) {
+      console.log(err)
+    })
   });
+  
+  //Get data for night shift
+  app.get("/produccionhoranoche/:fechainicial/:fechafinal/", function (req, res) {
+    let fechainicial = moment.unix(req.params.fechainicial).format("YYYY-MM-DD HH:mm:ss")
+    let fechafinal = moment.unix(req.params.fechafinal).format("YYYY-MM-DD HH:mm:ss")
+    //console.log(fechainicial)
+    //console.log(fechafinal)
+    //console.log(req.params.fechafinal)
+    db.Polska.findAll({
+      where: {
+        createdAt: {
+          [Op.gte]: fechainicial,
+          [Op.lte]: fechafinal
+        },
+        turno: {
+          [Op.eq]: 3
+        }
+      },
+      order:[
+        ["dia","ASC"]
+      ]
+    }).then(data => {
+      res.json(data)
+    }).catch(function (err) {
+      console.log(err)
+    })
+  });
+
+  //Get data for the production of all the week
+  app.get("/produccionsemana/:fechainicial/:fechafinal/", function (req, res) {
+    let fechainicial = moment.unix(req.params.fechainicial).format("YYYY-MM-DD HH:mm:ss")
+    let fechafinal = moment.unix(req.params.fechafinal).format("YYYY-MM-DD HH:mm:ss")
+    //console.log(fechainicial)
+    //console.log(fechafinal)
+    //console.log(req.params.fechafinal)
+    db.Polska.findAll({
+      where: {
+        createdAt: {
+          [Op.gte]: fechainicial,
+          [Op.lte]: fechafinal
+        },
+      }
+    }).then(data => {
+      res.json(data)
+    }).catch(function (err) {
+      console.log(err)
+    })
+  });
+
+
+
 
   //Route to restablish user password
   app.post('/forgot', function (req, res, next) {
@@ -420,12 +267,12 @@ module.exports = function (app) {
         var smtpTransport = nodemailer.createTransport({
           service: 'Gmail',
           auth: {
-            type:"OAuth2",
+            type: "OAuth2",
             user: 'netzwerk.mty@gmail.com',
-            clientId:process.env.clientId,
-            clientSecret:process.env.clientSecret,
-            refreshToken:process.env.refreshToken,
-            accessToken:process.env.accessToken
+            clientId: process.env.clientId,
+            clientSecret: process.env.clientSecret,
+            refreshToken: process.env.refreshToken,
+            accessToken: process.env.accessToken
           }
         });
         var mailOptions = {
@@ -479,7 +326,7 @@ module.exports = function (app) {
                   where: {
                     resetPasswordToken: req.params.token
                   },
-                  individualHooks:true
+                  individualHooks: true
                 }).then(function (data, err) {
                   done(err, user)
                 })
@@ -489,8 +336,8 @@ module.exports = function (app) {
               return res.redirect("back")
             }
           }
-          else{
-            req.flash("error","La contraseña debe tener minimo 5 caracteres")
+          else {
+            req.flash("error", "La contraseña debe tener minimo 5 caracteres")
             return res.redirect("back")
           }
 
@@ -500,12 +347,12 @@ module.exports = function (app) {
         var smtpTransport = nodemailer.createTransport({
           service: 'Gmail',
           auth: {
-            type:"OAuth2",
+            type: "OAuth2",
             user: 'netzwerk.mty@gmail.com',
-            clientId:process.env.clientId,
-            clientSecret:process.env.clientSecret,
-            refreshToken:process.env.refreshToken,
-            accessToken:process.env.accessToken
+            clientId: process.env.clientId,
+            clientSecret: process.env.clientSecret,
+            refreshToken: process.env.refreshToken,
+            accessToken: process.env.accessToken
           }
         });
         var mailOptions = {

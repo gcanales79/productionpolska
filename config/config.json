@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "root",
-    "database": "daimlerdb",
+    "database": "polskadb",
     "port":3306,
     "host": "localhost",
     "dialect": "mysql"

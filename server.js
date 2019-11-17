@@ -34,6 +34,9 @@ app.use(session({
   }),
   saveUninitialized: true,
   resave: 'true',
+  httpOnly: "true",
+  sameSite:"true",
+  Secure:"true",
   secret: 'secret'
 }));
 app.use(flash());
