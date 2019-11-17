@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "root",
+    "password": "Cugaleno26",
     "database": "polskadb",
     "port":3306,
     "host": "localhost",
