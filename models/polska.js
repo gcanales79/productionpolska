@@ -7,6 +7,7 @@ module.exports = function (sequelize, DataTypes) {
     line_stf3:DataTypes.STRING,
     turno:DataTypes.STRING,
     dia: DataTypes.STRING,
+    fecha: DataTypes.DATE,
   });
 
   return Polska;

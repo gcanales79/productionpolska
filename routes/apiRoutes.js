@@ -87,7 +87,7 @@ module.exports = function (app) {
 
   //API to get the data from the email
   app.post("/api/production", function (req, res) {
-    var hora = new Date().getHours();
+    /*var hora = new Date().getHours();
     var turno;
     //console.log(typeof(hora));
     if (hora >= 6 && hora < 14) {
@@ -98,18 +98,19 @@ module.exports = function (app) {
     }
     if ((hora >= 22 && hora < 24) || (hora >= 0 && hora < 6)) {
       turno = 3
-    }
+    }*/
     //console.log("El turno es "+ turno)
-    var dia = new Date().getDay();
-    console.log("El dia es " + dia)
+    /*var dia = new Date().getDay();*/
+    //console.log("El dia es " + dia)
     db.Polska.create({
       line_br10: req.body.line_br10,
       line_hr10_lp1: req.body.line_hr10_lp1,
       line_hr10_lp2: req.body.line_hr10_lp2,
       line_hr16_lp1: req.body.line_hr16_lp1,
       line_stf3: req.body.lines_stf3,
-      turno: turno,
-      dia: dia,
+      turno: req.body.shift,
+      dia: moment(req.body.date,"DD-MM-YYYY").day(),
+      fecha: moment(req.body.fecha).format("YYYY-MM-DD"),
     }).then(function (dbPolska) {
       res.json(dbPolska)
     })
@@ -127,7 +128,7 @@ module.exports = function (app) {
     //console.log(req.params.fechafinal)
     db.Polska.findAll({
       where: {
-        createdAt: {
+        fecha: {
           [Op.gte]: fechainicial,
           [Op.lte]: fechafinal
         },
@@ -154,7 +155,7 @@ module.exports = function (app) {
     //console.log(req.params.fechafinal)
     db.Polska.findAll({
       where: {
-        createdAt: {
+        fecha: {
           [Op.gte]: fechainicial,
           [Op.lte]: fechafinal
         },
@@ -181,7 +182,7 @@ module.exports = function (app) {
     //console.log(req.params.fechafinal)
     db.Polska.findAll({
       where: {
-        createdAt: {
+        fecha: {
           [Op.gte]: fechainicial,
           [Op.lte]: fechafinal
         },
@@ -208,7 +209,7 @@ module.exports = function (app) {
     //console.log(req.params.fechafinal)
     db.Polska.findAll({
       where: {
-        createdAt: {
+        fecha: {
           [Op.gte]: fechainicial,
           [Op.lte]: fechafinal
         },
