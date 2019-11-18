@@ -31,32 +31,26 @@
 
           </a>
         </li>-->
-        {{#ifCond admin "||" produccion}}
-        <li class="nav-item {{#if active_produccion}} active {{/if}}">
-          <a class="nav-link" href="/produccion">Produccion
+        {{#ifCond admin "||" user}}
+        <li class="nav-item {{#if active_home}} active {{/if}}">
+          <a class="nav-link" href="/produccion">HR10 Line
 
           </a>
         </li>
         {{/ifCond}}
         {{#if admin}}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle {{#if active_consulta}} active {{/if}}" href="/consulta"
+          <a class="nav-link dropdown-toggle {{#if active_alta}} active {{/if}}" href="/consulta"
             id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Administración
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="/consulta">Consulta No. Serie</a>
-            <a class="dropdown-item" href="/tabla">Ver Registros</a>
-            <a class="dropdown-item" href="/alta">Alta Usuarios</a>
+            <a class="dropdown-item" href="/alta">Add</a>
           </div>
         </li>
-        <li class="nav-item">
-          <a class="nav-link {{#if active_pruebas}}active{{/if}}"" href="/pruebas">Registro Manual</a> </li> {{/if}}
-            {{#ifCond admin "||" inspector}} <li class="nav-item {{#if active_gp12}}active{{/if}}">
-            <a class="nav-link" href="/gp12">GP12</a>
-        </li>
-        {{/ifCond}}
-        </li>
+        
+        {{/if}}
+            
         <li class="nav-item">
           <a class="nav-link" href="/logout">Logout</a>
         </li>

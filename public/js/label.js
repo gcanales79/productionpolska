@@ -125,6 +125,17 @@ $(document).ready(function () {
                         "rgba(255, 99, 132, 1)",
                     ],
                     borderWidth: 1
+                },{
+                label:"Goal",
+                data:[760,760,760,760,760,760,760],
+                type:"line",
+                backgroundColor:[
+                    'rgb(255,99,132)'
+                ],
+                fill:false,
+                borderColor:[
+                    "rgb(255,99,132)"
+                ]    
                 }
                 ]
             },

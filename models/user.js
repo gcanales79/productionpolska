@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
     role:{
         type:DataTypes.STRING,
         allowNull:false,
-        defaultValue:"iuser"
+        defaultValue:"user"
     },
     resetPasswordToken:{
       type:DataTypes.STRING,
