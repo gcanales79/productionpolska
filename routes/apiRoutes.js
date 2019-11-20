@@ -25,7 +25,7 @@ module.exports = function (app) {
     // They won't get this or even be able to access this page if they aren't authed    
 
 
-    if (req.user.role === "produccion" || req.user.role === "admin") {
+    if (req.user.role === "user" || req.user.role === "admin") {
       res.cookie("usuario", req.user.email)
       res.redirect("/produccion");
 

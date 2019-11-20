@@ -23,7 +23,7 @@ module.exports = function (app) {
   //Get produccion page
   app.get("/produccion", isAuthenticated, function (req, res) {
     //console.log(req.user)
-    if (req.user.role === "admin" || req.user.role === "produccion") {
+    if (req.user.role === "admin" || req.user.role === "user") {
       res.status(200);
       res.render("produccion", {
         title: "produccion",
