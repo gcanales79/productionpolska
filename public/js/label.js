@@ -29,7 +29,7 @@ $(document).ready(function () {
             let ProduccionTurnoDia = [0, 0, 0, 0, 0, 0, 0];
             for (let i = 0; i < datosDia.length; i++) {
                 var indice = datosDia[i].dia;
-                ProduccionTurnoDia[indice] = parseInt(datosDia[i].line_hr10_lp1)+parseInt(datosNoche[i].line_hr10_lp2)
+                ProduccionTurnoDia[indice] = parseInt(datosDia[i].line_hr10_lp1)+parseInt(datosDia[i].line_hr10_lp2)
             }
             let ProduccionTurnoTarde = [0, 0, 0, 0, 0, 0, 0];
             for (let i = 0; i < datosTarde.length; i++) {
