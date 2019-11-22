@@ -29,17 +29,17 @@ $(document).ready(function () {
             let ProduccionTurnoDia = [0, 0, 0, 0, 0, 0, 0];
             for (let i = 0; i < datosDia.length; i++) {
                 var indice = datosDia[i].dia;
-                ProduccionTurnoDia[indice] = datosDia[i].line_hr10_lp1+datosNoche[i].line_hr10_lp2
+                ProduccionTurnoDia[indice] = parseInt(datosDia[i].line_hr10_lp1)+parseInt(datosNoche[i].line_hr10_lp2)
             }
             let ProduccionTurnoTarde = [0, 0, 0, 0, 0, 0, 0];
             for (let i = 0; i < datosTarde.length; i++) {
                 var indice = datosTarde[i].dia;
-                ProduccionTurnoTarde[indice] = datosTarde[i].line_hr10_lp1+datosTarde[i].line_hr10_lp2
+                ProduccionTurnoTarde[indice] = parseInt(datosTarde[i].line_hr10_lp1)+parseInt(datosTarde[i].line_hr10_lp2)
             }
             let ProduccionTurnoNoche = [0, 0, 0, 0, 0, 0, 0];
             for (let i = 0; i < datosNoche.length; i++) {
                 var indice = datosNoche[i].dia;
-                ProduccionTurnoNoche[indice] = datosNoche[i].line_hr10_lp1+datosNoche[i].line_hr10_lp2
+                ProduccionTurnoNoche[indice] = parseInt(datosNoche[i].line_hr10_lp1)+parseInt(datosNoche[i].line_hr10_lp2)
             }
             GraficaporTurno(ProduccionTurnoDia, ProduccionTurnoTarde, ProduccionTurnoNoche)
         })
