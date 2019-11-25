@@ -162,7 +162,7 @@ $(document).ready(function () {
     function ProduccionporSemana() {
         let ProduccionSemanal = [];
         let NumSemana = [];
-        let Totalsemana = 0;
+        
         for (let i = 9; i >= 0; i--) {
             let fechaInicial = moment().startOf("week").subtract(i, "weeks").format("X");
             //console.log("La fecha Inicial es " + fechaInicial)
@@ -181,6 +181,7 @@ $(document).ready(function () {
                     }
                     else {
                         let Reportesemana = [];
+                        let Totalsemana = 0;
 
                         for (let j = 0; j < data.length; j++) {
 
@@ -191,7 +192,7 @@ $(document).ready(function () {
                             //console.log(Reportesemana[j])
                             //console.log(Totalsemana)
                             Totalsemana += (Reportesemana[j])
-
+                            
 
                         }
                         //console.log(Totalsemana)
