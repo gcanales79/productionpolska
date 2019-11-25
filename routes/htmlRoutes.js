@@ -35,6 +35,36 @@ module.exports = function (app) {
       
   });
 
+  //Get BR10 page
+  app.get("/br10", isAuthenticated, function (req, res) {
+    //console.log(req.user)
+    if (req.user.role === "admin" || req.user.role === "user") {
+      res.status(200);
+      res.render("br10", {
+        title: "br10",
+        active_br10: {
+          Register: true
+        }
+      })
+    }
+      
+  });
+
+   //Get STF3 page
+   app.get("/stf3", isAuthenticated, function (req, res) {
+    //console.log(req.user)
+    if (req.user.role === "admin" || req.user.role === "user") {
+      res.status(200);
+      res.render("stf3", {
+        title: "stf3",
+        active_stf3: {
+          Register: true
+        }
+      })
+    }
+      
+  });
+
   // Carga la pagina para dar de alta usuarios
   app.get("/alta", isAuthenticated, function (req, res) {
     //console.log(res.locals.sessionFlash)
