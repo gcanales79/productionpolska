@@ -107,7 +107,7 @@ module.exports = function (app) {
       line_hr10_lp1: req.body.line_hr10_lp1,
       line_hr10_lp2: req.body.line_hr10_lp2,
       line_hr16_lp1: req.body.line_hr16_lp1,
-      line_stf3: req.body.lines_stf3,
+      line_stf3: req.body.line_stf3,
       turno: req.body.shift,
       dia: moment(req.body.date,"DD-MM-YYYY").day(),
       fecha: moment(req.body.fecha).format("YYYY-MM-DD"),
