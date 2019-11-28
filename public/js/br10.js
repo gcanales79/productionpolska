@@ -180,7 +180,7 @@ $(document).ready(function () {
                 .then(function (data) {
                     //console.log(data)
                     if (data.length === 0) {
-                        ProduccionSemanal.push(0)
+                        ProduccionSemanal.splice(9-i,0,0)
                     }
                     else {
                         let Reportesemana = [];
@@ -199,7 +199,7 @@ $(document).ready(function () {
 
                         }
                         //console.log(Totalsemana)
-                        ProduccionSemanal.push(Totalsemana)
+                        ProduccionSemanal.splice(9-i,0,Totalsemana)
                     }
                     graficaProduccionsemana(ProduccionSemanal,NumSemana)
 

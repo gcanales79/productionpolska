@@ -177,7 +177,7 @@ $(document).ready(function () {
                 .then(function (data) {
                     //console.log(data)
                     if (data.length === 0) {
-                        ProduccionSemanal.push(0)
+                        ProduccionSemanal.splice(9-i,0,0)
                     }
                     else {
                         let Reportesemana = [];
@@ -185,7 +185,7 @@ $(document).ready(function () {
 
                         for (let j = 0; j < data.length; j++) {
 
-                            Reportesemana.push(parseInt(data[j].line_hr10_lp1))
+                            Reportesemana.push(parseInt(data[j].line_hr10_lp1)+parseInt(data[j].line_hr10_lp2))
                         }
                         //console.log(Reportesemana)
                         for (let j = 0; j < Reportesemana.length; j++) {
@@ -196,7 +196,8 @@ $(document).ready(function () {
 
                         }
                         //console.log(Totalsemana)
-                        ProduccionSemanal.push(Totalsemana)
+                        //console.log(i)
+                        ProduccionSemanal.splice(9-i,0,Totalsemana)
                     }
                     graficaProduccionsemana(ProduccionSemanal,NumSemana)
 

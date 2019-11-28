@@ -13,6 +13,8 @@ var db = require("./models");
 var axios = require("axios")
 var flash = require("connect-flash");
 var MemoryStore = require("memorystore")(session)
+var CronJob=require("cron").CronJob;
+let shell =require("shelljs")
 
 
 
@@ -127,6 +129,14 @@ var syncOptions = { force: false };
 if (process.env.NODE_ENV === "test") {
   syncOptions.force = true;
 }
+
+//Cron Job
+new CronJob('50 13 * * *', function() {
+  console.log("staring cron");
+  if(shell.exec("node cron.js").code !==0){
+    console.log("Something went wrong")
+  }
+  }, null, true, 'America/Monterrey');
 
 
 
