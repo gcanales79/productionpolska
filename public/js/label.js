@@ -198,6 +198,7 @@ $(document).ready(function () {
                         //console.log(Totalsemana)
                         //console.log(i)
                         ProduccionSemanal.splice(9-i,0,Totalsemana)
+                        console.log(ProduccionSemanal)
                     }
                     graficaProduccionsemana(ProduccionSemanal,NumSemana)
 
