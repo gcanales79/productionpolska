@@ -131,7 +131,7 @@ if (process.env.NODE_ENV === "test") {
 }
 
 //Cron Job
-new CronJob('37 23 * * *', function() {
+new CronJob('43 23 * * *', function() {
   console.log("starting cron");
   if(shell.exec("node cron.js").code !==0){
     console.log("Something went wrong")
