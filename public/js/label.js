@@ -165,6 +165,7 @@ $(document).ready(function () {
         let ArrayreporteSemana = [];
 
         for (let i = 9; i >= 0; i--) {
+            console.log("El i es " + i)
             let fechaInicial = moment().startOf("week").subtract(i, "weeks").format("X");
             //console.log("La fecha Inicial es " + fechaInicial)
             let fecha = moment().startOf("week").subtract(i, "weeks")

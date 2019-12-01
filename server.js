@@ -131,12 +131,12 @@ if (process.env.NODE_ENV === "test") {
 }
 
 //Cron Job
-new CronJob('50 13 * * *', function() {
-  console.log("staring cron");
+new CronJob('37 23 * * *', function() {
+  console.log("starting cron");
   if(shell.exec("node cron.js").code !==0){
     console.log("Something went wrong")
   }
-  }, null, true, 'America/Monterrey');
+  }, null, true, 'Europe/Warsaw');
 
 
 
