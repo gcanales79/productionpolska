@@ -50,10 +50,11 @@ function ProduccionporSemana() {
                 ArrayreporteSemana.sort((a, b) => parseFloat(b.index) - parseFloat(a.index));
                 //console.log(ArrayreporteSemana)
                 //console.log(ArrayreporteSemana.length)
-                console.log("La produccion fue de " + ArrayreporteSemana[0].produccion)
+                var Reporteproduccion=numberWithCommas(ArrayreporteSemana[0].produccion)
+                console.log("La produccion fue de " + Reporteproduccion)
             }
             axios.post("https://polskakpi.com/reportepolonia", {
-                produccion: ArrayreporteSemana[0].produccion,
+                produccion: Reporteproduccion,
             }).then(function (response) {
                 console.log(response.statusText)
             }).catch(function (err) {
@@ -68,3 +69,8 @@ function ProduccionporSemana() {
 
 }
 
+function numberWithCommas(x) {
+    var parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+}
