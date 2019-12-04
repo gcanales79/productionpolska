@@ -223,7 +223,50 @@ module.exports = function (app) {
 
   //* SMS Produccion de la seman reporte Polonia
   app.post("/reportepolonia", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE]
+    var telefonos = [process.env.GUS_PHONE,process.env.OMAR_PHONE]
+    /*
+    //* Send messages thru SMS
+    
+        for (var i = 0; i < telefonos.length; i++) {
+          client.messages.create({
+            from: process.env.TWILIO_PHONE, // From a valid Twilio number
+            body: "The production of HR10 line for last week was: " + req.body.produccion + ". The contracted capacity "+
+            "per week is 9,000 pcs",
+            to: telefonos[i],  // Text this number
+    
+          })
+            .then(function (message) {
+              console.log("Mensaje de texto: " + message.sid);
+              res.json(message);
+            });
+        }
+  
+    */    
+    
+    //* Send message thry whatsapp
+    for (var i = 0; i < telefonos.length; i++) {
+      console.log("whatsapp:" + telefonos[i]);
+      client.messages.create({
+        from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
+        body: "The production of HR10 line for last week was: " + req.body.produccion + ". The contracted capacity "+
+        "per week is 9,000.",
+        to: "whatsapp:" + telefonos[i],  // Text this number
+        /*La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}*/
+
+      })
+        .then(function (message) {
+          console.log("Whatsapp:" + message.sid);
+          res.json(message);
+        })
+        .catch(function (error) {
+          res.json(error)
+        });
+    }
+  });
+
+   //* SMS Produccion de la seman reporte Mexico
+   app.post("/reportemexico", function (req, res) {
+    var telefonos = [process.env.CARLOS_PHONE]
     /*
     //* Send messages thru SMS
     
