@@ -192,7 +192,7 @@ $(document).ready(function () {
 
 
                         for (let j = 0; j < data.length; j++) {
-
+                            //!Este dato se cambia dependiendo de la linea
                             Reportesemana.push(parseInt(data[j].line_hr10_lp1) + parseInt(data[j].line_hr10_lp2))
                         }
                         //console.log(Reportesemana)
