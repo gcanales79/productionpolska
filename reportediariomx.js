@@ -53,7 +53,7 @@ function ProduccionporSemana() {
                 var Reporteproduccion=numberWithCommas(ArrayreporteSemana[0].produccion)
                 console.log("La produccion fue de " + Reporteproduccion)
             }
-            axios.post("https://polskakpi.com/reportediariomexico", {
+            axios.post("https://polskakpi.com/reportediariomexicocd", {
                 produccion: Reporteproduccion,
             }).then(function (response) {
                 console.log(response.statusText)
