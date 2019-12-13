@@ -271,7 +271,7 @@ module.exports = function (app) {
   //* SMS Produccion diaro reporte Polonia
   app.post("/reportediariopolonia", function (req, res) {
     var telefonos = [process.env.GUS_PHONE, process.env.OMAR_PHONE]
-
+    /*
     //* Send messages thru SMS
 
     for (var i = 0; i < telefonos.length; i++) {
@@ -286,7 +286,7 @@ module.exports = function (app) {
           res.json(message);
         });
     }
-
+    */
 
 
     //* Send message thru whatsapp
@@ -333,7 +333,7 @@ module.exports = function (app) {
   
     */
 
-    //* Send message thry whatsapp
+    //* Send message thru whatsapp
     for (var i = 0; i < telefonos.length; i++) {
       console.log("whatsapp:" + telefonos[i]);
       client.messages.create({
@@ -356,8 +356,8 @@ module.exports = function (app) {
 
   //* SMS Produccion diaro reporte Mexico
   app.post("/reportediariomexico", function (req, res) {
-    var telefonos = [process.env.CARLOS_PHONE, process.env.GUS_PHONEno]
-
+    var telefonos = [process.env.GUS_PHONE]
+    /*
     //* Send messages thru SMS
 
     for (var i = 0; i < telefonos.length; i++) {
@@ -373,7 +373,7 @@ module.exports = function (app) {
         });
     }
 
-
+    */
 
     //* Send message thru whatsapp
     for (var i = 0; i < telefonos.length; i++) {
