@@ -356,7 +356,7 @@ module.exports = function (app) {
 
   //* SMS Produccion diaro reporte Mexico
   app.post("/reportediariomexico", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE]
+    var telefonos = [process.env.CARLOS_PHONE,process.env.GUS_PHONE]
     /*
     //* Send messages thru SMS
 
