@@ -19,7 +19,7 @@ function ProduccionporSemana() {
             if (data.data.length === 0) {
                 //ProduccionSemanal.splice(9 - i, 0, 0)
                 ArrayreporteSemana.push({
-                    index: i,
+                    index: 0,
                     produccion: 0
                 })
             }
