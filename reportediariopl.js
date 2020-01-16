@@ -32,7 +32,7 @@ function ProduccionporSemana() {
 
                     Reportesemana.push(parseInt(data.data[j].line_hr10_lp1) + parseInt(data.data[j].line_hr10_lp2))
                 }
-                //console.log(Reportesemana)
+                console.log(Reportesemana)
                 for (let j = 0; j < Reportesemana.length; j++) {
                     //console.log(Reportesemana[j])
                     //console.log(Totalsemana)
