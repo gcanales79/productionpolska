@@ -593,7 +593,7 @@ module.exports = function (app) {
 
   //* SMS precio del Paladio Arriba del Target
   app.post("/metalesprice", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE]
+    var telefonos = [process.env.GUS_PHONE,process.env.CARLOS_PHONE]
 
     //* Send messages thru SMS
 
