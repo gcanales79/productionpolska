@@ -95,8 +95,8 @@ module.exports = function (app) {
         line_hr16_lp1: req.body.line_hr16_lp1,
         line_stf3: req.body.line_stf3,
         turno: req.body.shift,
-        dia: moment(req.body.date, "DD-MM-YYYY").subtract(1,"day").day(),
-        fecha: moment(req.body.fecha).subtract(1,"day").format("YYYY-MM-DD"),
+        dia: moment(req.body.date, "DD-MM-YYYY").subtract(1, "day").day(),
+        fecha: moment(req.body.fecha).subtract(1, "day").format("YYYY-MM-DD"),
       }).then(function (dbPolska) {
         res.json(dbPolska)
       })
@@ -356,7 +356,7 @@ module.exports = function (app) {
 
   //* SMS Produccion diaro reporte Mexico
   app.post("/reportediariomexico", function (req, res) {
-    var telefonos = [process.env.CARLOS_PHONE,process.env.GUS_PHONE]
+    var telefonos = [process.env.CARLOS_PHONE, process.env.GUS_PHONE]
     /*
     //* Send messages thru SMS
 
@@ -546,6 +546,96 @@ module.exports = function (app) {
       res.redirect('/');
     });
   });
+
+  //* SMS precio de los Metales por Hora
+  app.post("/metalesporhora", function (req, res) {
+    var telefonos = [process.env.GUS_PHONE]
+
+    //* Send messages thru SMS
+
+    for (var i = 0; i < telefonos.length; i++) {
+      client.messages.create({
+        from: process.env.TWILIO_PHONE, // From a valid Twilio number
+        body: "The price of Palladium is: " + req.body.palladium + ". The original price was " +
+          "960 USD/oz. The price of Rhodium is: " + req.body.rhodium + ". The origina price was " +
+          "2,436 USD/oz",
+        to: telefonos[i],  // Text this number
+
+      })
+        .then(function (message) {
+          console.log("Mensaje de texto: " + message.sid);
+          res.json(message);
+        });
+    }
+
+
+
+    /* Send message thru whatsapp
+    for (var i = 0; i < telefonos.length; i++) {
+      console.log("whatsapp:" + telefonos[i]);
+      client.messages.create({
+        from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
+        body: "The production of HR10 line for last week was: " + req.body.produccion + ". The contracted capacity " +
+          "per week is 12,000.",
+        to: "whatsapp:" + telefonos[i],  // Text this number
+        /*La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}*
+
+      })
+        .then(function (message) {
+          console.log("Whatsapp:" + message.sid);
+          res.json(message);
+        })
+        .catch(function (error) {
+          res.json(error)
+        });
+    }*/
+  });
+
+  //* SMS precio del Paladio Arriba del Target
+  app.post("/metalesprice", function (req, res) {
+    var telefonos = [process.env.GUS_PHONE]
+
+    //* Send messages thru SMS
+
+    for (var i = 0; i < telefonos.length; i++) {
+      client.messages.create({
+        from: process.env.TWILIO_PHONE, // From a valid Twilio number
+        body: "The price of Palladium is over the target of 1,647 USD/oz. " +
+        "The price of Palladium is: " + req.body.palladium + ". The original price was " +
+          "960 USD/oz. The price of Rhodium is: " + req.body.rhodium + ". The origina price was " +
+          "2,436 USD/oz",
+        to: telefonos[i],  // Text this number
+
+      })
+        .then(function (message) {
+          console.log("Mensaje de texto: " + message.sid);
+          res.json(message);
+        });
+    }
+
+
+
+    /* Send message thru whatsapp
+    for (var i = 0; i < telefonos.length; i++) {
+      console.log("whatsapp:" + telefonos[i]);
+      client.messages.create({
+        from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
+        body: "The production of HR10 line for last week was: " + req.body.produccion + ". The contracted capacity " +
+          "per week is 12,000.",
+        to: "whatsapp:" + telefonos[i],  // Text this number
+        /*La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}*
+
+      })
+        .then(function (message) {
+          console.log("Whatsapp:" + message.sid);
+          res.json(message);
+        })
+        .catch(function (error) {
+          res.json(error)
+        });
+    }*/
+  });
+
 
 
 
