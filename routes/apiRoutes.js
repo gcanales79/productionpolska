@@ -556,9 +556,9 @@ module.exports = function (app) {
     for (var i = 0; i < telefonos.length; i++) {
       client.messages.create({
         from: process.env.TWILIO_PHONE, // From a valid Twilio number
-        body: "The price of Palladium is: " + req.body.palladium + ". The original price was " +
-          "960 USD/oz. The price of Rhodium is: " + req.body.rhodium + ". The origina price was " +
-          "2,436 USD/oz",
+        body: "The price of Palladium is: " + req.body.palladium + " USD/oz. The original price was " +
+          "960 USD/oz. The price of Rhodium is: " + req.body.rhodium + " USD/oz. The original price was " +
+          "2,436 USD/oz.",
         to: telefonos[i],  // Text this number
 
       })
@@ -601,8 +601,8 @@ module.exports = function (app) {
       client.messages.create({
         from: process.env.TWILIO_PHONE, // From a valid Twilio number
         body: "The price of Palladium is over the target of 1,647 USD/oz. " +
-        "The price of Palladium is: " + req.body.palladium + ". The original price was " +
-          "960 USD/oz. The price of Rhodium is: " + req.body.rhodium + ". The origina price was " +
+        "The price of Palladium is: " + req.body.palladium + " USD/oz. The original price was " +
+          "960 USD/oz. The price of Rhodium is: " + req.body.rhodium + " USD/oz. The original price was " +
           "2,436 USD/oz",
         to: telefonos[i],  // Text this number
 
