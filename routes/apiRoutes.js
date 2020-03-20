@@ -553,7 +553,7 @@ module.exports = function (app) {
 
     //* Send messages thru SMS
 
-    for (var i = 0; i < telefonos.length; i++) {
+    /*for (var i = 0; i < telefonos.length; i++) {
       client.messages.create({
         from: process.env.TWILIO_PHONE, // From a valid Twilio number
         body: "The price of Palladium is: " + req.body.palladium + " USD/oz. The original price was " +
@@ -566,19 +566,20 @@ module.exports = function (app) {
           console.log("Mensaje de texto: " + message.sid);
           res.json(message);
         });
-    }
+    }*/
 
 
 
-    /* Send message thru whatsapp
+    //* Send message thru whatsapp
     for (var i = 0; i < telefonos.length; i++) {
       console.log("whatsapp:" + telefonos[i]);
       client.messages.create({
         from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
-        body: "The production of HR10 line for last week was: " + req.body.produccion + ". The contracted capacity " +
-          "per week is 12,000.",
+        body: "The price of Palladium is: " + req.body.palladium + " USD/oz. The original price was " +
+          "960 USD/oz. The price of Rhodium is: " + req.body.rhodium + " USD/oz. The original price was " +
+          "2,436 USD/oz.",
         to: "whatsapp:" + telefonos[i],  // Text this number
-        /*La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}*
+        
 
       })
         .then(function (message) {
@@ -588,7 +589,7 @@ module.exports = function (app) {
         .catch(function (error) {
           res.json(error)
         });
-    }*/
+    }
   });
 
   //* SMS precio del Paladio Arriba del Target
@@ -597,7 +598,7 @@ module.exports = function (app) {
 
     //* Send messages thru SMS
 
-    for (var i = 0; i < telefonos.length; i++) {
+    /*for (var i = 0; i < telefonos.length; i++) {
       client.messages.create({
         from: process.env.TWILIO_PHONE, // From a valid Twilio number
         body: "The price of Palladium is over the target of 1,647 USD/oz. " +
@@ -611,20 +612,20 @@ module.exports = function (app) {
           console.log("Mensaje de texto: " + message.sid);
           res.json(message);
         });
-    }
+    }*/
 
 
 
-    /* Send message thru whatsapp
+    // Send message thru whatsapp
     for (var i = 0; i < telefonos.length; i++) {
       console.log("whatsapp:" + telefonos[i]);
       client.messages.create({
         from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
-        body: "The production of HR10 line for last week was: " + req.body.produccion + ". The contracted capacity " +
-          "per week is 12,000.",
+        body: "The price of Palladium is over the target of 1,647 USD/oz. The price of Palladium is: " +req.body.palladium+ " USD/oz. The original price was 960 USD/oz. The price of Rhodium is: "+req.body.rhodium+" USD/oz. The original price was 2,436 USD/oz. ",
         to: "whatsapp:" + telefonos[i],  // Text this number
-        /*La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}*
-
+        
+        
+        
       })
         .then(function (message) {
           console.log("Whatsapp:" + message.sid);
@@ -633,7 +634,7 @@ module.exports = function (app) {
         .catch(function (error) {
           res.json(error)
         });
-    }*/
+    }
   });
 
 

@@ -10,7 +10,7 @@ request('https://www.kitco.com/market/', function (err, resp, html) {
         let priceRH = parseFloat($("#RH-bid").text());
         console.log(pricePD);
         console.log(priceRH)
-        axios.post("https://polskakpi.com/metalesporhora", {
+        axios.post("https://polskakpi.com/metalesporhora" /*"http://localhost:3000/metalesporhora"*/, {
             palladium: pricePD,
             rhodium: priceRH
         }).then(function (response) {
