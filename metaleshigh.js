@@ -8,7 +8,7 @@ request('https://www.kitco.com/market/', function (err, resp, html) {
         //console.log(html); 
         let pricePD = parseFloat($("#PD-bid").text());
         let priceRH = parseFloat($("#RH-bid").text());
-        let targetpricePD = 1647;
+        let targetpricePD = 1750;
         console.log(pricePD);
         console.log(priceRH)
         if (pricePD > targetpricePD) {

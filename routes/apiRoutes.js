@@ -621,7 +621,7 @@ module.exports = function (app) {
       console.log("whatsapp:" + telefonos[i]);
       client.messages.create({
         from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
-        body: "The price of Palladium is over the target of 1,647 USD/oz. The price of Palladium is: " +req.body.palladium+ " USD/oz. The original price was 960 USD/oz. The price of Rhodium is: "+req.body.rhodium+" USD/oz. The original price was 2,436 USD/oz. ",
+        body: "The price of Palladium is over the target of 1,750 USD/oz. The price of Palladium is: " +req.body.palladium+ " USD/oz. The original price was 960 USD/oz. The price of Rhodium is: "+req.body.rhodium+" USD/oz. The original price was 2,436 USD/oz. ",
         to: "whatsapp:" + telefonos[i],  // Text this number
         
         
