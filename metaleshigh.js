@@ -8,10 +8,10 @@ request('https://www.kitco.com/market/', function (err, resp, html) {
         //console.log(html); 
         let pricePD = parseFloat($("#PD-bid").text());
         let priceRH = parseFloat($("#RH-bid").text());
-        let targetpricePD = 1750;
+        let targetpriceRH = 6500;
         console.log(pricePD);
         console.log(priceRH)
-        if (pricePD > targetpricePD) {
+        if (priceRH > targetpriceRH) {
             axios.post("https://polskakpi.com/metalesprice" /*"http://localhost:3000/metalesprice"*/, {
                 palladium: pricePD,
                 rhodium: priceRH
