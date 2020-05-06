@@ -123,6 +123,62 @@ module.exports = function (app) {
     }
   })
 
+  //API to get the data from the email (2nd Version)
+  app.post("/api/produccion", function (req, res) {
+    if (req.body.shift == 3) {
+      db.Polska2.create({
+        ws2_hr16: req.body.ws2_hr16,
+        ws3a_cell1: req.body.ws3a_cell1,
+        ws3a_cell2: req.body.ws3a_cell2,
+        ws3b_hr10det: req.body.ws3b_hr10det,
+        ws3b_hr10gpf: req.body.ws3b_hr10det,
+        ws4_br10ed: req.body.ws4_br10ed,
+        ws4_br10bja: req.body.ws4_br10bja,
+        ws4_br10gpf: req.body.ws4_br10gpf,
+        stf3_hr10: req.body.stf3_hr10,
+        stf3_br10: req.body.stf3_br10,
+        stf3_hr16: req.body.stf3_hr16,
+        stf4_hr10: req.body.stf4_hr10,
+        stf4_br10: req.body.stf4_br10,
+        stf4_hr16: req.body.stf4_hr16,
+        turno: req.body.shift,
+        dia: moment(req.body.date, "DD-MM-YYYY").subtract(1, "day").day(),
+        fecha: moment(req.body.fecha).subtract(1, "day").format("YYYY-MM-DD"),
+      }).then(function (dbPolska2) {
+        res.json(dbPolska2)
+      })
+        .catch(function (error) {
+          res.json(error)
+        })
+    }
+    else {
+      db.Polska2.create({
+        ws2_hr16: req.body.ws2_hr16,
+        ws3a_cell1: req.body.ws3a_cell1,
+        ws3a_cell2: req.body.ws3a_cell2,
+        ws3b_hr10det: req.body.ws3b_hr10det,
+        ws3b_hr10gpf: req.body.ws3b_hr10det,
+        ws4_br10ed: req.body.ws4_br10ed,
+        ws4_br10bja: req.body.ws4_br10bja,
+        ws4_br10gpf: req.body.ws4_br10gpf,
+        stf3_hr10: req.body.stf3_hr10,
+        stf3_br10: req.body.stf3_br10,
+        stf3_hr16: req.body.stf3_hr16,
+        stf4_hr10: req.body.stf4_hr10,
+        stf4_br10: req.body.stf4_br10,
+        stf4_hr16: req.body.stf4_hr16,
+        turno: req.body.shift,
+        dia: moment(req.body.date, "DD-MM-YYYY").day(),
+        fecha: moment(req.body.fecha).format("YYYY-MM-DD"),
+      }).then(function (dbPolska2) {
+        res.json(dbPolska2)
+      })
+        .catch(function (error) {
+          res.json(error)
+        })
+    }
+  })
+
   //Get data for day shift
   app.get("/produccionhoradia/:fechainicial/:fechafinal/", function (req, res) {
     let fechainicial = moment.unix(req.params.fechainicial).format("YYYY-MM-DD HH:mm:ss")
@@ -549,7 +605,7 @@ module.exports = function (app) {
 
   //* SMS precio de los Metales por Hora
   app.post("/metalesporhora", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE,process.env.BERE_PHONE]
+    var telefonos = [process.env.GUS_PHONE, process.env.BERE_PHONE]
 
     //* Send messages thru SMS
 
@@ -579,7 +635,7 @@ module.exports = function (app) {
           "960 USD/oz. The price of Rhodium is: " + req.body.rhodium + " USD/oz. The original price was " +
           "2,436 USD/oz.",
         to: "whatsapp:" + telefonos[i],  // Text this number
-        
+
 
       })
         .then(function (message) {
@@ -594,7 +650,7 @@ module.exports = function (app) {
 
   //* SMS precio del Paladio Arriba del Target
   app.post("/metalesprice", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE,process.env.CARLOS_PHONE]
+    var telefonos = [process.env.GUS_PHONE, process.env.CARLOS_PHONE]
 
     //* Send messages thru SMS
 
@@ -621,11 +677,11 @@ module.exports = function (app) {
       console.log("whatsapp:" + telefonos[i]);
       client.messages.create({
         from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
-        body: "The price of Palladium is over the target of 1,750 USD/oz. The price of Palladium is: " +req.body.palladium+ " USD/oz. The original price was 960 USD/oz. The price of Rhodium is: "+req.body.rhodium+" USD/oz. The original price was 2,436 USD/oz. ",
+        body: "The price of Palladium is over the target of 1,750 USD/oz. The price of Palladium is: " + req.body.palladium + " USD/oz. The original price was 960 USD/oz. The price of Rhodium is: " + req.body.rhodium + " USD/oz. The original price was 2,436 USD/oz. ",
         to: "whatsapp:" + telefonos[i],  // Text this number
-        
-        
-        
+
+
+
       })
         .then(function (message) {
           console.log("Whatsapp:" + message.sid);
