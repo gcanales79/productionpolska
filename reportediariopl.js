@@ -1,60 +1,62 @@
+require("dotenv").config();
 const moment = require('moment-timezone');
 const axios = require("axios");
 
 ProduccionporSemana();
 
 function ProduccionporSemana() {
-    console.log("Cron")
-    let ArrayreporteSemana = [];
+    //console.log("Cron")
+    let ArrayreporteHR10 = [];
+    let ArrayreporteBR10 = [];
+    let ArrayreporteHR16 = [];
 
     let fechaInicial = moment().startOf("day").subtract(1, "day").format("X");
     //console.log("La fecha Inicial es " + fechaInicial)
     let fechaFinal = moment().endOf("day").subtract(1, "day").format("X");
     //console.log("La fecha final es " + fechaFinal)
-    axios.get("https://polskakpi.com/produccionsemana/" + fechaInicial + "/" + fechaFinal)
+    axios.get(process.env.url+"/produccionsemana/" + fechaInicial + "/" + fechaFinal)
         .then(data => {
 
             //console.log(data)
 
             if (data.data.length === 0) {
                 //ProduccionSemanal.splice(9 - i, 0, 0)
-                ArrayreporteSemana.push({
-                    index: 0,
-                    produccion: 0
-                })
+                ArrayreporteHR10.push(0);
+                ArrayreporteBR10.push(0);
+                ArrayreporteHR16.push(0);
             }
             else {
-                let Reportesemana = [];
-                let Totalsemana = 0;
-
-
+                
                 for (let j = 0; j < data.data.length; j++) {
 
-                    Reportesemana.push(parseInt(data.data[j].line_hr10_lp1) + parseInt(data.data[j].line_hr10_lp2))
+                    ArrayreporteHR10.push(parseInt(data.data[j].ws3b_hr10det) + parseInt(data.data[j].ws3b_hr10gpf));
+                    ArrayreporteBR10.push(parseInt(data.data[j].ws4_br10ed)+parseInt(data.data[j].ws4_br10bja)+parseInt(data.data[j].ws4_br10gpf));
+                    ArrayreporteHR16.push(parseInt(data.data[j].ws2_hr16))
                 }
-                console.log(Reportesemana)
-                for (let j = 0; j < Reportesemana.length; j++) {
-                    //console.log(Reportesemana[j])
-                    //console.log(Totalsemana)
-                    Totalsemana += (Reportesemana[j])
-
-                }
-                //console.log(Totalsemana)
-                //console.log(i)
-                //ProduccionSemanal.splice(9 - i, 0, Totalsemana);
-                //console.log(ProduccionSemanal);
-                ArrayreporteSemana.push({
-                    index: 0,
-                    produccion: Totalsemana
-                })
-                ArrayreporteSemana.sort((a, b) => parseFloat(b.index) - parseFloat(a.index));
-                //console.log(ArrayreporteSemana)
-                //console.log(ArrayreporteSemana.length)
-                var Reporteproduccion=numberWithCommas(ArrayreporteSemana[0].produccion)
-                console.log("La produccion fue de " + Reporteproduccion)
             }
-            axios.post("https://polskakpi.com/reportediariopolonia", {
-                produccion: Reporteproduccion,
+            console.log(ArrayreporteHR10);
+            console.log(ArrayreporteBR10);
+            console.log(ArrayreporteHR16);
+
+               let produccion_hr10=0;
+               let produccion_br10=0;
+               let produccion_hr16=0;
+            
+            for (let i=0;i<ArrayreporteHR10.length; i++){
+                produccion_hr10=+ArrayreporteHR10[i]
+            }
+            for (let i=0;i<ArrayreporteBR10.length; i++){
+                produccion_br10=+ArrayreporteBR10[i]
+            }
+            for (let i=0;i<ArrayreporteHR16.length; i++){
+                produccion_hr16=+ArrayreporteHR16[i]
+            }
+
+            
+            axios.post(process.env.url+"/reportediariopolonia", {
+                produccion_hr10: numberWithCommas(produccion_hr10),
+                produccion_br10:numberWithCommas(produccion_br10),
+                produccion_hr16:numberWithCommas(produccion_hr16),
             }).then(function (response) {
                 console.log(response.statusText)
             }).catch(function (err) {

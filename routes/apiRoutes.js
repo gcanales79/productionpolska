@@ -267,7 +267,7 @@ module.exports = function (app) {
     //console.log(fechainicial)
     //console.log(fechafinal)
     //console.log(req.params.fechafinal)
-    db.Polska.findAll({
+    db.Polska2.findAll({
       where: {
         fecha: {
           [Op.gte]: fechainicial,
@@ -283,15 +283,17 @@ module.exports = function (app) {
 
   //* SMS Produccion de la semana reporte Polonia
   app.post("/reportepolonia", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE, process.env.OMAR_PHONE]
-    /*
+    var telefonos = [process.env.GUS_PHONE]
+  
     //* Send messages thru SMS
     
         for (var i = 0; i < telefonos.length; i++) {
           client.messages.create({
             from: process.env.TWILIO_PHONE, // From a valid Twilio number
-            body: "The production of HR10 line for last week was: " + req.body.produccion + ". The contracted capacity "+
-            "per week is 9,000 pcs",
+            body: "The production report from last week: \n" +
+            "HR10 Line: " + req.body.produccion_hr10 + ". Goal: 12,000. \n" + 
+            "BR10 Line: " + req.body.produccion_br10 + ". Goal: 5,500. \n" + 
+            "HR16 Line: " + req.body.produccion_hr16 + ". Goal: 7,500. \n",
             to: telefonos[i],  // Text this number
     
           })
@@ -300,18 +302,22 @@ module.exports = function (app) {
               res.json(message);
             });
         }
+        
   
-    */
-
+    
+   
+     /*   
     //* Send message thry whatsapp
     for (var i = 0; i < telefonos.length; i++) {
-      console.log("whatsapp:" + telefonos[i]);
+      console.log("whatsapp:" + process.env.TWILIO_PHONE);
       client.messages.create({
-        from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
-        body: "The production of HR10 line for last week was: " + req.body.produccion + ". The contracted capacity " +
-          "per week is 12,000.",
+        from: "whatsapp:" + "+14155238886", // From a valid Twilio number,
+        body: "The production report from last week: \n" +
+        "HR10 Line: " + req.body.produccion_hr10 + " Goal: 12,000. \n" + 
+        "BR10 Line: " + req.body.produccion_br10 + " Goal: 5,500. \n" + 
+        "HR16 Line: " + req.body.produccion_hr16 + " Goal: 7,500. \n",
         to: "whatsapp:" + telefonos[i],  // Text this number
-        /*La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}*/
+        //La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}
 
       })
         .then(function (message) {
@@ -321,19 +327,23 @@ module.exports = function (app) {
         .catch(function (error) {
           res.json(error)
         });
-    }
+    }*/
+    
   });
 
   //* SMS Produccion diaro reporte Polonia
   app.post("/reportediariopolonia", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE, process.env.OMAR_PHONE]
-    /*
+    var telefonos = [process.env.GUS_PHONE]
+    
     //* Send messages thru SMS
 
     for (var i = 0; i < telefonos.length; i++) {
       client.messages.create({
         from: process.env.TWILIO_PHONE, // From a valid Twilio number
-        body: "The production of HR10 line for yesterday was: " + req.body.produccion + ". The goal is 2,400.",
+        body: "The production report from yesterday: \n" +
+        "HR10 Line: " + req.body.produccion_hr10 + ". Goal: 2,400. \n" + 
+        "BR10 Line: " + req.body.produccion_br10 + ". Goal: 1,100. \n" + 
+        "HR16 Line: " + req.body.produccion_hr16 + ". Goal: 1,500. \n",
         to: telefonos[i],  // Text this number
 
       })
@@ -342,9 +352,9 @@ module.exports = function (app) {
           res.json(message);
         });
     }
-    */
+    
 
-
+    /*
     //* Send message thru whatsapp
     for (var i = 0; i < telefonos.length; i++) {
       console.log("whatsapp:" + telefonos[i]);
@@ -352,7 +362,7 @@ module.exports = function (app) {
         from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
         body: "The production of HR10 line for yesterday was: " + req.body.produccion + ". The goal is 2,400.",
         to: "whatsapp:" + telefonos[i],  // Text this number
-        /*La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}*/
+        //La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}
 
       })
         .then(function (message) {
@@ -362,7 +372,8 @@ module.exports = function (app) {
         .catch(function (error) {
           res.json(error)
         });
-    }
+    }*/
+    
   });
 
 
