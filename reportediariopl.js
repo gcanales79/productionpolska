@@ -14,7 +14,7 @@ function ProduccionporSemana() {
     //console.log("La fecha Inicial es " + fechaInicial)
     let fechaFinal = moment().endOf("day").subtract(1, "day").format("X");
     //console.log("La fecha final es " + fechaFinal)
-    axios.get(process.env.url2+"/produccionsemana/" + fechaInicial + "/" + fechaFinal)
+    axios.get(process.env.url+"/produccionsemana/" + fechaInicial + "/" + fechaFinal)
         .then(data => {
 
             //console.log(data)
@@ -57,7 +57,7 @@ function ProduccionporSemana() {
             console.log(produccion_hr16)
 
             
-            axios.post(process.env.url2+"/reportediariopolonia", {
+            axios.post(process.env.url+"/reportediariopolonia", {
                 produccion_hr10: numberWithCommas(produccion_hr10),
                 produccion_br10:numberWithCommas(produccion_br10),
                 produccion_hr16:numberWithCommas(produccion_hr16),
