@@ -14,7 +14,7 @@ function ProduccionporSemana() {
     //console.log("La fecha Inicial es " + fechaInicial)
     let fechaFinal = moment().endOf("day").subtract(1, "day").format("X");
     //console.log("La fecha final es " + fechaFinal)
-    axios.get(process.env.url+"/produccionsemana/" + fechaInicial + "/" + fechaFinal)
+    axios.get(process.env.url2+"/produccionsemana/" + fechaInicial + "/" + fechaFinal)
         .then(data => {
 
             //console.log(data)
@@ -43,17 +43,21 @@ function ProduccionporSemana() {
                let produccion_hr16=0;
             
             for (let i=0;i<ArrayreporteHR10.length; i++){
-                produccion_hr10=+ArrayreporteHR10[i]
+                produccion_hr10+=ArrayreporteHR10[i]
             }
             for (let i=0;i<ArrayreporteBR10.length; i++){
-                produccion_br10=+ArrayreporteBR10[i]
+                produccion_br10+=ArrayreporteBR10[i]
             }
             for (let i=0;i<ArrayreporteHR16.length; i++){
-                produccion_hr16=+ArrayreporteHR16[i]
+                produccion_hr16+=ArrayreporteHR16[i]
             }
 
+            console.log(produccion_hr10);
+            console.log(produccion_br10);
+            console.log(produccion_hr16)
+
             
-            axios.post(process.env.url+"/reportediariopolonia", {
+            axios.post(process.env.url2+"/reportediariopolonia", {
                 produccion_hr10: numberWithCommas(produccion_hr10),
                 produccion_br10:numberWithCommas(produccion_br10),
                 produccion_hr16:numberWithCommas(produccion_hr16),
