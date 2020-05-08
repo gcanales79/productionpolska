@@ -186,7 +186,7 @@ module.exports = function (app) {
     //console.log(fechainicial)
     //console.log(fechafinal)
     //console.log(req.params.fechafinal)
-    db.Polska.findAll({
+    db.Polska2.findAll({
       where: {
         fecha: {
           [Op.gte]: fechainicial,
@@ -213,7 +213,7 @@ module.exports = function (app) {
     //console.log(fechainicial)
     //console.log(fechafinal)
     //console.log(req.params.fechafinal)
-    db.Polska.findAll({
+    db.Polska2.findAll({
       where: {
         fecha: {
           [Op.gte]: fechainicial,
@@ -240,7 +240,7 @@ module.exports = function (app) {
     //console.log(fechainicial)
     //console.log(fechafinal)
     //console.log(req.params.fechafinal)
-    db.Polska.findAll({
+    db.Polska2.findAll({
       where: {
         fecha: {
           [Op.gte]: fechainicial,

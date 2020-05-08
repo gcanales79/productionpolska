@@ -30,19 +30,19 @@ $(document).ready(function () {
             for (let i = 0; i < datosDia.length; i++) {
                 var indice = datosDia[i].dia;
                 //!Este dato se cambia dependiendo de la linea
-                ProduccionTurnoDia[indice] = parseInt(datosDia[i].line_stf3)
+                ProduccionTurnoDia[indice] = parseInt(datosDia[i].stf3_hr10)+parseInt(datosDia[i].stf3_br10)+parseInt(datosDia[i].stf3_hr16)
             }
             let ProduccionTurnoTarde = [0, 0, 0, 0, 0, 0, 0];
             for (let i = 0; i < datosTarde.length; i++) {
                 var indice = datosTarde[i].dia;
                 //!Este dato se cambia dependiendo de la linea
-                ProduccionTurnoTarde[indice] = parseInt(datosTarde[i].line_stf3)
+                ProduccionTurnoTarde[indice] = parseInt(datosTarde[i].stf3_hr10)+parseInt(datosTarde[i].stf3_br10)+parseInt(datosTarde[i].stf3_hr16)
             }
             let ProduccionTurnoNoche = [0, 0, 0, 0, 0, 0, 0];
             for (let i = 0; i < datosNoche.length; i++) {
                 var indice = datosNoche[i].dia;
                 //!Este dato se cambia dependiendo de la linea
-                ProduccionTurnoNoche[indice] = parseInt(datosNoche[i].line_stf3)
+                ProduccionTurnoNoche[indice] = parseInt(datosNoche[i].stf3_hr10)+parseInt(datosNoche[i].stf3_br10)+parseInt(datosNoche[i].stf3_hr16)
             }
             GraficaporTurno(ProduccionTurnoDia, ProduccionTurnoTarde, ProduccionTurnoNoche)
         })
@@ -195,7 +195,7 @@ $(document).ready(function () {
 
                     for (let j = 0; j < data.length; j++) {
                         //!Este dato se cambia dependiendo de la linea
-                        Reportesemana.push(parseInt(data[j].line_stf3))
+                        Reportesemana.push(parseInt(data[j].stf3_hr10)+parseInt(data[j].stf3_br10)+parseInt(data[j].stf3_hr16))
                     }
                     //console.log(Reportesemana)
                     for (let j = 0; j < Reportesemana.length; j++) {

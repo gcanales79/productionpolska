@@ -30,19 +30,19 @@ $(document).ready(function () {
             for (let i = 0; i < datosDia.length; i++) {
                 var indice = datosDia[i].dia;
                 //!Este dato se cambia dependiendo de la linea
-                ProduccionTurnoDia[indice] = parseInt(datosDia[i].line_br10)
+                ProduccionTurnoDia[indice] = parseInt(datosDia[i].ws4_br10ed)+parseInt(datosDia[i].ws4_br10bja)+parseInt(datosDia[i].ws4_br10gpf)
             }
             let ProduccionTurnoTarde = [0, 0, 0, 0, 0, 0, 0];
             for (let i = 0; i < datosTarde.length; i++) {
                 var indice = datosTarde[i].dia;
                 //!Este dato se cambia dependiendo de la linea
-                ProduccionTurnoTarde[indice] = parseInt(datosTarde[i].line_br10)
+                ProduccionTurnoTarde[indice] = parseInt(datosTarde[i].ws4_br10ed)+parseInt(datosTarde[i].ws4_br10bja)+parseInt(datosTarde[i].ws4_br10gpf)
             }
             let ProduccionTurnoNoche = [0, 0, 0, 0, 0, 0, 0];
             for (let i = 0; i < datosNoche.length; i++) {
                 var indice = datosNoche[i].dia;
                 //!Este dato se cambia dependiendo de la linea
-                ProduccionTurnoNoche[indice] = parseInt(datosNoche[i].line_br10)
+                ProduccionTurnoNoche[indice] = parseInt(datosNoche[i].ws4_br10ed)+parseInt(datosNoche[i].ws4_br10bja)+parseInt(datosNoche[i].ws4_br10gpf)
             }
             GraficaporTurno(ProduccionTurnoDia, ProduccionTurnoTarde, ProduccionTurnoNoche)
         })
@@ -195,7 +195,7 @@ $(document).ready(function () {
 
                     for (let j = 0; j < data.length; j++) {
                         //!Este dato se cambia dependiendo de la linea
-                        Reportesemana.push(parseInt(data[j].line_br10))
+                        Reportesemana.push(parseInt(data[j].ws4_br10ed)+parseInt(data[j].ws4_br10bja)+parseInt(data[j].ws4_br10gpf))
                     }
                     //console.log(Reportesemana)
                     for (let j = 0; j < Reportesemana.length; j++) {

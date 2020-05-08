@@ -32,7 +32,7 @@ module.exports = function (app) {
         }
       })
     }
-      
+
   });
 
   //Get BR10 page
@@ -47,11 +47,11 @@ module.exports = function (app) {
         }
       })
     }
-      
+
   });
 
-   //Get STF3 page
-   app.get("/stf3", isAuthenticated, function (req, res) {
+  //Get STF3 page
+  app.get("/stf3", isAuthenticated, function (req, res) {
     //console.log(req.user)
     if (req.user.role === "admin" || req.user.role === "user") {
       res.status(200);
@@ -62,8 +62,38 @@ module.exports = function (app) {
         }
       })
     }
-      
+
   });
+
+  //Get HR16 page
+  app.get("/hr16", isAuthenticated, function (req, res) {
+    //console.log(req.user)
+    if (req.user.role === "admin" || req.user.role === "user") {
+      res.status(200);
+      res.render("hr16", {
+        title: "hr16",
+        active_hr16: {
+          Register: true
+        }
+      })
+    }
+
+  });
+
+    //Get STF4 page
+    app.get("/stf4", isAuthenticated, function (req, res) {
+      //console.log(req.user)
+      if (req.user.role === "admin" || req.user.role === "user") {
+        res.status(200);
+        res.render("stf4", {
+          title: "stf4",
+          active_stf4: {
+            Register: true
+          }
+        })
+      }
+  
+    });
 
   // Carga la pagina para dar de alta usuarios
   app.get("/alta", isAuthenticated, function (req, res) {

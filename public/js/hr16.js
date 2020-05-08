@@ -29,17 +29,20 @@ $(document).ready(function () {
             let ProduccionTurnoDia = [0, 0, 0, 0, 0, 0, 0];
             for (let i = 0; i < datosDia.length; i++) {
                 var indice = datosDia[i].dia;
-                ProduccionTurnoDia[indice] = parseInt(datosDia[i].ws3b_hr10det) + parseInt(datosDia[i].ws3b_hr10gpf)
+                //!Este dato se cambia dependiendo de la linea
+                ProduccionTurnoDia[indice] = parseInt(datosDia[i].ws2_hr16)
             }
             let ProduccionTurnoTarde = [0, 0, 0, 0, 0, 0, 0];
             for (let i = 0; i < datosTarde.length; i++) {
                 var indice = datosTarde[i].dia;
-                ProduccionTurnoTarde[indice] = parseInt(datosTarde[i].ws3b_hr10det) + parseInt(datosTarde[i].ws3b_hr10gpf)
+                //!Este dato se cambia dependiendo de la linea
+                ProduccionTurnoTarde[indice] = parseInt(datosTarde[i].ws2_hr16)
             }
             let ProduccionTurnoNoche = [0, 0, 0, 0, 0, 0, 0];
             for (let i = 0; i < datosNoche.length; i++) {
                 var indice = datosNoche[i].dia;
-                ProduccionTurnoNoche[indice] = parseInt(datosNoche[i].ws3b_hr10det) + parseInt(datosNoche[i].ws3b_hr10gpf)
+                //!Este dato se cambia dependiendo de la linea
+                ProduccionTurnoNoche[indice] = parseInt(datosNoche[i].ws2_hr16)
             }
             GraficaporTurno(ProduccionTurnoDia, ProduccionTurnoTarde, ProduccionTurnoNoche)
         })
@@ -125,17 +128,17 @@ $(document).ready(function () {
                         "rgba(255, 99, 132, 1)",
                     ],
                     borderWidth: 1
-                }, {
-                    label: "Goal",
-                    data: [760, 760, 760, 760, 760, 760, 760],
-                    type: "line",
-                    backgroundColor: [
-                        'rgb(255,99,132)'
-                    ],
-                    fill: false,
-                    borderColor: [
-                        "rgb(255,99,132)"
-                    ]
+                },{
+                label:"Goal",
+                //data:[760,760,760,760,760,760,760],
+                type:"line",
+                backgroundColor:[
+                    'rgb(255,99,132)'
+                ],
+                fill:false,
+                borderColor:[
+                    "rgb(255,99,132)"
+                ]    
                 }
                 ]
             },
@@ -163,9 +166,8 @@ $(document).ready(function () {
         let ProduccionSemanal = [];
         let NumSemana = [];
         let ArrayreporteSemana = [];
-
+        
         for (let i = 9; i >= 0; i--) {
-            //console.log("El i es " + i)
             let fechaInicial = moment().startOf("week").subtract(i, "weeks").format("X");
             //console.log("La fecha Inicial es " + fechaInicial)
             let fecha = moment().startOf("week").subtract(i, "weeks")
@@ -176,56 +178,56 @@ $(document).ready(function () {
             $.get("produccionsemana/" + fechaInicial + "/" + fechaFinal, function (data) {
                 //console.log(data)
             })
-                .then(function (data) {
-                    //console.log(data)
+            .then(function (data) {
+                //console.log(data)
 
-                    if (data.length === 0) {
-                        //ProduccionSemanal.splice(9 - i, 0, 0)
-                        ArrayreporteSemana.push({
-                            index: i,
-                            produccion: 0
-                        })
+                if (data.length === 0) {
+                    //ProduccionSemanal.splice(9 - i, 0, 0)
+                    ArrayreporteSemana.push({
+                        index: i,
+                        produccion: 0
+                    })
+                }
+                else {
+                    let Reportesemana = [];
+                    let Totalsemana = 0;
+
+
+                    for (let j = 0; j < data.length; j++) {
+                        //!Este dato se cambia dependiendo de la linea
+                        Reportesemana.push(parseInt(data[j].ws2_hr16))
                     }
-                    else {
-                        let Reportesemana = [];
-                        let Totalsemana = 0;
-
-
-                        for (let j = 0; j < data.length; j++) {
-                            //!Este dato se cambia dependiendo de la linea
-                            Reportesemana.push(parseInt(data[j].ws3b_hr10det) + parseInt(data[j].ws3b_hr10gpf))
-                        }
-                        //console.log(Reportesemana)
-                        for (let j = 0; j < Reportesemana.length; j++) {
-                            //console.log(Reportesemana[j])
-                            //console.log(Totalsemana)
-                            Totalsemana += (Reportesemana[j])
-
-
-
-
-                        }
+                    //console.log(Reportesemana)
+                    for (let j = 0; j < Reportesemana.length; j++) {
+                        //console.log(Reportesemana[j])
                         //console.log(Totalsemana)
-                        //console.log(i)
-                        //ProduccionSemanal.splice(9 - i, 0, Totalsemana);
-                        //console.log(ProduccionSemanal);
-                        ArrayreporteSemana.push({
-                            index: i,
-                            produccion: Totalsemana
-                        })
-                        ArrayreporteSemana.sort((a, b) => parseFloat(b.index) - parseFloat(a.index));
-                        //console.log(ArrayreporteSemana)
-                        //console.log(ArrayreporteSemana.length)
-                        if (ArrayreporteSemana.length === 10) {
-                            for (let j = 0; j < ArrayreporteSemana.length; j++) {
-                                ProduccionSemanal.push(ArrayreporteSemana[j].produccion)
-                            }
-                            //console.log(ProduccionSemanal)
-                        }
-                    }
-                    graficaProduccionsemana(ProduccionSemanal, NumSemana)
+                        Totalsemana += (Reportesemana[j])
 
-                })
+
+
+
+                    }
+                    //console.log(Totalsemana)
+                    //console.log(i)
+                    //ProduccionSemanal.splice(9 - i, 0, Totalsemana);
+                    //console.log(ProduccionSemanal);
+                    ArrayreporteSemana.push({
+                        index: i,
+                        produccion: Totalsemana
+                    })
+                    ArrayreporteSemana.sort((a, b) => parseFloat(b.index) - parseFloat(a.index));
+                    console.log(ArrayreporteSemana)
+                    console.log(ArrayreporteSemana.length)
+                    if (ArrayreporteSemana.length === 10) {
+                        for (let j = 0; j < ArrayreporteSemana.length; j++) {
+                            ProduccionSemanal.push(ArrayreporteSemana[j].produccion)
+                        }
+                        console.log(ProduccionSemanal)
+                    }
+                }
+                graficaProduccionsemana(ProduccionSemanal, NumSemana)
+
+            })
         }
 
     }
