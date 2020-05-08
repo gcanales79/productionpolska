@@ -284,7 +284,7 @@ module.exports = function (app) {
   //* SMS Produccion de la semana reporte Polonia
   app.post("/reportepolonia", function (req, res) {
     var telefonos = [process.env.GUS_PHONE]
-
+    /*
     //* Send messages thru SMS
 
     for (var i = 0; i < telefonos.length; i++) {
@@ -302,36 +302,33 @@ module.exports = function (app) {
           res.json(message);
         });
     }
+    */
 
+    //* Send message thry whatsapp
+    for (var i = 0; i < telefonos.length; i++) {
+      console.log("whatsapp:" + process.env.TWILIO_PHONE);
+      client.messages.create({
+        from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
+        body: "The production report from last week: \n\n" +
+          "HR10 Line: " + req.body.produccion_hr10 + ". Goal: 2,400. \n\n" +
+          "BR10 Line: " + req.body.produccion_br10 + ".  Goal: 1,100. \n\n" +
+          "HR16 Line: " + req.body.produccion_hr16 + ".  Goal: 1,500. \n\n",
+        to: "whatsapp:" + telefonos[i],  // Text this number
+        //La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}
 
-
-
-    /*   
-   //* Send message thry whatsapp
-   for (var i = 0; i < telefonos.length; i++) {
-     console.log("whatsapp:" + process.env.TWILIO_PHONE);
-     client.messages.create({
-       from: "whatsapp:" + "+14155238886", // From a valid Twilio number,
-       body: "The production report from last week: \n" +
-       "HR10 Line: " + req.body.produccion_hr10 + " Goal: 12,000. \n" + 
-       "BR10 Line: " + req.body.produccion_br10 + " Goal: 5,500. \n" + 
-       "HR16 Line: " + req.body.produccion_hr16 + " Goal: 7,500. \n",
-       to: "whatsapp:" + telefonos[i],  // Text this number
-       //La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}
-
-     })
-       .then(function (message) {
-         console.log("Whatsapp:" + message.sid);
-         res.json(message);
-       })
-       .catch(function (error) {
-         res.json(error)
-       });
-   }*/
+      })
+        .then(function (message) {
+          console.log("Whatsapp:" + message.sid);
+          res.json(message);
+        })
+        .catch(function (error) {
+          res.json(error)
+        });
+    }
 
   });
 
-  //* SMS Produccion diaro reporte Polonia
+  //*! SMS Produccion diaro reporte Polonia
   app.post("/reportediariopolonia", function (req, res) {
     var telefonos = [process.env.GUS_PHONE]
 
@@ -390,9 +387,9 @@ module.exports = function (app) {
 
 
 
-  //* SMS Produccion de la seman reporte Mexico
+  //*! SMS Produccion de la semana reporte Mexico
   app.post("/reportemexico", function (req, res) {
-    var telefonos = [process.env.CARLOS_PHONE]
+    var telefonos = [process.env.GUS_PHONE,process.env.CARLOS_PHONE]
     /*
     //* Send messages thru SMS
     
@@ -417,8 +414,10 @@ module.exports = function (app) {
       console.log("whatsapp:" + telefonos[i]);
       client.messages.create({
         from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
-        body: "The production of HR10 line for last week was: " + req.body.produccion + ". The contracted capacity " +
-          "per week is 12,000.",
+        body: "The production report from last week: \n\n" +
+        "HR10 Line: " + req.body.produccion_hr10 + ". Goal: 2,400. \n\n" +
+        "BR10 Line: " + req.body.produccion_br10 + ".  Goal: 1,100. \n\n" +
+        "HR16 Line: " + req.body.produccion_hr16 + ".  Goal: 1,500. \n\n",
         to: "whatsapp:" + telefonos[i],  // Text this number
         /*La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}*/
 
@@ -433,9 +432,9 @@ module.exports = function (app) {
     }
   });
 
-  //* SMS Produccion diaro reporte Mexico
+  //*! SMS Produccion diaro reporte Mexico
   app.post("/reportediariomexico", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE,process.env.CARLOS_PHONE]
+    var telefonos = [process.env.GUS_PHONE, process.env.CARLOS_PHONE]
     /*
     //* Send messages thru SMS
 
@@ -460,9 +459,9 @@ module.exports = function (app) {
       client.messages.create({
         from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
         body: "The production report from yesterday: \n\n" +
-        "HR10 Line: " + req.body.produccion_hr10 + ". Goal: 2,400. \n\n" +
-        "BR10 Line: " + req.body.produccion_br10 + ".  Goal: 1,100. \n\n" +
-        "HR16 Line: " + req.body.produccion_hr16 + ".  Goal: 1,500. \n\n",
+          "HR10 Line: " + req.body.produccion_hr10 + ". Goal: 2,400. \n\n" +
+          "BR10 Line: " + req.body.produccion_br10 + ".  Goal: 1,100. \n\n" +
+          "HR16 Line: " + req.body.produccion_hr16 + ".  Goal: 1,500. \n\n",
         to: "whatsapp:" + telefonos[i],  // Text this number
         /*La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}*/
 
