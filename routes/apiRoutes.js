@@ -309,10 +309,10 @@ module.exports = function (app) {
       console.log("whatsapp:" + process.env.TWILIO_PHONE);
       client.messages.create({
         from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
-        body: "The production report from last week: \n" +
-        "HR10 Line: " + "*"+req.body.produccion_hr10+"*" + ". Goal: 12,000.\n"+
-        "BR10 Line: " + "*"+req.body.produccion_br10+"*" + ". Goal: 1,100.\n"+
-        "HR16 Line: " + "*"+req.body.produccion_hr16+"*" + ". Goal: 1,500.",
+        body: "The production report from last week:\n" +
+        "HR10 Line: " + "*"+req.body.produccion_hr10+"*" + ". Goal: 1,600.\n"+
+        "BR10 Line: " + "*"+req.body.produccion_br10+"*" + ". Goal: 0.\n"+
+        "HR16 Line: " + "*"+req.body.produccion_hr16+"*" + ". Goal: 0.",
         to: "whatsapp:" + telefonos[i],  // Text this number
         //La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}
 
@@ -359,9 +359,9 @@ module.exports = function (app) {
       client.messages.create({
         from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
         body: "The production report from yesterday:\n" + 
-        "HR10 Line: " + "*"+req.body.produccion_hr10+"*" + ". Goal: 2,400.\n"+
-        "BR10 Line: " + "*"+req.body.produccion_br10+"*" + ". Goal: 220.\n"+
-        "HR16 Line: " + "*"+req.body.produccion_hr16+"*" + ". Goal: 300.",
+        "HR10 Line: " + "*"+req.body.produccion_hr10+"*" + ". Goal: 400.\n"+
+        "BR10 Line: " + "*"+req.body.produccion_br10+"*" + ". Goal: 0.\n"+
+        "HR16 Line: " + "*"+req.body.produccion_hr16+"*" + ". Goal: 0.",
         to: "whatsapp:" + telefonos[i],  // Text this number
         /*
       The production report from yesterday: 
@@ -411,10 +411,10 @@ module.exports = function (app) {
       console.log("whatsapp:" + telefonos[i]);
       client.messages.create({
         from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
-        body: "The production report from last week: \n" +
-        "HR10 Line: " + "*"+req.body.produccion_hr10+"*" + ". Goal: 12,000.\n"+
-        "BR10 Line: " + "*"+req.body.produccion_br10+"*" + ". Goal: 1,100.\n"+
-        "HR16 Line: " + "*"+req.body.produccion_hr16+"*" + ". Goal: 1,500.",
+        body: "The production report from last week:\n" +
+        "HR10 Line: " + "*"+req.body.produccion_hr10+"*" + ". Goal: 1,600.\n"+
+        "BR10 Line: " + "*"+req.body.produccion_br10+"*" + ". Goal: 0.\n"+
+        "HR16 Line: " + "*"+req.body.produccion_hr16+"*" + ". Goal: 0.",
         to: "whatsapp:" + telefonos[i],  // Text this number
         /*La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}*/
 
@@ -456,9 +456,9 @@ module.exports = function (app) {
       client.messages.create({
         from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
         body: "The production report from yesterday:\n" + 
-        "HR10 Line: " + "*"+req.body.produccion_hr10+"*" + ". Goal: 2,400.\n"+
-        "BR10 Line: " + "*"+req.body.produccion_br10+"*" + ". Goal: 220.\n"+
-        "HR16 Line: " + "*"+req.body.produccion_hr16+"*" + ". Goal: 300.",
+        "HR10 Line: " + "*"+req.body.produccion_hr10+"*" + ". Goal: 400.\n"+
+        "BR10 Line: " + "*"+req.body.produccion_br10+"*" + ". Goal: 0.\n"+
+        "HR16 Line: " + "*"+req.body.produccion_hr16+"*" + ". Goal: 0.",
         to: "whatsapp:" + telefonos[i],  // Text this number
         /*La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}*/
 
