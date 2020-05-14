@@ -1,0 +1,78 @@
+<div class="container">
+    <div>
+        <h1>Goals</h1>
+    </div>
+    <div class="table-responsive">
+        <table class="table display " style="width:100%" id="tablaGoal">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">HR10 Daily Goal</th>
+                    <th scope="col">BR10 Daily Goal</th>
+                    <th scope="col">HR16 Daily Goal</th>
+                    <th scope="col">HR10 Weekly Goal</th>
+                    <th scope="col">BR10 Weekly Goal</th>
+                    <th scope="col">HR16 Weekly Goal</th>
+                    <th scope="col">Last Update</th>
+                </tr>
+            </thead>
+            <tbdody>
+                {{#each goal}}
+                <tr>
+                    <th scope="row">{{this.id}}</th>
+                    <td>{{this.daily_hr10}}</td>
+                    <td>{{this.daily_br10}}</td>
+                    <td>{{this.daily_hr16}}</td>
+                    <td>{{this.wk_hr10}}</td>
+                    <td>{{this.wk_br10}}</td>
+                    <td>{{this.wk_hr16}}</td>
+                    <td>{{formatDate this.updatedAt}}</td>
+                </tr>
+                {{/each}}
+            </tbdody>
+        </table>
+    </div>
+    <div>
+        <h2>Update Goal</h2>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">Options</label>
+        </div>
+        <select class="custom-select" id="inputGroupSelect01">
+            <option selected>Choose...</option>
+            <option value="1">Daily Goal HR10</option>
+            <option value="2">Daily Goal BR10</option>
+            <option value="3">Daily Goal HR16</option>
+            <option value="4">Weekly Goal HR10</option>
+            <option value="5">Weekly Goal BR10</option>
+            <option value="6">Weekly Goal H16</option>
+        </select>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">New Goal</span>
+        </div>
+        <input type="number" class="form-control" placeholder="New Goal" aria-label="New Goal"
+            aria-describedby="basic-addon1" id="metaNueva">
+    </div>
+    <div class="row justify-content-end">
+        <button type="button" class="btn btn-info" id="botonCambio">Submitt</button>
+    </div>
+    <div class="col-md-6 col-md-offset-3" id="mensaje">
+        {{#if sessionFlash}}
+        {{#each sessionFlash}}
+
+        <div class="{{type}}">
+            {{message}}
+        </div>
+        {{/each}}
+        {{/if}}
+
+    </div>
+
+</div>
+
+
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="js/goal.js"></script>

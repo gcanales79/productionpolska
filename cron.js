@@ -2,9 +2,21 @@ require("dotenv").config();
 const moment = require('moment-timezone');
 const axios = require("axios");
 
-ProduccionporSemana();
+axios.get(process.env.url + "/goalslinea")
+    .then(data => {
+        console.log(data.data)
+        let metaHR10 = data.data[0].wk_hr10;
+        let metaBR10 = data.data[0].wk_br10;
+        let metaHR16 = data.data[0].wk_hr16;
+        ProduccionporSemana(metaHR10, metaBR10, metaHR16);
+    })
+    .catch((err) =>{
+        console.log(err)
+    })
 
-function ProduccionporSemana() {
+//ProduccionporSemana();
+
+function ProduccionporSemana(metaHR10, metaBR10, metaHR16) {
     //console.log("Cron")
     let ArrayreporteHR10 = [];
     let ArrayreporteBR10 = [];
@@ -61,6 +73,9 @@ function ProduccionporSemana() {
                 produccion_hr10: numberWithCommas(produccion_hr10),
                 produccion_br10:numberWithCommas(produccion_br10),
                 produccion_hr16:numberWithCommas(produccion_hr16),
+                meta_hr10: numberWithCommas(metaHR10),
+                meta_br10: numberWithCommas(metaBR10),
+                meta_hr16: numberWithCommas(metaHR16)
             }).then(function (response) {
                 console.log(response.statusText)
             }).catch(function (err) {

@@ -80,20 +80,20 @@ module.exports = function (app) {
 
   });
 
-    //Get STF4 page
-    app.get("/stf4", isAuthenticated, function (req, res) {
-      //console.log(req.user)
-      if (req.user.role === "admin" || req.user.role === "user") {
-        res.status(200);
-        res.render("stf4", {
-          title: "stf4",
-          active_stf4: {
-            Register: true
-          }
-        })
-      }
-  
-    });
+  //Get STF4 page
+  app.get("/stf4", isAuthenticated, function (req, res) {
+    //console.log(req.user)
+    if (req.user.role === "admin" || req.user.role === "user") {
+      res.status(200);
+      res.render("stf4", {
+        title: "stf4",
+        active_stf4: {
+          Register: true
+        }
+      })
+    }
+
+  });
 
   // Carga la pagina para dar de alta usuarios
   app.get("/alta", isAuthenticated, function (req, res) {
@@ -112,6 +112,36 @@ module.exports = function (app) {
 
 
       });
+    }
+    else {
+      res.render("404")
+    }
+  });
+
+
+  // Carga la pagina para dar de alta usuarios
+  app.get("/production-goals", isAuthenticated, function (req, res) {
+    //console.log(res.locals.sessionFlash)
+    let message = res.locals.sessionFlash
+    console.log(message)
+    if (req.user.role === "admin") {
+      db.Goal.findAll({
+
+      }).
+        then(dbGoal => {
+          //console.log(res.locals.sessionFlash)
+          //res.status(200);
+          res.render("goal", {
+            sessionFlash: message,
+            title: "goal",
+            active_goal: {
+              Register: true,
+            },
+            goal:dbGoal,
+          });
+
+        })
+
     }
     else {
       res.render("404")

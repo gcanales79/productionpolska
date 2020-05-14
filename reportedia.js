@@ -2,9 +2,21 @@ require("dotenv").config();
 const moment = require('moment-timezone');
 const axios = require("axios");
 
-ProduccionporSemana();
+axios.get(process.env.url + "/goalslinea")
+    .then(data => {
+        console.log(data.data)
+        let metaHR10 = data.data[0].wk_hr10;
+        let metaBR10 = data.data[0].wk_br10;
+        let metaHR16 = data.data[0].wk_hr16;
+        ProduccionporSemana(metaHR10, metaBR10, metaHR16);
+    })
+    .catch((err) => {
+        console.log(err)
+    })
 
-function ProduccionporSemana() {
+//ProduccionporSemana();
+
+function ProduccionporSemana(metaHR10, metaBR10, metaHR16) {
     //console.log("Cron")
     let ArrayreporteHR10 = [];
     let ArrayreporteBR10 = [];
@@ -14,7 +26,7 @@ function ProduccionporSemana() {
     //console.log("La fecha Inicial es " + fechaInicial)
     let fechaFinal = moment().endOf("week").subtract(1, "weeks").format("X");
     //console.log("La fecha final es " + fechaFinal)
-    axios.get(process.env.url+"/produccionsemana/" + fechaInicial + "/" + fechaFinal)
+    axios.get(process.env.url + "/produccionsemana/" + fechaInicial + "/" + fechaFinal)
         .then(data => {
 
             //console.log(data)
@@ -26,11 +38,11 @@ function ProduccionporSemana() {
                 ArrayreporteHR16.push(0);
             }
             else {
-                
+
                 for (let j = 0; j < data.data.length; j++) {
 
                     ArrayreporteHR10.push(parseInt(data.data[j].ws3b_hr10det) + parseInt(data.data[j].ws3b_hr10gpf));
-                    ArrayreporteBR10.push(parseInt(data.data[j].ws4_br10ed)+parseInt(data.data[j].ws4_br10bja)+parseInt(data.data[j].ws4_br10gpf));
+                    ArrayreporteBR10.push(parseInt(data.data[j].ws4_br10ed) + parseInt(data.data[j].ws4_br10bja) + parseInt(data.data[j].ws4_br10gpf));
                     ArrayreporteHR16.push(parseInt(data.data[j].ws2_hr16))
                 }
             }
@@ -38,34 +50,37 @@ function ProduccionporSemana() {
             console.log(ArrayreporteBR10);
             console.log(ArrayreporteHR16);
 
-               let produccion_hr10=0;
-               let produccion_br10=0;
-               let produccion_hr16=0;
-            
-            for (let i=0;i<ArrayreporteHR10.length; i++){
-                produccion_hr10+=ArrayreporteHR10[i]
+            let produccion_hr10 = 0;
+            let produccion_br10 = 0;
+            let produccion_hr16 = 0;
+
+            for (let i = 0; i < ArrayreporteHR10.length; i++) {
+                produccion_hr10 += ArrayreporteHR10[i]
             }
-            for (let i=0;i<ArrayreporteBR10.length; i++){
-                produccion_br10+=ArrayreporteBR10[i]
+            for (let i = 0; i < ArrayreporteBR10.length; i++) {
+                produccion_br10 += ArrayreporteBR10[i]
             }
-            for (let i=0;i<ArrayreporteHR16.length; i++){
-                produccion_hr16+=ArrayreporteHR16[i]
+            for (let i = 0; i < ArrayreporteHR16.length; i++) {
+                produccion_hr16 += ArrayreporteHR16[i]
             }
 
             console.log(produccion_hr10);
             console.log(produccion_br10);
             console.log(produccion_hr16)
 
-            
-            axios.post(process.env.url+"/reportemexico", {
+
+            axios.post(process.env.url + "/reportemexico", {
                 produccion_hr10: numberWithCommas(produccion_hr10),
-                produccion_br10:numberWithCommas(produccion_br10),
-                produccion_hr16:numberWithCommas(produccion_hr16),
+                produccion_br10: numberWithCommas(produccion_br10),
+                produccion_hr16: numberWithCommas(produccion_hr16),
+                meta_hr10: numberWithCommas(metaHR10),
+                meta_br10: numberWithCommas(metaBR10),
+                meta_hr16: numberWithCommas(metaHR16)
             }).then(function (response) {
-                console.log(response.statusText)
-            }).catch(function (err) {
-                console.log(err)
-            })
+                    console.log(response.statusText)
+                }).catch(function (err) {
+                    console.log(err)
+                })
 
         }).catch(function (err) {
             console.log(err)

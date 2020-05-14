@@ -281,6 +281,152 @@ module.exports = function (app) {
     })
   });
 
+  //Get the goals for each line of
+  app.get("/goalslinea", (req, res) => {
+    db.Goal.findAll({
+
+    })
+      .then(data => {
+        res.json(data)
+      }).catch((err) => {
+        console.log(err)
+      })
+  })
+
+  //Update the goal of a line
+  app.put("/api/updategoal/:line", (req, res) => {
+    switch (req.params.line) {
+      case "1":
+        //console.log("Entro")
+        db.Goal.update({
+          daily_hr10: req.body.newGoal,
+        }, {
+          where: {
+            id: 1,
+          }
+        }
+        ).then(function (data) {
+          req.session.sessionFlash = [{
+            type: "alert alert-success",
+            message: "Goal Updated Successfully"
+          }]
+          if (data) {
+
+            return res.status(200).send({ result: 'redirect', url: '/production-goals' })
+          } else {
+            return res.status(401).send({ error: "Something is wrong." })
+          }
+        })
+        break;
+      case "2":
+        db.Goal.update({
+          daily_br10: req.body.newGoal,
+        }, {
+          where: {
+            id: 1,
+          }
+        }
+        ).then(function (data) {
+          req.session.sessionFlash = [{
+            type: "alert alert-success",
+            message: "Goal Updated Successfully"
+          }]
+          if (data) {
+
+            return res.status(200).send({ result: 'redirect', url: '/production-goals' })
+          } else {
+            return res.status(401).send({ error: "Something is wrong." })
+          }
+        })
+        break;
+      case "3":
+        db.Goal.update({
+          daily_hr16: req.body.newGoal,
+        }, {
+          where: {
+            id: 1,
+          }
+        }
+        ).then(function (data) {
+          req.session.sessionFlash = [{
+            type: "alert alert-success",
+            message: "Goal Updated Successfully"
+          }]
+          if (data) {
+
+            return res.status(200).send({ result: 'redirect', url: '/production-goals' })
+          } else {
+            return res.status(401).send({ error: "Something is wrong." })
+          }
+        })
+        break;
+      case "4":
+        db.Goal.update({
+          wk_hr10: req.body.newGoal,
+        }, {
+          where: {
+            id: 1,
+          }
+        }
+        ).then(function (data) {
+          req.session.sessionFlash = [{
+            type: "alert alert-success",
+            message: "Goal Updated Successfully"
+          }]
+          if (data) {
+
+            return res.status(200).send({ result: 'redirect', url: '/production-goals' })
+          } else {
+            return res.status(401).send({ error: "Something is wrong." })
+          }
+        })
+        break;
+      case "5":
+        db.Goal.update({
+          wk_br10: req.body.newGoal,
+        }, {
+          where: {
+            id: 1,
+          }
+        }
+        ).then(function (data) {
+          req.session.sessionFlash = [{
+            type: "alert alert-success",
+            message: "Goal Updated Successfully"
+          }]
+          if (data) {
+
+            return res.status(200).send({ result: 'redirect', url: '/production-goals' })
+          } else {
+            return res.status(401).send({ error: "Something is wrong." })
+          }
+        })
+        break;
+      case "6":
+        db.Goal.update({
+          wk_hr16: req.body.newGoal,
+        }, {
+          where: {
+            id: 1,
+          }
+        }
+        ).then(function (data) {
+          req.session.sessionFlash = [{
+            type: "alert alert-success",
+            message: "Goal Updated Successfully"
+          }]
+          if (data) {
+
+            return res.status(200).send({ result: 'redirect', url: '/production-goals' })
+          } else {
+            return res.status(401).send({ error: "Something is wrong." })
+          }
+        })
+        break;
+
+    }
+  })
+
   //*! SMS Produccion de la semana reporte Polonia
   app.post("/reportepolonia", function (req, res) {
     var telefonos = [process.env.GUS_PHONE]
@@ -310,9 +456,9 @@ module.exports = function (app) {
       client.messages.create({
         from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
         body: "The production report from last week:\n" +
-        "HR10 Line: " + "*"+req.body.produccion_hr10+"*" + ". Goal: 1,600.\n"+
-        "BR10 Line: " + "*"+req.body.produccion_br10+"*" + ". Goal: 0.\n"+
-        "HR16 Line: " + "*"+req.body.produccion_hr16+"*" + ". Goal: 0.",
+          "HR10 Line: " + "*" + req.body.produccion_hr10 + "*" + ". Goal: " + req.body.meta_hr10 + ".\n" +
+          "BR10 Line: " + "*" + req.body.produccion_br10 + "*" + ". Goal: " + req.body.meta_br10 + ".\n" +
+          "HR16 Line: " + "*" + req.body.produccion_hr16 + "*" + ". Goal: " + req.body.meta_hr16 + ".",
         to: "whatsapp:" + telefonos[i],  // Text this number
         //La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}
 
@@ -358,10 +504,10 @@ module.exports = function (app) {
       console.log("whatsapp:" + telefonos[i]);
       client.messages.create({
         from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
-        body: "The production report from yesterday:\n" + 
-        "HR10 Line: " + "*"+req.body.produccion_hr10+"*" + ". Goal: 400.\n"+
-        "BR10 Line: " + "*"+req.body.produccion_br10+"*" + ". Goal: 0.\n"+
-        "HR16 Line: " + "*"+req.body.produccion_hr16+"*" + ". Goal: 0.",
+        body: "The production report from yesterday:\n" +
+          "HR10 Line: " + "*" + req.body.produccion_hr10 + "*" + ". Goal: " + req.body.meta_hr10 + ".\n" +
+          "BR10 Line: " + "*" + req.body.produccion_br10 + "*" + ". Goal: " + req.body.meta_br10 + ".\n" +
+          "HR16 Line: " + "*" + req.body.produccion_hr16 + "*" + ". Goal: " + req.body.meta_hr16 + ".",
         to: "whatsapp:" + telefonos[i],  // Text this number
         /*
       The production report from yesterday: 
@@ -412,9 +558,9 @@ module.exports = function (app) {
       client.messages.create({
         from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
         body: "The production report from last week:\n" +
-        "HR10 Line: " + "*"+req.body.produccion_hr10+"*" + ". Goal: 1,600.\n"+
-        "BR10 Line: " + "*"+req.body.produccion_br10+"*" + ". Goal: 0.\n"+
-        "HR16 Line: " + "*"+req.body.produccion_hr16+"*" + ". Goal: 0.",
+        "HR10 Line: " + "*" + req.body.produccion_hr10 + "*" + ". Goal: " + req.body.meta_hr10 + ".\n" +
+        "BR10 Line: " + "*" + req.body.produccion_br10 + "*" + ". Goal: " + req.body.meta_br10 + ".\n" +
+        "HR16 Line: " + "*" + req.body.produccion_hr16 + "*" + ". Goal: " + req.body.meta_hr16 + ".",
         to: "whatsapp:" + telefonos[i],  // Text this number
         /*La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}*/
 
@@ -455,10 +601,10 @@ module.exports = function (app) {
       console.log("whatsapp:" + telefonos[i]);
       client.messages.create({
         from: "whatsapp:" + process.env.TWILIO_PHONE, // From a valid Twilio number,
-        body: "The production report from yesterday:\n" + 
-        "HR10 Line: " + "*"+req.body.produccion_hr10+"*" + ". Goal: 400.\n"+
-        "BR10 Line: " + "*"+req.body.produccion_br10+"*" + ". Goal: 0.\n"+
-        "HR16 Line: " + "*"+req.body.produccion_hr16+"*" + ". Goal: 0.",
+        body: "The production report from yesterday:\n" +
+          "HR10 Line: " + "*" + req.body.produccion_hr10 + "*" + ". Goal: " + req.body.meta_hr10 + ".\n" +
+          "BR10 Line: " + "*" + req.body.produccion_br10 + "*" + ". Goal: " + req.body.meta_br10 + ".\n" +
+          "HR16 Line: " + "*" + req.body.produccion_hr16 + "*" + ". Goal: " + req.body.meta_hr16 + ".",
         to: "whatsapp:" + telefonos[i],  // Text this number
         /*La producción de la linea de Daimler del turno de {{1}} fue de: {{2}}*/
 
