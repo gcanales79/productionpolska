@@ -130,6 +130,8 @@ if (process.env.NODE_ENV === "test") {
   syncOptions.force = true;
 }
 
+
+
 //Cron Job
 new CronJob('0 8 * * *', function() {
   console.log("starting cron");

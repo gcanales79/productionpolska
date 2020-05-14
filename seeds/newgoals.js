@@ -1,3 +1,4 @@
+require('dotenv').config()
 var db = require("../models");
 
 db.Goal.create({
