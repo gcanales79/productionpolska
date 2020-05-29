@@ -773,7 +773,7 @@ module.exports = function (app) {
 
   //* SMS precio de los Metales por Hora
   app.post("/metalesporhora", function (req, res) {
-    var telefonos = [process.env.GUS_PHONE, process.env.BERE_PHONE]
+    var telefonos = [process.env.BERE_PHONE]
 
     //* Send messages thru SMS
 
