@@ -169,7 +169,7 @@ module.exports = function (app) {
         stf4_hr16: req.body.stf4_hr16,
         turno: req.body.shift,
         dia: moment(req.body.date, "DD-MM-YYYY").day(),
-        fecha: moment(req.body.fecha).format("YYYY-MM-DD"),
+        fecha: moment(req.body.date).format("YYYY-MM-DD"),
       }).then(function (dbPolska2) {
         res.json(dbPolska2)
       })
