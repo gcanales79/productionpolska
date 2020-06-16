@@ -86,7 +86,7 @@ module.exports = function (app) {
   });
 
   //API to get the data from the email
-  app.post("/api/production", function (req, res) {
+  /*app.post("/api/production", function (req, res) {
     if (req.body.shift == 3) {
       db.Polska.create({
         line_br10: req.body.line_br10,
@@ -121,7 +121,7 @@ module.exports = function (app) {
           res.json(error)
         })
     }
-  })
+  })*/
 
   //API to get the data from the email (2nd Version)
   app.post("/api/produccion", function (req, res) {
