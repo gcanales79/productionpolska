@@ -125,6 +125,7 @@ module.exports = function (app) {
 
   //API to get the data from the email (2nd Version)
   app.post("/api/produccion", function (req, res) {
+    console.log(req.body.date)
     if (req.body.shift == 3) {
       db.Polska2.create({
         ws2_hr16: req.body.ws2_hr16,
@@ -169,7 +170,7 @@ module.exports = function (app) {
         stf4_hr16: req.body.stf4_hr16,
         turno: req.body.shift,
         dia: moment(req.body.date, "DD-MM-YYYY").day(),
-        fecha: moment(req.body.date).format("YYYY-MM-DD"),
+        fecha: moment(req.body.date).format("YYYY-MM-DD HH:mm:ss"),
       }).then(function (dbPolska2) {
         res.json(dbPolska2)
       })
