@@ -169,8 +169,8 @@ module.exports = function (app) {
         stf4_br10: req.body.stf4_br10,
         stf4_hr16: req.body.stf4_hr16,
         turno: req.body.shift,
-        dia: moment(req.body.date, "YYYY-MM-DD").day(),
-        fecha: moment(req.body.date,"YYYY-MM-DD").format("YYYY-MM-DD"),
+        dia: moment(req.body.date, "DD-MM-YYYY").day(),
+        fecha: moment(req.body.date,"DD-MM-YYYY").format("YYYY-MM-DD"),
       }).then(function (dbPolska2) {
         res.json(dbPolska2)
       })
