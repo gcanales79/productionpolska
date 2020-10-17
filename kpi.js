@@ -20,7 +20,7 @@ let shell =require("shelljs")
 
 
 var app = express();
-//var sessionStore = new session.MemoryStore;
+//var sessionStore = new session.MemoryStore hello;
 var PORT = process.env.PORT || 3002;
 
 // Middleware
