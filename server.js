@@ -21,7 +21,7 @@ let shell =require("shelljs")
 
 var app = express();
 //var sessionStore = new session.MemoryStore;
-var PORT = process.env.PORT || 3000;
+var PORT = process.env.PORT || 3002;
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
