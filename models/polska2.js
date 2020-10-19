@@ -12,6 +12,14 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             defaultValue:"0"
         },
+        WS3a_CellGPF1:{
+            type: DataTypes.STRING,
+            defaultValue:"0"
+        },
+        WS3a_CellGPF2:{
+            type: DataTypes.STRING,
+            defaultValue:"0"
+        },
         ws3b_hr10det:  {
             type: DataTypes.STRING,
             defaultValue:"0"
