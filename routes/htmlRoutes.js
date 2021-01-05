@@ -1,105 +1,96 @@
 var db = require("../models");
 var isAuthenticated = require("../config/middleware/isAuthenticated");
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
-
-
-module.exports = function (app) {
+module.exports = function(app) {
   // Load index page
-  app.get("/", function (req, res) {
+  app.get("/", function(req, res) {
     res.status(200);
-    console.log(req.flash("message"))
+    console.log(req.flash("message"));
     res.render("index", {
       title: "home",
       active_home: {
-        Register: true
-      }
-    })
-
+        Register: true,
+      },
+    });
   });
 
-
   //Get produccion page
-  app.get("/produccion", isAuthenticated, function (req, res) {
+  app.get("/produccion", isAuthenticated, function(req, res) {
     //console.log(req.user)
     if (req.user.role === "admin" || req.user.role === "user") {
       res.status(200);
       res.render("produccion", {
         title: "produccion",
         active_home: {
-          Register: true
-        }
-      })
+          Register: true,
+        },
+      });
     }
-
   });
 
   //Get BR10 page
-  app.get("/br10", isAuthenticated, function (req, res) {
+  app.get("/br10", isAuthenticated, function(req, res) {
     //console.log(req.user)
     if (req.user.role === "admin" || req.user.role === "user") {
       res.status(200);
       res.render("br10", {
         title: "br10",
         active_br10: {
-          Register: true
-        }
-      })
+          Register: true,
+        },
+      });
     }
-
   });
 
   //Get STF3 page
-  app.get("/stf3", isAuthenticated, function (req, res) {
+  app.get("/stf3", isAuthenticated, function(req, res) {
     //console.log(req.user)
     if (req.user.role === "admin" || req.user.role === "user") {
       res.status(200);
       res.render("stf3", {
         title: "stf3",
         active_stf3: {
-          Register: true
-        }
-      })
+          Register: true,
+        },
+      });
     }
-
   });
 
   //Get HR16 page
-  app.get("/hr16", isAuthenticated, function (req, res) {
+  app.get("/hr16", isAuthenticated, function(req, res) {
     //console.log(req.user)
     if (req.user.role === "admin" || req.user.role === "user") {
       res.status(200);
       res.render("hr16", {
         title: "hr16",
         active_hr16: {
-          Register: true
-        }
-      })
+          Register: true,
+        },
+      });
     }
-
   });
 
   //Get STF4 page
-  app.get("/stf4", isAuthenticated, function (req, res) {
+  app.get("/stf4", isAuthenticated, function(req, res) {
     //console.log(req.user)
     if (req.user.role === "admin" || req.user.role === "user") {
       res.status(200);
       res.render("stf4", {
         title: "stf4",
         active_stf4: {
-          Register: true
-        }
-      })
+          Register: true,
+        },
+      });
     }
-
   });
 
   // Carga la pagina para dar de alta usuarios
-  app.get("/alta", isAuthenticated, function (req, res) {
+  app.get("/alta", isAuthenticated, function(req, res) {
     //console.log(res.locals.sessionFlash)
-    let message = res.locals.sessionFlash
-    console.log(message)
+    let message = res.locals.sessionFlash;
+    console.log(message);
     if (req.user.role === "admin") {
       //console.log(res.locals.sessionFlash)
       //res.status(200);
@@ -109,74 +100,62 @@ module.exports = function (app) {
         active_alta: {
           Register: true,
         },
-
-
       });
-    }
-    else {
-      res.render("404")
+    } else {
+      res.render("404");
     }
   });
 
-
   // Carga la pagina para dar de alta usuarios
-  app.get("/production-goals", isAuthenticated, function (req, res) {
+  app.get("/production-goals", isAuthenticated, function(req, res) {
     //console.log(res.locals.sessionFlash)
-    let message = res.locals.sessionFlash
-    console.log(message)
+    let message = res.locals.sessionFlash;
+    console.log(message);
     if (req.user.role === "admin") {
-      db.Goal.findAll({
-
-      }).
-        then(dbGoal => {
-          //console.log(res.locals.sessionFlash)
-          //res.status(200);
-          res.render("goal", {
-            sessionFlash: message,
-            title: "goal",
-            active_goal: {
-              Register: true,
-            },
-            goal:dbGoal,
-          });
-
-        })
-
-    }
-    else {
-      res.render("404")
+      db.Goal.findAll({}).then((dbGoal) => {
+        //console.log(res.locals.sessionFlash)
+        //res.status(200);
+        res.render("goal", {
+          sessionFlash: message,
+          title: "goal",
+          active_goal: {
+            Register: true,
+          },
+          //Solucion al problema de handlebars
+          goal: dbGoal.map(dbGoal=>dbGoal.toJSON()),
+        });
+      });
+    } else {
+      res.render("404");
     }
   });
 
   //Cambiar contraseña
 
-  app.get("/reset/:token", function (req, res) {
+  app.get("/reset/:token", function(req, res) {
     db.User.findOne({
       where: {
         resetPasswordToken: req.params.token,
         resetPasswordExpire: {
-          [Op.gt]: Date.now()
-        }
-
-      }
-    }).then(user => {
+          [Op.gt]: Date.now(),
+        },
+      },
+    }).then((user) => {
       if (!user) {
-        req.flash("error", "El token para restablecer la contraseña se ha vencido")
-        return res.redirect("/")
+        req.flash(
+          "error",
+          "El token para restablecer la contraseña se ha vencido"
+        );
+        return res.redirect("/");
       }
       res.render("reset", {
-        token: req.params.token
-      })
-    })
-  })
-
-
-  // Render 404 page for any unmatched routes
-  app.get("*", function (req, res) {
-    res.render("404");
+        token: req.params.token,
+      });
+    });
   });
 
-
-
-
-}
+  // Render 404 page for any unmatched routes
+  app.get("*", function(req, res) {
+    res.render("404");
+  });
+};
