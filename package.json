@@ -29,7 +29,7 @@
     "extend": "^3.0.2",
     "handlebars-helpers": "^0.10.0",
     "memorystore": "^1.6.4",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "moment-timezone": "^0.5.32",
     "mysql2": "^1.7.0",
     "node-cron": "^2.0.3",
