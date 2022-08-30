@@ -30,7 +30,7 @@
     "handlebars-helpers": "^0.10.0",
     "memorystore": "^1.6.4",
     "moment": "^2.29.1",
-    "moment-timezone": "^0.5.32",
+    "moment-timezone": "^0.5.35",
     "mysql2": "^1.7.0",
     "node-cron": "^2.0.3",
     "nodemailer": "^4.7.0",
